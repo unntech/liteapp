@@ -1,0 +1,21 @@
+{
+    "name": "lzs9605/liteapp",
+    "description": "A lite php Framework for web provide",
+    "type": "project",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Jason Lin",
+            "email": "lzs9605@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "lzs9605/litephp": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "LiteApp\\": "app/"
+        }
+    }
+}

@@ -1,0 +1,16 @@
+# https://git-scm.com/docs/gitignore
+# https://help.github.com/articles/ignoring-files
+# Example.gitignore files : https://github.com/github/gitignore
+# ide
+_notes/
+/bower_components/
+/node_modules/
+**/_notes/
+.idea/
+
+# composer
+/vendor/
+composer.lock
+
+# config
+config/

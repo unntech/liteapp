@@ -1,8 +1,5 @@
 <?php
-/*
-	[UENEN TECHNOLOGIES] Copyright (c) 2022 unn.tech
-	This is a freeware, use is subject to license.txt
-*/
+
 
 define('DT_DEBUG', 1);  //0用于生产， 1开启调试开发模式
 if(DT_DEBUG) {
@@ -20,3 +17,4 @@ require_once DT_ROOT . '/vendor/autoload.php';
 
 $Lite = new \LiteApp\LiteApp();
 $DT_TIME = time();
+$title = $Lite->config->get('app.name', 'LitePhp');

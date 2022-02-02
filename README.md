@@ -2,10 +2,10 @@
 LiteApp 1.0
 ===============
 
-[![Total Downloads](https://poser.pugx.org/lzs9605/liteapp/downloads)](https://packagist.org/packages/lzs9605/liteapp)
-[![Latest Stable Version](https://poser.pugx.org/lzs9605/liteapp/v/stable)](https://packagist.org/packages/lzs9605/liteapp)
+[![Total Downloads](https://poser.pugx.org/unntech/liteapp/downloads)](https://packagist.org/packages/unntech/liteapp)
+[![Latest Stable Version](https://poser.pugx.org/unntech/liteapp/v/stable)](https://packagist.org/packages/unntech/liteapp)
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D7.0-8892BF.svg)](http://www.php.net/)
-[![License](https://poser.pugx.org/lzs9605/liteapp/license)](https://packagist.org/packages/lzs9605/liteapp)
+[![License](https://poser.pugx.org/unntech/liteapp/license)](https://packagist.org/packages/unntech/liteapp)
 
 一个PHP的轻量框架
 
@@ -24,7 +24,7 @@ LiteApp 1.0
 ## 安装
 
 ~~~
-composer create-project lzs9605/liteapp yourApp
+composer create-project unntech/liteapp yourApp
 ~~~
 
 ~~~
@@ -34,7 +34,7 @@ composer create-project lzs9605/liteapp yourApp
 
 如果需要更新框架使用
 ~~~
-composer update lzs9605/litephp
+composer update unntech/litephp
 ~~~
 
 ## 文档

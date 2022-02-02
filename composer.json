@@ -1,5 +1,5 @@
 {
-    "name": "lzs9605/liteapp",
+    "name": "unntech/liteapp",
     "description": "A lite php Framework for web provide",
     "type": "project",
     "license": "Apache-2.0",
@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=7.0",
-        "lzs9605/litephp": "*"
+        "unntech/litephp": "*"
     },
     "autoload": {
         "psr-4": {

@@ -18,3 +18,5 @@ require_once DT_ROOT . '/vendor/autoload.php';
 $Lite = new \LiteApp\LiteApp();
 $DT_TIME = time();
 $title = $Lite->config->get('app.name', 'LitePhp');
+
+define('DT_KEY', $Lite->config->get('app.authkey', 'LitePhp'));

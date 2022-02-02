@@ -11,9 +11,11 @@ class LiteApp
      * 配置参数
      */
     public $config, $db, $redis;
+    public $DT_TIME;
     
     public function __construct()
     {
+        $this->DT_TIME = time();
         $this->config = new \LitePhp\Config(DT_ROOT . "/config/");
         $this->config->load(['app', 'db']);
         $this->db = \LitePhp\Db::Create($this->config->get('db'));

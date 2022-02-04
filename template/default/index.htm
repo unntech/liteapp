@@ -1,0 +1,56 @@
+{php $CSS = array('index');}
+{template 'header'}
+<style>
+
+</style>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <div class="container">
+  <!-- Brand/logo -->
+  <a class="navbar-brand" href="#"><svg class="bi bi-bootstrap-fill" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="white" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M4.002 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4h-8zm1.06 12h3.475c1.804 0 2.888-.908 2.888-2.396 0-1.102-.761-1.916-1.904-2.034v-.1c.832-.14 1.482-.93 1.482-1.816 0-1.3-.955-2.11-2.542-2.11H5.062V12zm1.313-4.875V4.658h1.78c.973 0 1.542.457 1.542 1.237 0 .802-.604 1.23-1.764 1.23H6.375zm0 3.762h1.898c1.184 0 1.81-.48 1.81-1.377 0-.885-.65-1.348-1.886-1.348H6.375v2.725z" clip-rule="evenodd"></path>
+</svg> LiteApp</a>
+  
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Features</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </li>
+    </ul>
+  </div>
+    </div>
+</nav>
+<div style="height: 56px; background: #EEE"></div>
+<div class="container mt-3">
+原码下载地址： <a href="https://github.com/unntech/liteapp">https://github.com/unntech/liteapp</a><br>
+安装方法：composer create-project unntech/liteapp yourApp
+</div>
+<div class="container mt-3">
+    <div class="row">
+    <div class="col">
+        Loop Example<BR>
+    {loop $a $k $v}
+    {$v}<BR>
+    {/loop} 
+    </div>
+<div class="col">
+    Format Number:<br>
+        {number_format($n,2)}
+        </div>
+    <div class="col">
+    <img src='{$qrCodeUrl}'>
+    </div>
+    </div>
+</div>
+
+<div class="footer"> LiteApp @ UNN.tech v{$version}</div>
+{template 'footer'}

@@ -9,6 +9,10 @@ LiteApp 1.0
 
 一个PHP的轻量框架
 
+DEMO:
+
+https://liteapp.unn.tech
+
 
 ## 主要新特性
 
@@ -30,6 +34,7 @@ composer create-project unntech/liteapp yourApp
 ~~~
 将目录config.sample 改名为 config，可以更据需求增加配置文件
 读取例子见：tests/sample.config.php
+将runtime目录设为可写权限
 ~~~
 
 如果需要更新框架使用

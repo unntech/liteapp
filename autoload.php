@@ -23,4 +23,5 @@ $title = $Lite->config->get('app.name', 'LitePhp');
 \LitePhp\Template::init(DT_ROOT, $Lite->config->get('app.template', 'default'), DT_ROOT."/runtime/cache");
 
 define('DT_KEY', $Lite->config->get('app.authkey', 'LitePhp'));
-define('DT_SKIN', 'template/'.$Lite->config->get('app.template', 'default')."/skin");
+define('DT_SKIN', '/template/'.$Lite->config->get('app.template', 'default')."/skin");
+define('DT_STATIC', '/template/static');

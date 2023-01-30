@@ -36,5 +36,13 @@ return[
             
             'charset'           => ''
            ] ,
+        
+          [
+			'database'			=> 'mongodb',
+			//服务器连接串
+			'uri'				=> 'mongodb://user:passwd@127.0.0.1:27017',
+			// 数据库名
+			'dbname'			=> 'test'
+		   ]
         ]
 ];

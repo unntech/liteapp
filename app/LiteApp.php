@@ -25,8 +25,14 @@ class LiteApp
     }
     
     public function set_db($i=0){ //$i 为配置文件db列表里的第几个配置
-        $this->config->load(['db']);
+        //$this->config->load(['db']);
         $this->db = \LitePhp\Db::Create($this->config->get('db'), $i);
+    }
+    
+    public function new_db($i=0){ //$i 为配置文件db列表里的第几个配置
+        //$this->config->load(['db']);
+        $thisdb = \LitePhp\Db::Create($this->config->get('db'), $i);
+		return $thisdb;
     }
     
     public function set_redis(){

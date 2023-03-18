@@ -25,3 +25,5 @@ $title = $Lite->config->get('app.name', 'LitePhp');
 define('DT_KEY', $Lite->config->get('app.authkey', 'LitePhp'));
 define('DT_SKIN', '/template/'.$Lite->config->get('app.template', 'default')."/skin");
 define('DT_STATIC', '/template/static');
+
+require_once DT_ROOT . '/include/common.php';

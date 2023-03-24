@@ -55,7 +55,7 @@ function config(string $name = null, $default = null){
     }else{
         $key = $name;
     }
-    if(!$Lite->config->exist($key)){
+    if(!$Lite->config->exists($key)){
         $Lite->config->load($key);
     } 
     $r = $Lite->config->get($name, $default);

@@ -1,0 +1,68 @@
+{template 'header'}
+<style>
+    .hero{background-color:#00bcf2;color:#fff;margin:0 auto;padding:80px 10px 70px;max-width:100%;}
+    .wrapper{*zoom:1;margin:0 auto;max-width:1200px;width:100%}
+    .coname{font-size:32px; line-height:64px; text-align:center;}
+    .bkeee{background:#EEEEEE;}
+    body{background:#f7f9fb}
+    .card {	border-color: transparent;	box-shadow: 0 0 40px rgba(0,0,0,.05); }
+    .card-body {  flex: 1 1 auto;padding: 1.25rem;}
+    .card-title{margin-bottom: 30px; font-size: 1.5rem; text-align: right;}
+
+</style>
+
+<div class="hero">
+    <div class="wrapper"><div class="f_l"><img src="//static.uenen.com/imgs/pic/logo1.png" width="320" alt="UENEN" /></div>
+        <div class="f_r"><div class="coname">Lite Admin Manage Demo</div><div class="text1">。。。。</div></div>
+        <div class="c_b"></div>
+    </div>
+</div>
+{if $emsg != ''}
+<div class="container mt-5">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Notice</strong> {$emsg}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+{/if}
+<div class="container h-100 mt-5">
+    <div class="col-md-9 col-lg-5 m-auto card card-body">
+        <h4 class="card-title">Login</h4>
+        <form method="POST">
+
+            <div class="form-group">
+                <label for="username">UserName</label>
+                <input id="username" type="text" class="form-control" name="username" value="{$username}" required="" autofocus="">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" class="form-control" name="password" required="">
+            </div>
+
+            <div class="form-group">
+                <label for="username">Authenticator</label>
+                <input id="authenticator" type="text" class="form-control" name="authenticator" value="">
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="remember"> Remember Me
+                </label>
+            </div>
+
+            <div class="form-group no-margin">
+                <button type="submit" name="login" class="btn btn-primary btn-block">Login</button>
+            </div>
+            <div class="margin-top20 text-center">
+                Don't have an account?
+            </div>
+        </form>
+    </div>
+</div>
+
+<div style="height:150px;"></div>
+<div class="footer">UNN.Tech @ 2023</div>
+{template 'footer'}

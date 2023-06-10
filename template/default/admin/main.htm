@@ -1,0 +1,32 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>控制台</b><BR>
+        用于展示当前系统中的统计数据、统计报表及重要实时数据
+        <div class="b15"></div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="javascript:void(0)" data-toggle="tab" data-target="#nav-home" >控制台</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" data-toggle="tab" data-target="#nav-profile">会员数据</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" data-toggle="tab" data-target="#nav-custom">自定义</a>
+            </li>
+        </ul>
+    </div>
+    <div class="admin-content-body">
+    <div class="container-fluid">
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home">控制台</div>
+            <div class="tab-pane fade" id="nav-profile">会员数据</div>
+            <div class="tab-pane fade" id="nav-custom">自定义</div>
+        </div>
+
+    </div>
+    </div>
+</div>
+{template 'footer','admin'}

@@ -63,6 +63,9 @@ function config(string $name = null, $default = null){
     return $r;
 }
 
-
+function pagination($count, $pagenum=0){
+    global $Lite;
+    return $Lite->pagination($count, $pagenum);
+}
 
 

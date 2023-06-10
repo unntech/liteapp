@@ -1,0 +1,15 @@
+{php $CSS=array('admin'); }
+{template 'header','admin'}
+{template 'navigation','admin'}
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>{if isset($msgTitle)}{$msgTitle}{else}信息提示{/if}</b>
+        <div class="b15"></div>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+            <div>{$promptMessage}</div>
+        </div>
+    </div>
+</div>
+{template 'footer','admin'}

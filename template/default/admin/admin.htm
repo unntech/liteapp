@@ -1,0 +1,350 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<script>
+    adminComm = new adminComm('{$apiToken}');
+    $(document).ready(function() {
+
+        $("#deleteAdminUser").on('show.bs.modal', function (event) {
+            $("#deleteAdminUserLabel").html(event.relatedTarget.attributes.title.value);
+            $("#delNode").val(event.relatedTarget.dataset.node);
+            $("#delAction").val(event.relatedTarget.dataset.action);
+            $("#delRowid").val(event.relatedTarget.dataset.rowid);
+            let msg ='用户名：'+ $("#list-row-"+event.relatedTarget.dataset.rowid+" td:nth-child(2)").html() + '：' + $("#list-row-"+event.relatedTarget.dataset.rowid+" td:nth-child(3)").html() ;
+            if(event.relatedTarget.dataset.node == 18){
+                msg = msg + '，确定解绑？<BR>解绑后不可恢复原密钥，可重新绑定！';
+                $("#adminUserDelete").html('确定解绑');
+            }else{
+                msg = msg + '，确定删除？<BR>删除后不可恢复！！！';
+                $("#adminUserDelete").html('确定删除');
+            }
+
+            $("#deleteAdminUser .modal-body").html(msg);
+        });
+
+        $('#editAdminUser').on('show.bs.modal', function (event) {
+            //console.log(event);
+            $("#editAdminUserLabel").html(event.relatedTarget.attributes.title.value);
+            $("#colNode").val(event.relatedTarget.dataset.node);
+            $("#colAction").val(event.relatedTarget.dataset.action);
+            $("#colUserid").val(event.relatedTarget.dataset.rowid);
+
+            if(event.relatedTarget.dataset.action == 'EDIT') {
+                let d = {
+                    "node": event.relatedTarget.dataset.node,
+                    "rowid": event.relatedTarget.dataset.rowid,
+                    "action": "QUERY"
+                };
+                adminComm.post('admin.php', d, function (dataBody, status) {
+                    if (status == 'success') {
+                        let ret = JSON.parse(dataBody);
+                        //console.log(ret);
+                        if(ret.errcode == 0) {
+                            let data = ret.data;
+                            $("#colUsername").val(data.username);
+                            $("#colNickname").val(data.nickname);
+                            $("#customuserstatus" + data.status).prop('checked', true);
+                            $("#useradminInline" + data.admin).prop('checked', true);
+                            $.each(data.auths, function (index, value) {
+                                $("#rulesName-"+index).prop('checked', true);
+                            });
+                        }else{
+                            toastr.warning(ret.errcode + ": "+ret.msg);
+                        }
+                    }
+                });
+            }
+        })
+
+        $('#editAdminUser').on('hidden.bs.modal', function (event) {
+            $("#rulesCheckboxs :checkbox").prop('checked', false);
+            $("#colUsername").val('').removeClass('is-invalid').removeClass('is-valid');
+            $("#colPassword").val('');
+            $("#colNickname").val('').removeClass('is-invalid').removeClass('is-valid');
+        });
+
+        $('#adminUserDelete').click(function (){
+            let d = {
+                "node": $("#delNode").val(),
+                "rowid": $("#delRowid").val(),
+                "action": $("#delAction").val()
+            };
+            adminComm.post('admin.php', d, function (dataBody, status) {
+                if (status == 'success') {
+                    let ret = JSON.parse(dataBody);
+                    //console.log(ret);
+                    if(ret.errcode == 0) {
+                        let data = ret.data;
+                        if($("#delAction").val() == 'DELETE'){
+                            toastr.success("删除成功！"+data.id);
+                            $("#list-row-"+data.id).remove();
+                        }else{
+                            toastr.success("解绑成功！"+data.id);
+                            $("#list-row-"+data.id+' td:nth-child(8)').html('');
+                        }
+                        $('#deleteAdminUser').modal('hide');
+                    }else{
+                        toastr.warning(ret.errcode + ": "+ret.msg);
+                    }
+                }
+            });
+        });
+
+        $('#adminUserSave').click(function (){
+            //验证数据合法
+            if(checkFormFields() == false){
+                return false;
+            }
+
+            let rules = [], i = 0;
+            $("#editAdminUser input[name='rulesNames[]']:checked").each(function () {
+                rules[i] = $(this).val();
+                i++;
+            });
+            let d = {
+                "node": $("#colNode").val(),
+                "rowid": $("#colUserid").val(),
+                "username": $("#colUsername").val(),
+                "nickname": $("#colNickname").val(),
+                "password": $("#colPassword").val(),
+                "userstatus": $("#editAdminUser input[name='userstatus']:checked").val(),
+                "useradmin": $("#editAdminUser input[name='useradmin']:checked").val(),
+                "rules": JSON.stringify(rules),
+                "action": $("#colAction").val()
+            };
+            adminComm.post('admin.php', d, function (dataBody, status) {
+                if (status == 'success') {
+                    let ret = JSON.parse(dataBody);
+                    //console.log(ret);
+                    if(ret.errcode == 0) {
+                        toastr.success("保存成功！");
+                        $('#editAdminUser').modal('hide');
+                    }else{
+                        toastr.warning(ret.errcode + ": "+ret.msg);
+                    }
+                }
+            });
+
+        });
+
+        function checkFormFields(){
+            let formCheck = true;
+            if($("#colUsername").val().length<3){
+                $("#colUsername").removeClass('is-valid');
+                $("#colUsername").addClass('is-invalid');
+                formCheck = false;
+            }else{
+                $("#colUsername").removeClass('is-invalid');
+                $("#colUsername").addClass('is-valid');
+            }
+            if($("#colNickname").val().length<2){
+                $("#colNickname").removeClass('is-valid');
+                $("#colNickname").addClass('is-invalid');
+                formCheck = false;
+            }else{
+                $("#colNickname").removeClass('is-invalid');
+                $("#colNickname").addClass('is-valid');
+            }
+            return formCheck
+        }
+    });
+</script>
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>管理员列表</b><BR>
+        一个管理员可以有多个角色组
+        <div class="b15"></div>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+            <div class="admin-content-toolbar">
+                <a href="?" class="btn btn-secondary"><i class="bi bi-arrow-repeat"></i></a>
+                {if $auth->authNode(10)}<button type="button" class="btn btn-success" data-toggle="modal" data-target="#editAdminUser" title="添加用户" data-node="10" data-action ="ADD" data-rowid="0">添加用户</button>{/if}
+                <div class="float-right">
+                    <form method="get">
+                        <div class="form-row align-items-center">
+                            <div class="col-auto">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">用户名</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="username" aria-label="Username" name="username" value="{$qUsername}" aria-describedby="basic-addon1">
+                        </div>
+                            </div>
+                            <div class="col-auto">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">状态</label>
+                            </div>
+                            <select name="status" class="custom-select" id="inputGroupSelect01">
+                                <option value="-9">全部</option>
+                                <option value="0" {if $qStatus == 0}selected{/if}>正常</option>
+                                <option value="1" {if $qStatus == 1}selected{/if}>禁用</option>
+                                <option value="2" {if $qStatus == 2}selected{/if}>锁定</option>
+                            </select>
+                        </div>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary" name="toolbarSearch">查询</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <table class="table table-bordered table-striped text-center">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>姓名</th>
+                    <th>登入次数</th>
+                    <th>状态</th>
+                    <th>角色组</th>
+                    <th>管理员</th>
+                    <th>动态码</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $list $k $v}
+                <tr id="list-row-{$v[id]}">
+                    <td>{$v[id]}</td>
+                    <td>{$v[username]}</td>
+                    <td>{$v[nickname]}</td>
+                    <td>{$v[login_num]}</td>
+                    <td>{$v['statusName']}</td>
+                    <td>{$v[authRules]}</td>
+                    <td>{$v[adminTag]}</td>
+                    <td>{if $v[authenticator]!=''} {if $auth->authNode(18)}
+                        <button type="button" data-toggle="modal" data-target="#deleteAdminUser" title="解除动态码绑定" data-node="18" data-rowid="{$v[id]}" data-action ="SECURE" class="btn btn-danger btn-ssm">解除绑定</button>
+                        {else}已绑定{/if} {/if}</td>
+                    <td>
+                        {if $v[id] > 1}
+                        {if $auth->authNode(11)}<button type="button" data-toggle="modal" data-target="#editAdminUser" title="编辑用户" data-node="11" data-rowid="{$v[id]}" data-action ="EDIT" class="btn btn-primary btn-ssm">编辑</button>{/if}
+                        {if $auth->authNode(10)}<button type="button" data-toggle="modal" data-target="#deleteAdminUser" title="删除用户" data-node="10" data-rowid="{$v[id]}" data-action ="DELETE" class="btn btn-secondary btn-ssm">删除</button>{/if}
+                        {/if}
+                    </td>
+                </tr>
+                {/loop}
+                </tbody>
+            </table>
+            {pagination($pageTotal)}
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="editAdminUser" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAdminUserLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div class="form-group row">
+                        <label for="colUserid" class="col-sm-2 col-form-label">用户ID</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="userid" readonly id="colUserid" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colUsername" class="col-sm-2 col-form-label">用户名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="username" required id="colUsername" maxlength="32" value="" placeholder="登入用户名">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colNickname" class="col-sm-2 col-form-label">用户昵称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="nickname" required id="colNickname" maxlength="32" value="" placeholder="用户姓名或昵称">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colPassword" class="col-sm-2 col-form-label">登入密码</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" name="password" required id="colPassword" value="" placeholder="登入密码">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">状态</label>
+                        <div class="col-sm-10 pt-2">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="customuserstatus0" name="userstatus" checked value="0" class="custom-control-input">
+                                <label class="custom-control-label" for="customuserstatus0">正常</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="customuserstatus1" name="userstatus" value="1" class="custom-control-input">
+                                <label class="custom-control-label" for="customuserstatus1">禁用</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="customuserstatus2" name="userstatus" value="2" class="custom-control-input">
+                                <label class="custom-control-label" for="customuserstatus2">锁定</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">角色组</label>
+                        <div class="col-sm-10 pt-2" id="rulesCheckboxs">
+                            {loop $rulesNames $k $v}
+                            <div class="custom-control custom-checkbox custom-control-inline">
+                                <input type="checkbox" class="custom-control-input" id="rulesName-{$k}" name="rulesNames[]" value="{$k}">
+                                <label class="custom-control-label" for="rulesName-{$k}">{$v}</label>
+                            </div>
+                            {/loop}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">用户标识</label>
+                        <div class="col-sm-10 pt-2">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="useradminInline0" name="useradmin" checked value="0" class="custom-control-input">
+                                <label class="custom-control-label" for="useradminInline0">标准用户</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="useradminInline1" name="useradmin" value="1" class="custom-control-input">
+                                <label class="custom-control-label" for="useradminInline1">超级管理</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="useradminInline2" name="useradmin" value="2" class="custom-control-input">
+                                <label class="custom-control-label" for="useradminInline2">自定义</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="node" id="colNode" value="0">
+                <input type="hidden" name="action" id="colAction" value="ADD">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="adminUserSave">确认保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteAdminUser" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAdminUserLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="node" id="delNode" value="0">
+                <input type="hidden" name="node" id="delRowid" value="0">
+                <input type="hidden" name="action" id="delAction" value="DELETE">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" id="adminUserDelete">确认删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+{template 'footer','admin'}

@@ -1,0 +1,93 @@
+{if $navigationConfig == 'sider'}
+<header class="main-header">
+    <div class="navbar">
+        <a href="javascript:void(0)"><i class="bi bi-distribute-vertical"></i></a>
+        <div class="navbar-custom-menu">
+            <a href="/"><i class="bi bi-house-door-fill"></i> 主页</a>
+            <a href="javascript:LiadminFullScreen()"><i class="bi bi-arrows-fullscreen"></i></a>
+            <a href="javascript:void(0);" data-toggle="dropdown" aria-expanded="false">{$curUser['nickname']}</a>
+            <div class="dropdown-menu userinfomenu">
+                <a class="dropdown-item" href="profile.php">个人资料</a>
+                <a class="dropdown-item" href="editpsw.php">修改密码</a>
+                <a class="dropdown-item" href="authenticator.php">动态码绑定</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="index.php?action=logout">注销退出</a>
+            </div>
+            <a href="javascript:void(0);" title="样式设置"><i class="bi bi-three-dots-vertical"></i></a>
+        </div>
+    </div>
+</header>
+<div style="height: 50px"></div>
+<div class="main-sidebar h-100" id="admin-main-sidebar">
+    <div class="logo">
+        <span class="logo-lg">{$appName}后台管理</span>
+    </div>
+    <div class="sidebar-top-separate"></div>
+    <div class="sidebar-menu-wrapper">
+    <ul class="sidebar-menu">
+        {loop $auth->menu $k $v}
+        <li {if $k == $activeMenu} class="active" {/if}>
+            <a href="{$v[href]}">{$v[title]}</a>
+        </li>
+        {if isset($v['sub'])}
+        <ul class="sidebar-menu sidebar-menu-sub" id="sidebar-submenu-{$k}" {if !empty($v['menuShow'])} style="display:block" {/if}>
+        {loop $v['sub'] $subk $subv}
+        <li {if $subk == $activeMenu} class="active" {/if}>
+            <a href="{$subv[href]}">{$subv[title]}</a>
+        </li>
+        {/loop}
+        </ul>
+        {/if}
+        {/loop}
+    </ul>
+    </div>
+</div>
+{else}
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <div class="container-fluid">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="javascript:void(0)">{$appName}后台管理</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                {loop $auth->menu $k $v}
+                {if isset($v['sub'])}
+                <li  class="nav-item dropdown" >
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">{$v[title]}</a>
+                    <div class="dropdown-menu">
+                        {loop $v['sub'] $subk $subv}
+                        <a class="dropdown-item" href="{$subv[href]}">{$subv[title]}</a>
+                        {/loop}
+                    </div>
+                </li>
+                {else}
+                <li  class="nav-item {if $k == $activeMenu}active{/if}" >
+                    <a class="nav-link" href="{$v[href]}">{$v[title]}</a>
+                </li>
+                {/if}
+                {/loop}
+            </ul>
+        </div>
+        <div class="navbar-custom-area d-none d-sm-block">
+            <a href="/"><i class="bi bi-house-door-fill"></i> 主页</a>
+            <a href="javascript:LiadminFullScreen()"><i class="bi bi-arrows-fullscreen"></i></a>
+            <a href="javascript:void(0)" data-toggle="dropdown" aria-expanded="false">{$curUser['nickname']}</a>
+            <div class="dropdown-menu userinfomenu">
+                <a class="dropdown-item" href="profile.php">个人资料</a>
+                <a class="dropdown-item" href="editpsw.php">修改密码</a>
+                <a class="dropdown-item" href="authenticator.php">动态码绑定</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="index.php?action=logout">注销退出</a>
+            </div>
+            <a href="javascript:void(0);" title="样式设置"><i class="bi bi-three-dots-vertical"></i></a>
+        </div>
+    </div>
+</nav>
+<div style="height: 56px; background: #EEE"></div>
+<style>
+    .admin-content-wrapper{padding-left: 15px;}
+</style>
+{/if}

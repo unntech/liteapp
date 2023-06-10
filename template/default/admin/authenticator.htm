@@ -1,0 +1,43 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>绑定登入二次验动态码</b>
+        <div class="b15"></div>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+            <form method="post">
+                <div class="form-group row">
+                    <label for="colUserid" class="col-sm-2 col-form-label">用户ID</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="userid" readonly id="colUserid" value="{$profile[id]}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="colUsername" class="col-sm-2 col-form-label">用户名</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="username" readonly id="colUsername" value="{$profile[username]}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">动态码绑定</label>
+                    <div class="col-sm-5">
+                        <img src="{$qrCodeUrl}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="colNewPassword" class="col-sm-2 col-form-label">动态码</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="newcode" required id="colNewPassword" maxlength="32" value="" placeholder="输入手机Authenticator应用上显示的动态码">
+                    </div>
+                </div>
+                <div class="text-center col-sm-7">
+                    <input type="hidden" name="secret" value="{$secret}">
+                    <button type="submit" class="btn btn-primary" name="save">确认绑定</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{template 'footer','admin'}

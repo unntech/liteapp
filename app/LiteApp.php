@@ -10,7 +10,7 @@ class LiteApp
     /**
      * 配置参数
      */
-    const VERSION = '1.0.5';
+    const VERSION = '1.1.1';
     public $config, $db, $redis;
     public $DT_TIME;
     public $appName;
@@ -75,5 +75,43 @@ class LiteApp
         $res = \LitePhp\LiHttp::post($url, $data, $aHeader);
         return $res;
     }
-    
+
+    public function pagination($count, $pagenum=0){
+        if($pagenum <= 0){
+            $pagenum = $this->config->get('admin.pageNum');
+        }
+        if($pagenum <= 0) $pagenum = 1;
+        if(empty($count)) $count = 0;
+        $p = ceil($count / $pagenum);
+        //if($p ==1) return '';
+        $a = '';
+        foreach($_GET as $k=>$v){
+            if($k !='page' ) $a.='&'.$k.'='.$v;
+        }
+        $curPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        if($curPage < 1) $curPage = 1;
+        $ret = '<nav aria-label="Page navigation admin"><ul class="pagination pagination-sm"><li class="page-item';
+        if($curPage == 1){
+            $ret .= ' disabled';
+        }
+        $prePage = $curPage - 1;
+        $ret .= '"><a class="page-link" href="?page='.$prePage.$a.'">Previous</a></li>';
+        if($curPage > 10){ $bi = $curPage - 9; $pi = $bi + 30;}
+        else{$bi = 1; $pi = 30;}
+        if($pi > $p){ $pi = $p;}
+        for($i=$bi; $i<=$pi; $i ++){
+            if($curPage == $i){
+                $ret .='<li class="page-item active" aria-current="page"><span class="page-link">'.$i.'</span></li>';
+            }else{
+                $ret .= '<li class="page-item"><a class="page-link" href="?page='.$i.$a.'">'.$i.'</a></li>';
+            }
+        }
+        $ret .= '<li class="page-item';
+        if($curPage == $p){
+            $ret .= ' disabled';
+        }
+        $nextPage = $curPage + 1;
+        $ret .= '"><a class="page-link" href="?page='.$nextPage.$a.'">Next</a></li><li class="page-item"><span class="page-link">共'.$count.'条记录</span></li></ul></nav>';
+        return $ret;
+    }
 }

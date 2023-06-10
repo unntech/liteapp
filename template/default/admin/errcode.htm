@@ -1,0 +1,21 @@
+{template 'header'}
+<div class="b30"></div>
+        <div class="container-fluid">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>错误代码</th>
+                    <th>错误信息</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $errcode $k $v}
+                <tr>
+                    <td>{$k}</td>
+                    <td>{$v}</td>
+                </tr>
+                {/loop}
+                </tbody>
+            </table>
+        </div>
+{template 'footer','admin'}

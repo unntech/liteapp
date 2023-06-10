@@ -1,0 +1,42 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>管理员日志</b>
+        <div class="b15"></div>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+            <table class="table table-bordered table-striped text-center">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>管理员ID</th>
+                    <th>管理员</th>
+                    <th>操作页面</th>
+                    <th>标题</th>
+                    <th>内容</th>
+                    <th>IP</th>
+                    <th>时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                {loop $list $k $v}
+                <tr>
+                    <td>{$v[id]}</td>
+                    <td>{$v[admin_id]}</td>
+                    <td>{$v[nickname]}</td>
+                    <td align="left">{$v[url]}</td>
+                    <td>{$v[title]}</td>
+                    <td class="listcol-ellipsis-w200" title='{$v[content]}'>{$v[content]}</td>
+                    <td>{$v[ip]}</td>
+                    <td>{date('Y-m-d H:i:s', $v[addtime])}</td>
+                </tr>
+                {/loop}
+                </tbody>
+            </table>
+            {pagination($pageTotal)}
+        </div>
+    </div>
+</div>
+{template 'footer','admin'}

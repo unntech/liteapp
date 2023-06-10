@@ -1,0 +1,48 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>修改您的登入密码</b>
+        <div class="b15"></div>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+            <form method="post">
+                <div class="form-group row">
+                    <label for="colUserid" class="col-sm-2 col-form-label">用户ID</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="userid" readonly id="colUserid" value="{$profile[id]}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="colUsername" class="col-sm-2 col-form-label">用户名</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="username" readonly id="colUsername" value="{$profile[username]}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="colOldPassword" class="col-sm-2 col-form-label">旧密码</label>
+                    <div class="col-sm-5">
+                        <input type="password" class="form-control" name="oldpassword" required id="colOldPassword" maxlength="32" value="" placeholder="您原来的登入密码">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="colNewPassword" class="col-sm-2 col-form-label">新密码</label>
+                    <div class="col-sm-5">
+                        <input type="password" class="form-control" name="newpassword" required id="colNewPassword" maxlength="32" value="" placeholder="新密码">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="colCfmPassword" class="col-sm-2 col-form-label">确认密码</label>
+                    <div class="col-sm-5">
+                        <input type="password" class="form-control" name="cfmpassword" required id="colCfmPassword" maxlength="32" value="" placeholder="确认新密码">
+                    </div>
+                </div>
+                <div class="text-center col-sm-7">
+                    <button type="submit" class="btn btn-primary" name="save">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{template 'footer','admin'}

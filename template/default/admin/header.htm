@@ -11,13 +11,15 @@
 <link rel="stylesheet" type="text/css" href="{DT_SKIN}/common.css"/>
 {if isset($CSS) && is_array($CSS)}
 {loop $CSS $css}
-<link rel="stylesheet" type="text/css" href="{DT_SKIN}/{$css}.css"/>
+<link rel="stylesheet" type="text/css" href="{DT_SKIN}/{$css}.css?v={$DT_TIME}"/>
 {/loop}
 {/if}
 <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
 <script type="text/javascript" src="//apis.zhisg.com/js/jquery/jquery-3.5.1.min.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="//apis.zhisg.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{DT_STATIC}/admin/js/admin.js?{$DT_TIME}"></script>
+<script type="text/javascript" src="{DT_STATIC}/admin/js/admin-comm.js"></script>
 </head>
 
 <body>

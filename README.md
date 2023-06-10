@@ -1,5 +1,5 @@
 
-LiteApp 1.0
+LiteApp 1.1
 ===============
 
 [![Total Downloads](https://poser.pugx.org/unntech/liteapp/downloads)](https://packagist.org/packages/unntech/liteapp)
@@ -21,9 +21,11 @@ https://liteapp.unn.tech
 * 原生多应用支持
 * 对IDE更加友好
 * 统一和精简大量用法
+* 最为接近原生PHP写法，满足习惯原开发的人员开发习惯
+* 1.1 新增Admin后台管理模块
 
 
-> LiteApp 1.0的运行环境要求PHP7.0+，兼容PHP8.1
+> LiteApp 1.1的运行环境要求PHP7.0+，兼容PHP8.1
 
 ## 安装
 
@@ -35,6 +37,7 @@ composer create-project unntech/liteapp yourApp
 将目录config.sample 改名为 config，可以更据需求增加配置文件
 读取例子见：tests/sample.config.php
 将runtime目录设为可写权限
+docs/liteapp.sql 导入至数据库
 ~~~
 
 如果需要更新框架使用

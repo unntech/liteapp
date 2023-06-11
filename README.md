@@ -46,6 +46,8 @@ composer update unntech/litephp
 ~~~
 
 ## 文档
+Admin后台入口：http://{domain}/admin/index.php
+用户名：admin 密码：123456
 
 [完全开发手册](#)
 

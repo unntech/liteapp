@@ -92,6 +92,14 @@ function ajaxviewopen(id){
 
 }
 
+function userInfoMenu(){
+    $("#userinfomenu").fadeToggle();
+}
+
+function rightSidebarBox(){
+    $("#admin-right-sidebar").fadeToggle();
+}
+
 function LiadminFullScreen(){
     if (
         document.fullscreen ||

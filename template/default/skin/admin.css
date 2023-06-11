@@ -224,9 +224,31 @@ body{
 .userinfomenu{
     right: 10px;
     left: auto;
-    z-index: auto;
+    position: absolute;
+    width: 150px;
+    display: none;
+    z-index: 1024;
+    background: #fff;
+    border: #ccc 1px solid;
+    border-radius: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-top: 5px;
 }
 
+.right-sidebar-box{
+    position: absolute;
+    right: 0;
+    left: auto;
+    width: 200px;
+    background: #fff;
+    border: #ccc 1px solid;
+    padding: 15px 15px;
+    min-height: 500px;
+    z-index: 1024;
+    display: none;
+    border-radius: 5px;
+}
 
 .btn-ssm{
     padding: 0.05rem 0.25rem;

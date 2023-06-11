@@ -1,6 +1,6 @@
 // JavaScript Document
 
-function adminComm(token) {
+function adminCommFunc(token) {
     this.token = token === undefined ? '' : token;
 
     this.post = function (url, d, successFunc) {

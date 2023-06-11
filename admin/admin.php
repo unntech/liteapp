@@ -98,9 +98,7 @@ while ($r = $res->fetch_assoc()){
 }
 
 $rulesNames = $auth->getAdminAuths();
-$liCrypt = new LitePhp\LiCrypt(DT_KEY);
-$jwt = ['node'=>$activeMenu, 'exp'=>time()+3600];
-$apiToken = $liCrypt->getToken($jwt);
+
 
 $CSS = ['admin'];
 include LitePhp\Template::load('admin', 'admin');

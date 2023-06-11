@@ -24,17 +24,21 @@
                     <label class="col-sm-2 col-form-label">动态码绑定</label>
                     <div class="col-sm-5">
                         <img src="{$qrCodeUrl}">
+                        <small id="qrCodeUrllHelp" class="form-text text-muted">第一步：打开手机APP：Authenticator，点+号扫描以上二维码。（首次使用请先下载AuthenticatorAPP）</small>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="colNewPassword" class="col-sm-2 col-form-label">动态码</label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" name="newcode" required id="colNewPassword" maxlength="32" value="" placeholder="输入手机Authenticator应用上显示的动态码">
+                        <input type="text" class="form-control" name="newcode" required id="colNewPassword" maxlength="32" value="" placeholder="输入动态码">
+                        <small id="newcodeHelp" class="form-text text-muted">第二步：输入手机Authenticator应用上显示的动态码</small>
+                        <small id="newsaveHelp" class="form-text text-muted">第三步：点击确认绑定按钮，看到提示绑定成功即可，如有其它错误，按提示操作</small>
                     </div>
                 </div>
                 <div class="text-center col-sm-7">
                     <input type="hidden" name="secret" value="{$secret}">
                     <button type="submit" class="btn btn-primary" name="save">确认绑定</button>
+
                 </div>
             </form>
         </div>

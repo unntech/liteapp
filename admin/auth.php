@@ -46,9 +46,6 @@ if($isAjax){  //ajax 提交
 $pageTotal = $Lite->db->table($auth->tableAdmin.'_auth')->where(['status'=>['>=', 0]])->count();
 $list = $Lite->db->table($auth->tableAdmin.'_auth')->where(['status'=>['>=', 0]])->limit([$pageStart, $pageNum])->select()->toArray();
 
-$liCrypt = new LitePhp\LiCrypt(DT_KEY);
-$jwt = ['node'=>$activeMenu, 'exp'=>time()+3600];
-$apiToken = $liCrypt->getToken($jwt);
 
 $CSS = ['admin'];
 include LitePhp\Template::load('auth', 'admin');

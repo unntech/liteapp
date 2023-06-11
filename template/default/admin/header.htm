@@ -1,25 +1,28 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>{if isset($title)}{$title}{else}LiteApp{/if}</title>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<!-- 新 Bootstrap 核心 CSS 文件 -->
-<link href="//apis.zhisg.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<link href="//apis.zhisg.com/bootstrap/icons-1.8.1/font/bootstrap-icons.css" rel="stylesheet">
-<link href="//apis.zhisg.com/css/bootcomm.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{DT_SKIN}/common.css"/>
-{if isset($CSS) && is_array($CSS)}
-{loop $CSS $css}
-<link rel="stylesheet" type="text/css" href="{DT_SKIN}/{$css}.css?v={if ENVIRONMENT == 'DEV'}{$DT_TIME}{else}1.0{/if}"/>
-{/loop}
-{/if}
-<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-<script type="text/javascript" src="//apis.zhisg.com/js/jquery/jquery-3.5.1.min.js"></script>
-<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="//apis.zhisg.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="{DT_STATIC}/admin/js/admin.js?v={if ENVIRONMENT == 'DEV'}{$DT_TIME}{else}1.0{/if}"></script>
-<script type="text/javascript" src="{DT_STATIC}/admin/js/admin-comm.js"></script>
+    <meta charset="utf-8">
+    <title>{if isset($title)}{$title}{else}LiteApp{/if}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="//apis.zhisg.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//apis.zhisg.com/bootstrap/icons-1.8.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="//apis.zhisg.com/css/bootcomm.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{DT_SKIN}/common.css"/>
+    {if isset($CSS) && is_array($CSS)}
+    {loop $CSS $css}
+    <link rel="stylesheet" type="text/css" href="{DT_SKIN}/{$css}.css?v={if ENVIRONMENT == 'DEV'}{$DT_TIME}{else}1.0{/if}"/>
+    {/loop}
+    {/if}
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script type="text/javascript" src="//apis.zhisg.com/js/jquery/jquery-3.5.1.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="//apis.zhisg.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{DT_STATIC}/admin/js/admin-comm.js?v1"></script>
+    <script>
+        adminComm = new adminCommFunc('{$apiToken}');
+    </script>
+    <script type="text/javascript" src="{DT_STATIC}/admin/js/admin.js?v={if ENVIRONMENT == 'DEV'}{$DT_TIME}{else}1.0{/if}"></script>
 </head>
 
 <body>

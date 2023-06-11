@@ -26,7 +26,7 @@ if(isset($_POST['save'])){
     }
 }
 
-$profile = $auth->curUser();
+$profile = $curUser;
 
 $CSS = ['admin'];
 include LitePhp\Template::load('editpsw', 'admin');

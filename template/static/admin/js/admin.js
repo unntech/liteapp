@@ -1,6 +1,64 @@
 // JavaScript Document
 
 $(document).ready(function() {
+    $("#navMenuStyleSetting [name=navStyle]").click(function (){
+        toastr.options.positionClass = "toast-top-center";
+        let d = {
+            "nav": $(this).val(),
+            "action": "SETNAV"
+        };
+        adminComm.post('profile.php', d, function (dataBody, status) {
+            if (status == 'success') {
+                let ret = JSON.parse(dataBody);
+                //console.log(ret);
+                if(ret.errcode == 0) {
+                    let data = ret.data;
+                    toastr.success('设置成功：'+ data.navigation);
+                }else{
+                    toastr.warning(ret.errcode + ": "+ret.msg);
+                }
+            }
+        });
+    });
+
+    $("form").submit(function(event){
+        checkSubmitFlag++;
+        if(checkSubmitFlag > 1){
+            event.preventDefault();
+        }
+    });
+
+    $("[data-toggle|='adminConfirm']").click(function (event){
+        //console.log(event);
+        adminConfirmOptStyle();
+        if(event.target.dataset.yes){
+            $(this).removeAttr('data-yes');
+        }else{
+            event.preventDefault();
+            $("#adminConfirmOpt").modal('show');
+            $("#adminConfirmOptLabel").html(event.target.attributes.title.value)
+            $("#adminConfirmOpt .modal-body").html(event.target.dataset.msg);
+            $("#adminConfirmOptYes").attr("data-nodename", event.target.nodeName);
+            $("#adminConfirmOptYes").attr("data-targetid", '#'+event.target.id);
+        }
+    });
+
+    $("#adminActivityContent").on('click', '#adminConfirmOptYes', function (event){
+        //console.log(event);
+        if(event.target.dataset.nodename == 'A'){
+            window.location.href = $(event.target.dataset.targetid).attr('href');
+        }else{
+            $(event.target.dataset.targetid).attr('data-yes', true);
+            $(event.target.dataset.targetid).click();
+        }
+        $("#adminConfirmOpt").modal('hide');
+    });
+
+    $('#adminActivityContent').on('hidden.bs.modal', '#adminConfirmOpt', function (event) {
+        //console.log('hidden');
+        $("#adminActivityContent #adminConfirmOpt").remove();
+    });
+
     $("[data-toggle|='adminPopForm']").click(function (){
         //toastr.info($(this).attr('data-target'));
         let srcdivid = $(this).attr('data-target');
@@ -47,6 +105,36 @@ $(document).ready(function() {
 
 });
 
+$(function () {
+    let flag = $.cookie('navigatorSiderFlag');
+    if(flag == 1){
+        //navigatorSiderToggle();
+    }
+});
+
+function adminConfirmOptStyle(){
+    $('#adminActivityContent').append(`
+    <div class="modal fade" id="adminConfirmOpt" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="adminConfirmOptLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adminConfirmOptLabel">操作提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id="adminConfirmOptYes">确定</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    `);
+}
 
 function adminPopWrapper(){
     $('body').append(`
@@ -98,6 +186,24 @@ function userInfoMenu(){
 
 function rightSidebarBox(){
     $("#admin-right-sidebar").fadeToggle();
+}
+
+function navigatorSiderToggle(){
+    if(navigatorSiderFlag == 0){
+        $("#admin-main-sidebar").addClass('main-sidebar-sm');
+        $(".admin-content-wrapper").css('padding-left', '68px');
+        $(".main-header").addClass('main-header-sm')
+        $("#admin-main-sidebar .menu-text").hide();
+        navigatorSiderFlag = 1;
+        $.cookie('navigatorSiderFlag', 1);
+    }else{
+        $("#admin-main-sidebar").removeClass('main-sidebar-sm');
+        $(".admin-content-wrapper").css('padding-left', '245px');
+        $(".main-header").removeClass('main-header-sm');
+        $("#admin-main-sidebar .menu-text").fadeIn("slow");
+        navigatorSiderFlag = 0;
+        $.cookie('navigatorSiderFlag', 0);
+    }
 }
 
 function LiadminFullScreen(){

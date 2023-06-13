@@ -156,7 +156,7 @@
     <div class="admin-content-body">
         <div class="container-fluid">
             <div class="admin-content-toolbar">
-                <a href="?" class="btn btn-secondary"><i class="bi bi-arrow-repeat"></i></a>
+                <a href="?{$_SERVER['QUERY_STRING']}" class="btn btn-secondary"><i class="bi bi-arrow-repeat"></i></a>
                 {if $auth->authNode(10)}<button type="button" class="btn btn-success" data-toggle="modal" data-target="#editAdminUser" title="添加用户" data-node="10" data-action ="ADD" data-rowid="0">添加用户</button>{/if}
                 <div class="float-right">
                     <form method="get">
@@ -166,7 +166,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">用户名</span>
                             </div>
-                            <input type="text" class="form-control" placeholder="username" aria-label="Username" name="username" value="{$qUsername}" aria-describedby="basic-addon1">
+                            <input type="text" class="form-control" placeholder="username" autocomplete="false" aria-label="Username" name="username" value="{$qUsername}" aria-describedby="basic-addon1">
                         </div>
                             </div>
                             <div class="col-auto">
@@ -232,7 +232,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="editAdminUser" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="editAdminUser" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="editAdminUserLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -252,7 +252,7 @@
                     <div class="form-group row">
                         <label for="colUsername" class="col-sm-2 col-form-label">用户名</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="username" required id="colUsername" maxlength="32" value="" placeholder="登入用户名">
+                            <input type="text" class="form-control" name="username" autocomplete="false" required id="colUsername" maxlength="32" value="" placeholder="登入用户名">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -324,7 +324,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="deleteAdminUser" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="deleteAdminUser" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="deleteAdminUserLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

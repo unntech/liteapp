@@ -36,6 +36,20 @@ function dv($var, bool $echo = true, string $label = null, bool $strict = true)
     }
 }
 
+/**
+ * 通过JS把PHP变量输出至 console.log
+ * @param $output
+ * @param $with_script_tags
+ * @return void
+ */
+function console_log($output, $with_script_tags = true) {
+    $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
+        ');';
+    if ($with_script_tags) {
+        $js_code = '<script>' . $js_code . '</script>';
+    }
+    echo $js_code;
+}
 
 function set_cookie($var, $value = '', $time = 0) {
     global $Lite;
@@ -68,4 +82,11 @@ function pagination($count, $pagenum=0){
     return $Lite->pagination($count, $pagenum);
 }
 
-
+if (!function_exists('array_key_first')) {
+    function array_key_first(array $arr) {
+        foreach($arr as $key => $unused) {
+            return $key;
+        }
+        return NULL;
+    }
+}

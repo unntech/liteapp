@@ -1,5 +1,10 @@
 {template 'header','admin'}
 {template 'navigation','admin'}
+<script>
+    $(document).ready(function (){
+
+    });
+</script>
 <div class="admin-content-wrapper">
     <div class="admin-content-heading">
         <b>控制台</b><BR>
@@ -23,10 +28,14 @@
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home">控制台</div>
             <div class="tab-pane fade" id="nav-profile">会员数据</div>
-            <div class="tab-pane fade" id="nav-custom">自定义</div>
+            <div class="tab-pane fade" id="nav-custom">自定义<BR><BR>
+                <a href="testconfirm.php" class="btn btn-success" data-toggle="adminConfirm" title="测试提示" data-msg="确认要这样吗？" id="testConfirmBtn">测试确认</a>
+            </div>
         </div>
-
     </div>
     </div>
 </div>
+
+
+
 {template 'footer','admin'}

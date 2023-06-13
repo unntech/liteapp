@@ -23,6 +23,9 @@ body{
 .main-sidebar::-webkit-scrollbar{
     width: 0 !important;
 }
+.main-sidebar-sm{
+    width: 58px !important;
+}
 
 .sidebar-menu-wrapper{
 
@@ -33,12 +36,15 @@ body{
     height: 50px;
     font-size: 20px;
     line-height: 50px;
-    text-align: center;
-    width: 230px;
+    width: auto;
     padding: 0 15px;
     font-weight: 300;
     overflow: hidden;
     color: #fff;
+}
+.main-sidebar .logo img{
+    width: 28px;
+    margin-top: -5px;
 }
 .sidebar-top-separate{
     clear:both;
@@ -85,8 +91,11 @@ body{
     top: 0;
     width: 100%;
 }
+.main-header-sm{
+    padding-left: 58px !important;
+}
 
-.main-header .navbar {
+.main-header .navtoolbar {
     background-color: #fff;
     color: #666;
     height: 50px;
@@ -94,15 +103,36 @@ body{
     box-shadow: 0 1px 4px rgba(0,21,41,0.08);
 }
 
-.main-header .navbar a {
+.main-header .navtoolbar-main{
+    max-width: calc(100% - 320px);
+    overflow: hidden;
+    float: left;
+    height: 50px;
+}
+.main-header .navtoolbar a {
     color: #666;
+    line-height: 50px;
+    padding: 0 15px;
+}
+.main-header .navtoolbar .presentation{
+    background: #f1f4f6;
+    text-decoration: none;
+    border-right: 1px solid #cce5ff;
+}
+.main-header .navtoolbar .presentation-active{
+    background: #cce5ff;
+    text-decoration: none;
+}
+.main-header .navtoolbar .presentation:hover{
+    background: #e8edf0;
 }
 
-.main-header .navbar .navbar-custom-menu {
+.main-header .navtoolbar .navbar-custom-menu {
     float: right;
+    min-width: 315px;
 }
 
-.main-header .navbar .navbar-custom-menu a {
+.main-header .navtoolbar .navbar-custom-menu a {
     padding-right: 20px;
 }
 
@@ -227,7 +257,7 @@ body{
     position: absolute;
     width: 150px;
     display: none;
-    z-index: 1024;
+    z-index: 1025;
     background: #fff;
     border: #ccc 1px solid;
     border-radius: 5px;
@@ -240,13 +270,19 @@ body{
     position: absolute;
     right: 0;
     left: auto;
-    width: 200px;
+    width: 250px;
     background: #fff;
     border: #ccc 1px solid;
-    padding: 15px 15px;
+    padding: 5px 5px;
     min-height: 500px;
     z-index: 1024;
     display: none;
+    border-radius: 5px;
+}
+.right-sidebar-item{
+    background: #f1f4f6;
+    padding: 10px 10px;
+    margin-bottom: 15px;
     border-radius: 5px;
 }
 

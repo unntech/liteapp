@@ -1,6 +1,8 @@
 <?php
 
 defined('IN_LitePhp') or exit('Access Denied');
+require DT_ROOT. '/app/admin/common.php';
+
 $liAdminToken = get_cookie('LiAdmin');
 if (empty($liAdminToken)) {
     LitePhp\LiHttp::redirect('index.php');
@@ -26,7 +28,8 @@ $curUserId = $auth->curUserId();
 
 $title = $appName . '-' . $auth->nodeName($activeMenu);
 $pageNum = config('admin.pageNum');
-$navigationConfig = config('admin.navigation');
+$navigationConfig = $curUser['params']['navigation'] ?? config('admin.navigation');
+
 if (\LitePhp\LiComm::is_mobile()) {
     $navigationConfig = 'top';
 }
@@ -60,11 +63,5 @@ if (!empty($postData)) {
     $isAjax = false;
 }
 
-
-//常用函数
-
-function auth_nodeHref($id): string
-{
-    global $auth;
-    return $auth->nodeHref($id);
-}
+$presentation = $auth->presentation($activeMenu);
+$navigatorSiderFlag = $_COOKIE['navigatorSiderFlag'] ?? 0;

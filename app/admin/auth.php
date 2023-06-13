@@ -101,6 +101,7 @@ class auth
                 'status'    => $user['status'],
                 'login_num' => $user['login_num'],
                 'admin'     => $user['admin'],
+                'params'    => empty($user['params']) ? [] : json_decode($user['params'], true),
             ];
 
             //获取菜单权限
@@ -255,5 +256,29 @@ class auth
             $ret[$r['id']] = $r['title'];
         }
         return $ret;
+    }
+
+    public function presentation($activeMenu){
+        $presentation = json_decode(get_cookie('presentation'), true);
+        if(empty($presentation)){
+            $presentation = [];
+        }
+        if($activeMenu > 0){
+            $presentation[$activeMenu] = [
+                'title'=>$this->nodeName($activeMenu),
+                'href'=>$_SERVER['REQUEST_URI'],
+                'hit'=> $this->DT_TIME,
+            ];
+        }
+        if(count($presentation) > 12){
+            foreach ($presentation as $k=>$v){
+                $_hit[$k] = $v['hit'];
+            }
+            asort($_hit);
+            $k = array_key_first($_hit);
+            unset($presentation[$k]);
+        }
+        set_cookie('presentation', json_encode($presentation));
+        return $presentation;
     }
 }

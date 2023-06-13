@@ -1,5 +1,15 @@
 {template 'header','admin'}
 {template 'navigation','admin'}
+<script>
+    $(document).ready(function() {
+
+    });
+
+    function formCheck(){
+
+        return true;
+    }
+</script>
 <div class="admin-content-wrapper">
     <div class="admin-content-heading">
         <b>绑定登入二次验动态码</b>
@@ -7,7 +17,7 @@
     </div>
     <div class="admin-content-body">
         <div class="container-fluid">
-            <form method="post">
+            <form method="post" onsubmit="return formCheck();">
                 <div class="form-group row">
                     <label for="colUserid" class="col-sm-2 col-form-label">用户ID</label>
                     <div class="col-sm-5">

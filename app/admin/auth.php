@@ -5,12 +5,15 @@ namespace LiteApp\admin;
 class auth
 {
     protected $DT_TIME, $DT_IP, $db;
+    protected $menuNodeCache = true;  //菜单权限列表是否缓存，生产环境建议开启
+    const NonceId = 'a1b651';
     public $tableAdmin = 'admin';
     public $loginSuccess = false, $user = ['id' => 0];
     public $menu = [], $node = [];
     const status = ['正常', '禁用', '锁定'];
     public $adminTag = ['标准用户', '超级管理员', '自定义'];
 
+    use \LiteApp\traits\crypt;
 
     public function __construct()
     {
@@ -86,13 +89,12 @@ class auth
 
     public function auth(): bool
     {
-        $liAdminToken = get_cookie('LiAdmin');
-        $liCrypt = new \LitePhp\LiCrypt(DT_KEY);
-        $verify = $liCrypt->verifyToken($liAdminToken);
+        $liAdminToken = get_cookie('LiAdmin'.self::NonceId);
+        $verify = $this->verifyToken($liAdminToken);
         if ($verify === false) {
             return false;
         } else {
-            $this->logined = true;
+            $this->loginSuccess = true;
             $user = $this->db->table($this->tableAdmin)->where(['id' => $verify['sub']])->selectOne();
             $this->user = [
                 'id'        => $user['id'],
@@ -100,66 +102,13 @@ class auth
                 'nickname'  => $user['nickname'],
                 'status'    => $user['status'],
                 'login_num' => $user['login_num'],
+                'auth_ids'  => $user['auth_ids'],
                 'admin'     => $user['admin'],
                 'params'    => empty($user['params']) ? [] : json_decode($user['params'], true),
             ];
 
-            //获取菜单权限
-            if ($user['admin'] == 1) {
-                $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1])->order('sort')->select(true);
-            } else {
-                $authIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
-                $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1, 'id' => ['IN', explode(',', $authIds)]])->order('sort')->select(true);
-            }
-            $node = [];
-            while ($r = $res->fetch_assoc()) {
-                if (empty($r['node'])) {
-                    $href = "javascript:treeviewopen({$r['id']});";
-                } else {
-                    if ($_rpos = strrpos($r['node'], '#')) {
-                        $action = substr($r['node'], $_rpos + 1);
-                        $_url = substr($r['node'], 0, $_rpos);
-                        $href = '/' . $_url . '.php?action=' . $action . '&';
-                    } elseif ($_rpos = strrpos($r['node'], '@')) {
-                        $href = "javascript:ajaxviewopen({$r['id']});";
-                    } else {
-                        $href = '/' . $r['node'] . '.php';
-                    }
-                }
-                //$href = empty($r['node']) ? "javascript:treeviewopen({$r['id']});" : '/'.$r['node'].'.php';
-                if ($r['pid'] == 0) {
-                    $node[$r['id']] = ['id' => $r['id'], 'node' => $r['node'], 'title' => $r['title'], 'sort' => $r['sort'], 'icon' => $r['icon'], 'href' => $href];
-                } else {
-                    $node[$r['pid']]['sub'][$r['id']] = ['id' => $r['id'], 'node' => $r['node'], 'title' => $r['title'], 'sort' => $r['sort'], 'icon' => $r['icon'], 'href' => $href];
-                }
-            }
-            $this->menu = $node;
-            //获取权限节点
-            if ($user['admin'] == 1) {
-                $res = $this->db->table($this->tableAdmin . '_node')->where(['status' => 1])->order('sort')->select(true);
-            } else {
-                $authIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
-                $res = $this->db->table($this->tableAdmin . '_node')->where(['status' => 1, 'id' => ['IN', explode(',', $authIds)]])->order('sort')->select(true);
-            }
-            $node = [];
-            while ($r = $res->fetch_assoc()) {
-                if (empty($r['node'])) {
-                    $href = "javascript:void(0);";
-                } else {
-                    if ($_rpos = strrpos($r['node'], '#')) {
-                        $action = substr($r['node'], $_rpos + 1);
-                        $_url = substr($r['node'], 0, $_rpos);
-                        $href = '/' . $_url . '.php?action=' . $action . '&';
-                    } elseif ($_rpos = strrpos($r['node'], '@')) {
-                        $href = "javascript:void(0);";
-                    } else {
-                        $href = '/' . $r['node'] . '.php';
-                    }
-                }
-                //$href = empty($r['node']) ? "javascript:void(0);" : '/'.$r['node'].'.php';
-                $node[$r['id']] = ['id' => $r['id'], 'node' => $r['node'], 'title' => $r['title'], 'sort' => $r['sort'], 'icon' => $r['icon'], 'pid' => $r['pid'], 'href' => $href];
-            }
-            $this->node = $node;
+            $this->updateMenuNode();
+
             return true;
         }
 
@@ -186,24 +135,124 @@ class auth
             }
         }
 
+        $this->loginSuccess = true;
+        $this->user = [
+            'id'        => $user['id'],
+            'username'  => $user['username'],
+            'nickname'  => $user['nickname'],
+            'status'    => $user['status'],
+            'login_num' => $user['login_num'],
+            'auth_ids'  => $user['auth_ids'],
+            'admin'     => $user['admin'],
+            'params'    => empty($user['params']) ? [] : json_decode($user['params'], true),
+        ];
+
         //登入成功，写入登入日志
         $this->db->query("UPDATE {$this->tableAdmin} SET login_num = login_num + 1 WHERE id = {$user['id']}");
         $content = json_encode(['username' => $username, 'authenticator' => $authenticator]);
-        $this->adminLog(
-            [
-                'admin_id' => $user['id'],
-                'nickname' => $user['nickname'],
-                'url'      => $_SERVER['REQUEST_URI'],
-                'title'    => '登入成功',
-                'content'  => $content,
-            ]
-        );
+        $this->aLog('登入成功', $content);
 
-        $liCrypt = new \LitePhp\LiCrypt(DT_KEY);
+        $this->updateMenuNode(true);
+
         $jwt = ['sub' => $user['id'], 'exp' => $this->DT_TIME + 86400];
-        $token = $liCrypt->getToken($jwt);
-        set_cookie('LiAdmin', $token);
+        $token = $this->getToken($jwt);
+        set_cookie('LiAdmin'.self::NonceId, $token);
         return (object)['errcode' => 0, 'msg' => '登入成功！'];
+    }
+
+    /**
+     * 获取用户的菜单和节点权限，生产环境建议缓存起来，不用每次读库
+     * @param $tag 为true时强制更新
+     * @return void
+     */
+    protected function updateMenuNode($tag = false)
+    {
+        if($this->menuNodeCache){
+            global $Lite;
+            $Lite->set_redis();
+        }
+        $user = $this->user;
+        if(!$tag && $this->menuNodeCache){  //不强制更新先偿试读缓存
+            $_g = true;
+            $_c = \LitePhp\Redis::get('adminMenu'.self::NonceId.'_'.$user['id']);
+            if(!empty($_c)){
+                $this->menu = json_decode($_c, true);
+            }else{
+                $_g = false;
+            }
+            $_c = \LitePhp\Redis::get('adminNode'.self::NonceId.'_'.$user['id']);
+            if(!empty($_c)){
+                $this->node = json_decode($_c, true);
+            }else{
+                $_g = false;
+            }
+            if($_g){
+                return;
+            }
+        }
+
+        //获取菜单权限
+        if ($user['admin'] == 1) {
+            $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1])->order('sort')->select(true);
+        } else {
+            $authIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
+            $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1, 'id' => ['IN', explode(',', $authIds)]])->order('sort')->select(true);
+        }
+        $node = [];
+        while ($r = $res->fetch_assoc()) {
+            if (empty($r['node'])) {
+                $href = "javascript:treeviewopen({$r['id']});";
+            } else {
+                if ($_rpos = strrpos($r['node'], '#')) {
+                    $action = substr($r['node'], $_rpos + 1);
+                    $_url = substr($r['node'], 0, $_rpos);
+                    $href = '/' . $_url . '.php?action=' . $action . '&';
+                } elseif ($_rpos = strrpos($r['node'], '@')) {
+                    $href = "javascript:ajaxviewopen({$r['id']});";
+                } else {
+                    $href = '/' . $r['node'] . '.php';
+                }
+            }
+            //$href = empty($r['node']) ? "javascript:treeviewopen({$r['id']});" : '/'.$r['node'].'.php';
+            if ($r['pid'] == 0) {
+                $node[$r['id']] = ['id' => $r['id'], 'node' => $r['node'], 'title' => $r['title'], 'sort' => $r['sort'], 'icon' => $r['icon'], 'href' => $href];
+            } else {
+                $node[$r['pid']]['sub'][$r['id']] = ['id' => $r['id'], 'node' => $r['node'], 'title' => $r['title'], 'sort' => $r['sort'], 'icon' => $r['icon'], 'href' => $href];
+            }
+        }
+        $this->menu = $node;
+
+        //获取权限节点
+        if ($user['admin'] == 1) {
+            $res = $this->db->table($this->tableAdmin . '_node')->where(['status' => 1])->order('sort')->select(true);
+        } else {
+            $authIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
+            $res = $this->db->table($this->tableAdmin . '_node')->where(['status' => 1, 'id' => ['IN', explode(',', $authIds)]])->order('sort')->select(true);
+        }
+        $node = [];
+        while ($r = $res->fetch_assoc()) {
+            if (empty($r['node'])) {
+                $href = "javascript:void(0);";
+            } else {
+                if ($_rpos = strrpos($r['node'], '#')) {
+                    $action = substr($r['node'], $_rpos + 1);
+                    $_url = substr($r['node'], 0, $_rpos);
+                    $href = '/' . $_url . '.php?action=' . $action . '&';
+                } elseif ($_rpos = strrpos($r['node'], '@')) {
+                    $href = "javascript:void(0);";
+                } else {
+                    $href = '/' . $r['node'] . '.php';
+                }
+            }
+            //$href = empty($r['node']) ? "javascript:void(0);" : '/'.$r['node'].'.php';
+            $node[$r['id']] = ['id' => $r['id'], 'node' => $r['node'], 'title' => $r['title'], 'sort' => $r['sort'], 'icon' => $r['icon'], 'pid' => $r['pid'], 'href' => $href];
+        }
+        $this->node = $node;
+
+        if($this->menuNodeCache){
+            \LitePhp\Redis::set('adminMenu'.self::NonceId.'_'.$user['id'], json_encode($this->menu), 7200);
+            \LitePhp\Redis::set('adminNode'.self::NonceId.'_'.$user['id'], json_encode($this->node), 7200);
+        }
     }
 
     public function password(string $value, $salt = ''): string
@@ -264,7 +313,7 @@ class auth
     }
 
     public function presentation($activeMenu){
-        $presentation = json_decode(get_cookie('presentation'), true);
+        $presentation = json_decode(get_cookie('presentation'.$this->user['id']), true);
         if(empty($presentation)){
             $presentation = [];
         }
@@ -283,7 +332,7 @@ class auth
             $k = array_key_first($_hit);
             unset($presentation[$k]);
         }
-        set_cookie('presentation', json_encode($presentation));
+        set_cookie('presentation'.$this->user['id'], json_encode($presentation));
         return $presentation;
     }
 }

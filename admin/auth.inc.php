@@ -3,7 +3,8 @@
 defined('IN_LitePhp') or exit('Access Denied');
 require DT_ROOT. '/app/admin/common.php';
 
-$liAdminToken = get_cookie('LiAdmin');
+
+$liAdminToken = get_cookie('LiAdmin'.LiteApp\admin\auth::NonceId);
 if (empty($liAdminToken)) {
     LitePhp\LiHttp::redirect('index.php');
 }

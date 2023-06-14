@@ -10,6 +10,22 @@
     .card-title{margin-bottom: 30px; font-size: 1.5rem; text-align: right;}
 
 </style>
+<script>
+    $(document).ready(function (){
+        $("#loginBtn").click(function (){
+            if($("#rememberCheck").prop("checked")){
+                window.localStorage.setItem('username', $("#username").val());
+            }
+        })
+
+        let username = window.localStorage.getItem('username');
+        if(username !== null){
+            $("#username").val(username);
+            $("#rememberCheck").prop("checked", true);
+        }
+    });
+
+</script>
 
 <div class="hero d-none d-sm-block">
     <div class="wrapper"><div class="f_l"><img src="{DT_STATIC}/lite-bg.png" width="240" alt="UENEN" /></div>
@@ -49,12 +65,12 @@
 
             <div class="form-group">
                 <label>
-                    <input type="checkbox" name="remember"> Remember Me
+                    <input type="checkbox" name="remember" id="rememberCheck"> Remember Me
                 </label>
             </div>
 
             <div class="form-group no-margin">
-                <button type="submit" name="login" class="btn btn-primary btn-block">Login</button>
+                <button type="submit" name="login" class="btn btn-primary btn-block" id="loginBtn">Login</button>
             </div>
             <div class="margin-top20 text-center">
                 Don't have an account?

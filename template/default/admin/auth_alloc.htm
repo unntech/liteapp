@@ -48,7 +48,7 @@
                     <td><input class="form-check-input" type="checkbox" name="rulesCheck[]" value="{$v[id]}" id="allocCheck{$v[id]}" {if $v[check]} checked {/if} ></td>
                     <td align="left">{$v[title]}</td>
                     <td align="left">{$v[node]}</td>
-                    <td>{$v[icon]}</td>
+                    <td>{if !empty($v['icon'])}<i class="{$v[icon]}" title="{$v[icon]}"></i>{/if}</td>
                     <td>{$menuNode[$v[is_menu]]}</td>
                 </tr>
                 {/loop}

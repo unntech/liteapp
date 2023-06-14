@@ -1,5 +1,106 @@
 {template 'header','admin'}
 {template 'navigation','admin'}
+<script>
+    $(document).ready(function() {
+
+        $('#editNodeItem').on('show.bs.modal', function (event) {
+            //console.log(event);
+            $("#editNodeItemLabel").html(event.relatedTarget.attributes.title.value);
+            $("#colNode").val(event.relatedTarget.dataset.node);
+            $("#colAction").val(event.relatedTarget.dataset.action);
+            $("#colNodeId").val(event.relatedTarget.dataset.rowid);
+
+            if(event.relatedTarget.dataset.action == 'EDIT') {
+                let d = {
+                    "node": event.relatedTarget.dataset.node,
+                    "rowid": event.relatedTarget.dataset.rowid,
+                    "action": "QUERY"
+                };
+                adminComm.post('menu.php', d, function (dataBody, status) {
+                    if (status == 'success') {
+                        let ret = JSON.parse(dataBody);
+                        //console.log(ret);
+                        if(ret.errcode == 0) {
+                            let data = ret.data;
+                            $("#colNodePid").val(data.pid);
+                            $("#colNodeName").val(data.node);
+                            $("#colNodeTitle").val(data.title);
+                            $("#customnodetatus" + data.status).prop('checked', true);
+                            $("#colNodeIcon").val(data.icon);
+                            if(data.icon == ''){
+                                $("#colNodeIcon-i").html('<i class="bi bi-list"></i>');
+                            }else{
+                                $("#colNodeIcon-i").html('<i class="'+ data.icon +'"></i>');
+                            }
+                            //$("#nodeClsInline" + data.is_menu).prop('checked', true);
+                            $("#colNodeSort").val(data.sort);
+                        }else{
+                            toastr.warning(ret.errcode + ": "+ret.msg);
+                        }
+                    }
+                });
+            }
+        })
+
+        $('#editNodeItem').on('hidden.bs.modal', function (event) {
+
+            $("#colNodeName").val('').removeClass('is-invalid').removeClass('is-valid');
+            $("#colNodeTitle").val('').removeClass('is-invalid').removeClass('is-valid');
+            $("#colNodeIcon-i").html('<i class="bi bi-list"></i>');
+            $("#editNodeItem form")[0].reset();
+        });
+
+        $('#adminNodeSave').click(function (){
+            //验证数据合法
+            if(checkFormFields() == false){
+                return false;
+            }
+
+            let d = {
+                "node": $("#colNode").val(),
+                "rowid": $("#colNodeId").val(),
+                "pid": $("#colNodePid").val(),
+                "nodename": $("#colNodeName").val(),
+                "title": $("#colNodeTitle").val(),
+                "status": $("#editNodeItem input[name='nodestatus']:checked").val(),
+                "icon": $("#colNodeIcon").val(),
+                //"is_menu": $("#editNodeItem input[name='nodecls']:checked").val(),
+                "sort": $("#colNodeSort").val(),
+                "action": $("#colAction").val()
+            };
+            adminComm.post('menu.php', d, function (dataBody, status) {
+                if (status == 'success') {
+                    let ret = JSON.parse(dataBody);
+                    //console.log(dataBody);
+                    if(ret.errcode == 0) {
+                        toastr.success("保存成功！");
+                        $('#editNodeItem').modal('hide');
+                    }else{
+                        toastr.warning(ret.errcode + ": "+ret.msg);
+                    }
+                }
+            });
+
+        });
+
+        $("#colNodeIcon").change(function (){
+            $("#colNodeIcon-i").html('<i class="'+ $("#colNodeIcon").val() +'"></i>');
+        });
+
+        function checkFormFields(){
+            let formCheck = true;
+            if($("#colNodeTitle").val().length<2){
+                $("#colNodeTitle").removeClass('is-valid');
+                $("#colNodeTitle").addClass('is-invalid');
+                formCheck = false;
+            }else{
+                $("#colNodeTitle").removeClass('is-invalid');
+                $("#colNodeTitle").addClass('is-valid');
+            }
+            return formCheck
+        }
+    });
+</script>
 <div class="admin-content-wrapper">
     <div class="admin-content-heading">
         <b>菜单管理</b>
@@ -7,6 +108,9 @@
     </div>
     <div class="admin-content-body">
         <div class="container-fluid">
+            <div class="admin-content-toolbar">
+                <a href="?{$_SERVER['QUERY_STRING']}" class="btn btn-secondary"><i class="bi bi-arrow-repeat"></i></a>
+            </div>
             <table class="table table-bordered table-striped text-center">
                 <thead>
                 <tr>
@@ -27,17 +131,112 @@
                     <td align="left">{$v[node]}</td>
                     <td align="left">{$v[title]}</td>
                     <td><div class='admin-switch-wrap'>
-                        <input type='checkbox' {if $v[status] == 1} checked {/if} id= 'switch-{$k}'>
+                        <input type='checkbox' id= 'switch-{$k}' {if $v[status] == 1} checked {/if}>
                         <label for='switch-{$k}'></label>
                     </div></td>
-                    <td>{$v[icon]}</td>
+                    <td>{if !empty($v['icon'])}<i class="{$v[icon]}" title="{$v[icon]}"></i>{/if}</td>
                     <td>
-                        {if $auth->authNode(17)}<button type="button" class="btn btn-primary btn-ssm">编辑</button>{/if}
+                        {if $auth->authNode(17)}<button type="button" class="btn btn-primary btn-ssm" data-toggle="modal" data-target="#editNodeItem" title="编辑菜单" data-node="17" data-action ="EDIT" data-rowid="{$v[id]}">编辑</button>{/if}
                     </td>
                 </tr>
                 {/loop}
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="editNodeItem" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="editNodeItemLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editNodeItemLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div class="form-group row">
+                        <label for="colNodeId" class="col-sm-2 col-form-label">节点ID</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="nodeid" readonly id="colNodeId" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colNodePid" class="col-sm-2 col-form-label">上级</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="colNodePid">
+                                <option value="0">顶层菜单</option>
+                                {loop $topMenu $k $v}
+                                <option value="{$v[id]}">{$v[title]}</option>
+                                {/loop}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colNodeName" class="col-sm-2 col-form-label">菜单代码</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="nodename" required id="colNodeName" maxlength="100" value="" placeholder="admin/node">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colNodeTitle" class="col-sm-2 col-form-label">菜单标题</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="nodetitle" required id="colNodeTitle" maxlength="32" value="" placeholder="菜单标题">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">状态</label>
+                        <div class="col-sm-10 pt-2">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="customnodetatus0" name="nodestatus" value="0" class="custom-control-input">
+                                <label class="custom-control-label" for="customnodetatus0">禁用</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="customnodetatus1" name="nodestatus" checked value="1" class="custom-control-input">
+                                <label class="custom-control-label" for="customnodetatus1">正常</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colNodeIcon" class="col-sm-2 col-form-label">图标</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="colNodeIcon-i"><i class="bi bi-list"></i></span>
+                                </div>
+                                <input type="text" class="form-control" name="nodeicon" required id="colNodeIcon" maxlength="100" value="" placeholder="bi bi-list">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon2"><a href="icons.php" target="_blank">浏览图标</a></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">类型</label>
+                        <div class="col-sm-10 pt-2">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="nodeClsInline1" name="nodecls" value="1" checked class="custom-control-input">
+                                <label class="custom-control-label" for="nodeClsInline1">菜单</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colNodeSort" class="col-sm-2 col-form-label">排序</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="nodesort" required id="colNodeSort" pattern="\d" value="0" placeholder="0">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="node" id="colNode" value="0">
+                <input type="hidden" name="action" id="colAction" value="ADD">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="adminNodeSave">确认保存</button>
+            </div>
         </div>
     </div>
 </div>

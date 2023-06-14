@@ -258,6 +258,11 @@ class auth
         return $ret;
     }
 
+    public function getAdminNode($id)
+    {
+        return $this->db->table($this->tableAdmin. '_node')->where(['id'=>$id])->selectOne();
+    }
+
     public function presentation($activeMenu){
         $presentation = json_decode(get_cookie('presentation'), true);
         if(empty($presentation)){

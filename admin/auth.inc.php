@@ -54,6 +54,9 @@ if (!empty($postData)) {
         \LiteApp\admin\response::error(4, '非当前登入用户！');
     }
     if (isset($postData['node'])) {
+        if(!is_numeric($postData['node'])){
+            \LiteApp\admin\response::error(1, '无效权限，无法操作！', $postData);
+        }
         if (!$auth->authNode($postData['node'])) {
             \LiteApp\admin\response::error(1, '无此权限，无法操作！');
         }

@@ -2,7 +2,7 @@
 
 require '../autoload.php';
 
-$title = 'LiteApp Admin';
+$title = $Lite->appName.'后台管理';
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $ref = isset($_GET['ref']) ? $_GET['ref'] : 'main.php';
 

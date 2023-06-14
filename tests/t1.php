@@ -11,9 +11,13 @@ echo $Lite->db->table('admin_log')->alias('a')->where(['addtime'=>4])->where($wh
 var_dump($Lite->db->getOptions(), DT_ROOT);
 
 $excel = new \LiteApp\admin\XlsWriter('.');
-$a = $excel->reader('../runtime/export/202306/12/excel_20230612220912.xlsx');
-var_dump($a);
-
+$a = $excel->reader('../runtime/export/202306/12/1.xlsx');
+/*
+foreach ($a as $k=>$v){
+    $s = 'bi bi-' . substr($v[0],0, -4);
+    $Lite->db->table('icons')->insert(['name'=>$s]);
+}
+*/
 \LitePhp\Template::message('这是一个提示示例', '错误提示');
 
 

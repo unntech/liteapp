@@ -26,13 +26,13 @@
     <ul class="sidebar-menu">
         {loop $auth->menu $k $v}
         <li {if $k == $activeMenu} class="active" {/if}>
-            <a href="{$v[href]}"><i class="bi bi-list-ul"></i><span class="menu-text {if $navigatorSiderFlag}d_none{/if}"> {$v[title]}</span></a>
+            <a href="{$v[href]}"><i class="{if empty($v['icon'])}bi bi-list-ul{else}{$v[icon]}{/if}"></i><span class="menu-text {if $navigatorSiderFlag}d_none{/if}"> {$v[title]}</span></a>
         </li>
         {if isset($v['sub'])}
         <ul class="sidebar-menu sidebar-menu-sub" id="sidebar-submenu-{$k}" {if !empty($v['menuShow'])} style="display:block" {/if}>
         {loop $v['sub'] $subk $subv}
         <li {if $subk == $activeMenu} class="active" {/if}>
-            <a href="{$subv[href]}"><i class="bi bi-list"></i><span class="menu-text {if $navigatorSiderFlag}d_none{/if}"> {$subv[title]}</span></a>
+            <a href="{$subv[href]}"><i class="{if empty($subv['icon'])}bi bi-list{else}{$subv[icon]}{/if}"></i><span class="menu-text {if $navigatorSiderFlag}d_none{/if}"> {$subv[title]}</span></a>
         </li>
         {/loop}
         </ul>
@@ -60,7 +60,7 @@
                 {loop $auth->menu $k $v}
                 {if isset($v['sub'])}
                 <li  class="nav-item dropdown" >
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">{$v[title]}</a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">{if !empty($v['icon'])}<i class="{$v[icon]}"></i> {/if}{$v[title]}</a>
                     <div class="dropdown-menu">
                         {loop $v['sub'] $subk $subv}
                         <a class="dropdown-item" href="{$subv[href]}">{$subv[title]}</a>
@@ -69,7 +69,7 @@
                 </li>
                 {else}
                 <li  class="nav-item {if $k == $activeMenu}active{/if}" >
-                    <a class="nav-link" href="{$v[href]}">{$v[title]}</a>
+                    <a class="nav-link" href="{$v[href]}">{if !empty($v['icon'])}<i class="{$v[icon]}"></i> {/if}{$v[title]}</a>
                 </li>
                 {/if}
                 {/loop}

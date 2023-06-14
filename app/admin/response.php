@@ -26,12 +26,12 @@ class response
         self::response($ret);
     }
 
-    public static function error($errcode = 0, $msg = 'success')
+    public static function error($errcode = 0, $msg = 'success', $data = ['sign'=>''])
     {
         $ret = [
             'errcode' => $errcode,
             'msg'     => $msg,
-            'data'    => (object)[],
+            'data'    => $data,
         ];
         self::response($ret);
     }

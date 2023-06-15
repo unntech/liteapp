@@ -5,8 +5,8 @@ namespace LiteApp\admin;
 class auth
 {
     protected $DT_TIME, $DT_IP, $db;
-    protected $menuNodeCache = true;  //菜单权限列表是否缓存，生产环境建议开启
-    const NonceId = 'a1b651';
+    protected $menuNodeCache = false;  //菜单权限列表是否缓存，生产环境建议开启
+    const NonceId = '';
     public $tableAdmin = 'admin';
     public $loginSuccess = false, $user = ['id' => 0];
     public $menu = [], $node = [];

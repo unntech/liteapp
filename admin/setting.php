@@ -5,7 +5,7 @@ $activeMenu = 4;
 require 'auth.inc.php';
 
 if(isset($_POST['saveBtn'])){
-    echo 'post';
+    //do something
 }
 
 $CSS = ['admin'];

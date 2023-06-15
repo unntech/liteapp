@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary" name="toolbarSearch">查询</button>
-                                <button type="submit" class="btn btn-info" name="toolbarExport">导出</button>
+                                {if $auth->authNode(22)}<button type="submit" class="btn btn-info" name="toolbarExport">导出</button>{/if}
                             </div>
                         </div>
                     </form>

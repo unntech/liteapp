@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主机： 10.100.112.6
--- 生成日期： 2023-06-14 19:32:02
+-- 生成日期： 2023-06-15 19:22:22
 -- 服务器版本： 5.7.39-log
 -- PHP 版本： 7.4.30
 
@@ -45,8 +45,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `username`, `nickname`, `psw`, `login_num`, `status`, `authenticator`, `auth_ids`, `admin`, `params`) VALUES
-(1, 'ADMIN', 'Admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', 51, 0, '', '', 1, '{\"navigation\": \"sider\"}'),
-(2, 'USER', 'User', '7c4a8d09ca3762af61e59520943dc26494f8941b', 8, 0, '', '1', 0, NULL),
+(1, 'ADMIN', 'Admin', '7c4a8d09ca3762af61e59520943dc26494f8941b', 69, 0, '', '', 1, '{\"navigation\": \"sider\"}'),
+(2, 'USER', 'User', '7c4a8d09ca3762af61e59520943dc26494f8941b', 18, 0, '', '1,2', 0, NULL),
 (3, 'ABC', 'DDDD', 'da39a3ee5e6b4b0d3255bfef95601890afd80709', 0, -1, '', '', 0, NULL);
 
 -- --------------------------------------------------------
@@ -131,7 +131,9 @@ INSERT INTO `admin_node` (`id`, `pid`, `node`, `title`, `status`, `is_menu`, `pa
 (17, 3, 'admin/menu', '编辑', 1, 0, NULL, '', '', 0),
 (18, 6, 'admin/admin#authentic', '解绑动态码', 1, 0, NULL, '', '', 0),
 (19, 8, 'admin/node', '添加', 1, 0, NULL, '', '', 0),
-(20, 0, '', '测试D', -1, 1, NULL, '', '', 0);
+(20, 0, 'admin/test', '测试D', -1, 0, NULL, '', '', 0),
+(21, 1, 'admin/main#report', '数据报表', 1, 0, NULL, '', '', 0),
+(22, 7, 'admin/adminlog#export', '导出', 1, 0, NULL, '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -2191,7 +2193,7 @@ ALTER TABLE `admin_log`
 -- 使用表AUTO_INCREMENT `admin_node`
 --
 ALTER TABLE `admin_node`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- 使用表AUTO_INCREMENT `alog`

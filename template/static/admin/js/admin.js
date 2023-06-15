@@ -103,6 +103,14 @@ $(document).ready(function() {
         adminPopWraFullsreen();
     });
 
+    $("#presentation-top-bar-close").click(function (){
+       $("#presentation-top-bar").slideUp();
+    });
+
+    $("#navtop-appname").hover(function (){
+        $("#presentation-top-bar").slideDown();
+    })
+
 });
 
 $(function () {

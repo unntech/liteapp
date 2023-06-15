@@ -317,7 +317,7 @@ class auth
         if(empty($presentation)){
             $presentation = [];
         }
-        if($activeMenu > 0){
+        if($activeMenu > 0 && !isset($_GET['toolbarExport'])){
             $presentation[$activeMenu] = [
                 'title'=>$this->nodeName($activeMenu),
                 'href'=>$_SERVER['REQUEST_URI'],

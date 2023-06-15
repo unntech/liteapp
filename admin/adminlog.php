@@ -25,7 +25,7 @@ if(!empty($qUserId)){
 $pageTotal = $Lite->db->table($auth->tableAdmin.'_log')->where($where)->count();
 $list = $Lite->db->table($auth->tableAdmin.'_log')->where($where)->order('id desc')->limit([$pageStart, $pageNum])->select()->toArray();
 
-if(isset($_GET['toolbarExport'])){ //导出
+if(isset($_GET['toolbarExport']) && $auth->authNode(22)){ //导出
     $res = $Lite->db->table($auth->tableAdmin.'_log')->where($where)->order('id desc')->select(true);
     $list = [];
     while ($r = $res->fetch_assoc()){

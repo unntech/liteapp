@@ -127,6 +127,30 @@ body{
     background: #e8edf0;
 }
 
+.presentation-bar{
+    height: 35px;
+    display: none;
+    border-bottom: 1px solid transparent;
+    box-shadow: 0 1px 4px rgba(0,21,41,0.08);
+}
+.presentation-bar a{
+    color: #666;
+    line-height: 35px;
+    text-decoration: none;
+    padding: 0 15px;
+}
+.presentation-bar .presentation{
+    background: #f1f4f6;
+    border-right: 1px solid #cce5ff;
+}
+.presentation-bar .presentation-active{
+    background: #cce5ff;
+}
+.presentation-bar .presentation:hover{
+    background: #e2e3e5;
+}
+
+
 .main-header .navtoolbar .navbar-custom-menu {
     float: right;
     padding-right: 5px;

@@ -17,35 +17,35 @@
     </div>
     <div class="admin-content-body">
         <div class="container-fluid">
-            <form method="post" onsubmit="return formCheck();">
+            <form method="post" onsubmit="return formCheck();" class="max-md">
                 <div class="form-group row">
                     <label for="colUserid" class="col-sm-2 col-form-label">用户ID</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-10">
                         <input type="text" class="form-control" name="userid" readonly id="colUserid" value="{$profile[id]}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="colUsername" class="col-sm-2 col-form-label">用户名</label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" name="username" readonly id="colUsername" value="{$profile[username]}">
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="username" autocomplete="false" readonly id="colUsername" value="{$profile[username]}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">动态码绑定</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-10">
                         <img src="{$qrCodeUrl}">
                         <small id="qrCodeUrllHelp" class="form-text text-muted">第一步：打开手机APP：Authenticator，点+号扫描以上二维码。（首次使用请先下载AuthenticatorAPP）</small>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="colNewPassword" class="col-sm-2 col-form-label">动态码</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-10">
                         <input type="text" class="form-control" name="newcode" required id="colNewPassword" maxlength="32" value="" placeholder="输入动态码">
                         <small id="newcodeHelp" class="form-text text-muted">第二步：输入手机Authenticator应用上显示的动态码</small>
                         <small id="newsaveHelp" class="form-text text-muted">第三步：点击确认绑定按钮，看到提示绑定成功即可，如有其它错误，按提示操作</small>
                     </div>
                 </div>
-                <div class="text-center col-sm-7">
+                <div class="text-center col mt-5">
                     <input type="hidden" name="secret" value="{$secret}">
                     <button type="submit" class="btn btn-primary" name="save">确认绑定</button>
 

@@ -52,34 +52,31 @@ function console_log($output, $with_script_tags = true) {
 }
 
 function set_cookie($var, $value = '', $time = 0) {
-    global $Lite;
-    return $Lite->setCookie($var, $value, $time);
+    return \LiteApp\app::$Lite->setCookie($var, $value, $time);
 }
 
 function get_cookie($var) {
-    global $Lite;
-    return $Lite->getCookie($var);
+    return \LiteApp\app::$Lite->getCookie($var);
 }
 
 function config(string $name = null, $default = null){
-    global $Lite;
+    $config = \LiteApp\app::$Lite->config;
     if (false !== strpos($name, '.')) {
         $v = explode('.',$name);
         $key = $v[0];
     }else{
         $key = $name;
     }
-    if(!$Lite->config->exists($key)){
-        $Lite->config->load($key);
+    if(!$config->exists($key)){
+        $config->load($key);
     } 
-    $r = $Lite->config->get($name, $default);
+    $r = $config->get($name, $default);
     
     return $r;
 }
 
 function pagination($count, $pagenum=0){
-    global $Lite;
-    return $Lite->pagination($count, $pagenum);
+    return \LiteApp\app::$Lite->pagination($count, $pagenum);
 }
 
 if (!function_exists('array_key_first')) {

@@ -3,7 +3,7 @@ namespace LiteApp;
 
 defined('IN_LitePhp') or exit('Access Denied');
 /**
- * LiteApi 基础类
+ * LiteApp 基础类
  */
 class LiteApp
 {

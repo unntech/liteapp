@@ -90,6 +90,7 @@ body{
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 1020;
 }
 .main-header-sm{
     padding-left: 58px !important;
@@ -278,7 +279,7 @@ body{
 .userinfomenu{
     right: 10px;
     left: auto;
-    position: absolute;
+    position: fixed;
     width: 150px;
     display: none;
     z-index: 1025;
@@ -291,7 +292,7 @@ body{
 }
 
 .right-sidebar-box{
-    position: absolute;
+    position: fixed;
     right: 0;
     left: auto;
     width: 250px;
@@ -302,6 +303,7 @@ body{
     z-index: 1024;
     display: none;
     border-radius: 5px;
+    margin-top: 5px;
 }
 .right-sidebar-item{
     background: #f1f4f6;

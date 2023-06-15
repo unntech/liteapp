@@ -42,7 +42,7 @@ class XlsWriter
      * @param string|null $sheet
      * @return $this
      */
-    public function addSheet(string $sheet = null)
+    public function addSheet(string $sheet = null): self
     {
         $this->fileObj->addSheet($sheet);
         return $this;
@@ -53,7 +53,7 @@ class XlsWriter
      * @param string $sheet
      * @return $this
      */
-    public function checkoutSheet(string $sheet)
+    public function checkoutSheet(string $sheet): self
     {
         $this->fileObj->checkoutSheet($sheet);
         return $this;
@@ -64,7 +64,7 @@ class XlsWriter
      * @param string $sheetName
      * @return bool
      */
-    public function existSheet(string $sheetName)
+    public function existSheet(string $sheetName): bool
     {
         return $this->fileObj->existSheet($sheetName);
     }
@@ -74,7 +74,7 @@ class XlsWriter
      * @param array $header
      * @return $this
      */
-    public function header(array $header)
+    public function header(array $header): self
     {
         if(empty($this->fileObj)){
             $this->fileName();
@@ -89,7 +89,7 @@ class XlsWriter
      * @param string $string 单元格数据
      * @return $this
      */
-    public function mergeCells(string $scope, string $string)
+    public function mergeCells(string $scope, string $string): self
     {
         $this->fileObj->mergeCells($scope, $string);
         return $this;
@@ -100,7 +100,7 @@ class XlsWriter
      * @param array $data
      * @return $this
      */
-    public function data(array $data)
+    public function data(array $data): self
     {
         if(empty($this->fileObj)){
             $this->fileName();
@@ -114,7 +114,7 @@ class XlsWriter
      * @param int $i 行号从0开始递增，0表示第一行，1表示第二行，2表示第三行
      * @return $this
      */
-    public function setCurrentLine(int $i)
+    public function setCurrentLine(int $i): self
     {
         $this->fileObj->setCurrentLine($i);
         return $this;
@@ -237,7 +237,8 @@ class XlsWriter
      * 关闭当前资源
      * @return void
      */
-    public function close(){
+    public function close()
+    {
         $this->xlsObj->close();
     }
 

@@ -2,10 +2,11 @@
 
 namespace LiteApp\admin;
 
-class auth
+use LiteApp\app;
+
+class auth extends app
 {
-    protected $DT_TIME, $DT_IP, $db;
-    protected $menuNodeCache = false;  //菜单权限列表是否缓存，生产环境建议开启
+    protected $menuNodeCache = true;  //菜单权限列表是否缓存，生产环境建议开启
     const NonceId = '';
     public $tableAdmin = 'admin';
     public $loginSuccess = false, $user = ['id' => 0];
@@ -17,10 +18,7 @@ class auth
 
     public function __construct()
     {
-        global $DT_TIME, $DT_IP, $Lite;
-        $this->DT_TIME = $DT_TIME;
-        $this->DT_IP = $DT_IP;
-        $this->db = $Lite->db;
+        parent::__construct();
     }
 
     public function __destruct()
@@ -28,26 +26,46 @@ class auth
 
     }
 
+    /**
+     * 是否登入状态
+     * @return bool
+     */
     public function isLogin(): bool
     {
         return $this->loginSuccess;
     }
 
+    /**
+     * 当前登入用户信息
+     * @return int[]
+     */
     public function curUser(): array
     {
         return $this->user;
     }
 
+    /**
+     * 当前登入用户ID
+     * @return int
+     */
     public function curUserId(): int
     {
         return $this->user['id'];
     }
 
+    /**
+     * 获取菜单列表
+     * @return array
+     */
     public function getMenu(): array
     {
         return $this->menu;
     }
 
+    /**
+     * 获取权限节点列表
+     * @return array
+     */
     public function getNode(): array
     {
         return $this->node;
@@ -56,16 +74,26 @@ class auth
     /**
      * 验证节权权限
      * @param int $authId
+     * @param bool $tag 为true时，如果验证无权则直接退出
      * @return bool
      */
-    public function authNode(int $authId): bool
+    public function authNode(int $authId, bool $tag = false): bool
     {
         if ($authId == 0) {
             return true;
         }
-        return array_key_exists($authId, $this->node);
+        $auth =  array_key_exists($authId, $this->node);
+        if($tag && $auth == false){
+            $this->message('对不起，您无权限进行此操作！', '错误提示');
+        }
+        return $auth;
     }
 
+    /**
+     * 设置激活菜单项
+     * @param $id
+     * @return void
+     */
     public function activeMenu($id)
     {
         if (isset($this->node[$id]) && $this->node[$id]['pid'] > 0) {
@@ -74,6 +102,11 @@ class auth
 
     }
 
+    /**
+     * 获取节点名
+     * @param $id
+     * @return string
+     */
     public function nodeName($id): string
     {
         if ($id == 0) {
@@ -82,11 +115,20 @@ class auth
         return $this->node[$id]['title'] ?? '';
     }
 
+    /**
+     * 获取节点链接
+     * @param $authId
+     * @return string
+     */
     public function nodeHref($authId): string
     {
         return $this->node[$authId]['href'] ?? '';
     }
 
+    /**
+     * 登入鉴权
+     * @return bool
+     */
     public function auth(): bool
     {
         $liAdminToken = get_cookie('LiAdmin'.self::NonceId);
@@ -114,6 +156,13 @@ class auth
 
     }
 
+    /**
+     * 登入
+     * @param $username
+     * @param $passwd
+     * @param $authenticator
+     * @return object
+     */
     public function login($username, $passwd, $authenticator = '')
     {
         $username = $this->db->removeEscape($username);
@@ -168,8 +217,7 @@ class auth
     protected function updateMenuNode($tag = false)
     {
         if($this->menuNodeCache){
-            global $Lite;
-            $Lite->set_redis();
+            self::$Lite->set_redis();
         }
         $user = $this->user;
         if(!$tag && $this->menuNodeCache){  //不强制更新先偿试读缓存
@@ -255,11 +303,23 @@ class auth
         }
     }
 
+    /**
+     * 生成密码哈希
+     * @param string $value
+     * @param $salt
+     * @return string
+     */
     public function password(string $value, $salt = ''): string
     {
         return sha1($value . $salt);
     }
 
+    /**
+     * 写入管理员操作日志
+     * @param $title
+     * @param $content
+     * @return bool|int|\MongoDB\Driver\WriteResult|\mysqli_result|string|null
+     */
     public function aLog($title, $content = '')
     {
         return $this->adminLog(
@@ -280,6 +340,11 @@ class auth
         return $this->db->table($this->tableAdmin . '_log')->insert($data);
     }
 
+    /**
+     * 读取管理员用户表信息
+     * @param $id
+     * @return array|false
+     */
     public function getAdminUser($id)
     {
         $row = $this->db->table($this->tableAdmin)->where(['id' => $id])->selectOne();
@@ -288,11 +353,21 @@ class auth
         return $row;
     }
 
+    /**
+     * 读取角色权限信息
+     * @param $id
+     * @return array|false
+     */
     public function getAdminAuth($id)
     {
         return $this->db->table($this->tableAdmin . '_auth')->where(['id' => $id])->selectOne();
     }
 
+    /**
+     * 读取所有角色权限表数据
+     * @param $ids
+     * @return array
+     */
     public function getAdminAuths($ids = null): array
     {
         if (empty($ids)) {
@@ -307,12 +382,23 @@ class auth
         return $ret;
     }
 
+    /**
+     * 读取节点信息
+     * @param $id
+     * @return array|false
+     */
     public function getAdminNode($id)
     {
         return $this->db->table($this->tableAdmin. '_node')->where(['id'=>$id])->selectOne();
     }
 
-    public function presentation($activeMenu){
+    /**
+     * 获取当用活动页列表
+     * @param int $activeMenu
+     * @return array|mixed
+     */
+    public function presentation(int $activeMenu): array
+    {
         $presentation = json_decode(get_cookie('presentation'.$this->user['id']), true);
         if(empty($presentation)){
             $presentation = [];
@@ -334,5 +420,25 @@ class auth
         }
         set_cookie('presentation'.$this->user['id'], json_encode($presentation));
         return $presentation;
+    }
+
+    /**
+     * 输出错误信息提示
+     * @param string $promptMessage
+     * @param string|null $msgTitle
+     * @param array $param
+     * @return void
+     */
+    public function message(string $promptMessage, string $msgTitle = null, array $param = [])
+    {
+        global $activeMenu;
+        $admin_dir = 'admin';
+        $DT_TIME = $this->DT_TIME;
+        $title = $appName = app::$Lite->appName;
+        $curUser = $this->curUser();
+        $presentation = $this->presentation($activeMenu);
+
+        include \LitePhp\Template::load('message_thin', 'admin');
+        exit(0);
     }
 }

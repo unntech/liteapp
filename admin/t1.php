@@ -15,5 +15,6 @@ $a = $Lite->redis->get('a');
 LitePhp\Redis::set('b', 'abc', 3600);
 */
 
-session_start();
-var_dump(session_id());
+//session_start();
+//var_dump(session_id());
+

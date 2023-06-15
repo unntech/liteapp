@@ -6,11 +6,13 @@ use LiteApp\app;
 
 class auth extends app
 {
-    protected $menuNodeCache = true;  //菜单权限列表是否缓存，生产环境建议开启
+    protected $menuNodeCache = false;  //菜单权限列表是否缓存，生产环境建议开启
     const NonceId = '';
     public $tableAdmin = 'admin';
-    public $loginSuccess = false, $user = ['id' => 0];
-    public $menu = [], $node = [];
+    public $loginSuccess = false;
+    public $user = ['id' => 0];
+    public $menu = [];
+    public $node = [];
     const status = ['正常', '禁用', '锁定'];
     public $adminTag = ['标准用户', '超级管理员', '自定义'];
 

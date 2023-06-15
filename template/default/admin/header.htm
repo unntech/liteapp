@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{DT_SKIN}/common.css"/>
     {if isset($CSS) && is_array($CSS)}
     {loop $CSS $css}
-    <link rel="stylesheet" type="text/css" href="{DT_SKIN}/{$css}.css?v={if ENVIRONMENT == 'DEV'}{$DT_TIME}{else}1.0{/if}"/>
+    <link rel="stylesheet" type="text/css" href="{DT_SKIN}/{$css}.css?v={if ENVIRONMENT == 'DEV'}{$DT_TIME}{else}{$version}{/if}"/>
     {/loop}
     {/if}
     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
@@ -19,13 +19,13 @@
     <script type="text/javascript" src="{DT_STATIC}/jquery/jquery.cookie-1.4.1.js"></script>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="{DT_STATIC}/bootstrap-4.6.2/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{DT_STATIC}/admin/js/admin-comm.js?v1"></script>
+    <script type="text/javascript" src="{DT_STATIC}/admin/js/admin-comm.js?v={$version}"></script>
     <script>
         adminComm = new adminCommFunc('{$apiToken}');
         var checkSubmitFlag = 0;
         var navigatorSiderFlag = {$navigatorSiderFlag};
     </script>
-    <script type="text/javascript" src="{DT_STATIC}/admin/js/admin.js?v={if ENVIRONMENT == 'DEV'}{$DT_TIME}{else}1.0{/if}"></script>
+    <script type="text/javascript" src="{DT_STATIC}/admin/js/admin.js?v={if ENVIRONMENT == 'DEV'}{$DT_TIME}{else}{$version}{/if}"></script>
 </head>
 
 <body>

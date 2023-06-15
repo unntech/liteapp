@@ -49,7 +49,8 @@ class LiteApp
         return $this->db->insert_id();
     }
     
-    public function setCookie($var, $value = '', $time = 0) {
+    public function setCookie($var, $value = '', $time = 0): bool
+    {
         $time = $time > 0 ? $this->DT_TIME + $time : (empty($value) ? $this->DT_TIME - 3600 : 0);
         $port = $_SERVER['REQUEST_SCHEME'] == 'https' ? 1 : 0;
         $var = $this->config->get('app.cookie_pre', 'Lite') . $var;
@@ -58,10 +59,11 @@ class LiteApp
 
     public function getCookie($var) {
         $var =  $this->config->get('app.cookie_pre', 'Lite') . $var;
-        return isset($_COOKIE[$var]) ? $_COOKIE[$var] : '';
+        return $_COOKIE[$var] ?? '';
     }
     
-    public function getRequestHeaders(){
+    public function getRequestHeaders(): array
+    {
         return \LitePhp\LiHttp::requestHeaders();
     }
     
@@ -76,7 +78,14 @@ class LiteApp
         return $res;
     }
 
-    public function pagination($count, $pagenum=0){
+    /**
+     * 输出分页HTML
+     * @param int $count
+     * @param int $pagenum
+     * @return string
+     */
+    public function pagination(int $count, int $pagenum = 0): string
+    {
         if($pagenum <= 0){
             $pagenum = $this->config->get('admin.pageNum');
         }

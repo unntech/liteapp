@@ -39,10 +39,10 @@ function dv($var, bool $echo = true, string $label = null, bool $strict = true)
 /**
  * 通过JS把PHP变量输出至 console.log
  * @param $output
- * @param $with_script_tags
+ * @param bool $with_script_tags
  * @return void
  */
-function console_log($output, $with_script_tags = true) {
+function console_log($output, bool $with_script_tags = true) {
     $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) .
         ');';
     if ($with_script_tags) {
@@ -51,7 +51,8 @@ function console_log($output, $with_script_tags = true) {
     echo $js_code;
 }
 
-function set_cookie($var, $value = '', $time = 0) {
+function set_cookie($var, $value = '', $time = 0): bool
+{
     return \LiteApp\app::$Lite->setCookie($var, $value, $time);
 }
 
@@ -75,7 +76,8 @@ function config(string $name = null, $default = null){
     return $r;
 }
 
-function pagination($count, $pagenum=0){
+function pagination(int $count, int $pagenum = 0): string
+{
     return \LiteApp\app::$Lite->pagination($count, $pagenum);
 }
 

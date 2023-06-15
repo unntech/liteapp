@@ -129,11 +129,11 @@ body{
 
 .main-header .navtoolbar .navbar-custom-menu {
     float: right;
-    min-width: 315px;
+    padding-right: 5px;
 }
 
 .main-header .navtoolbar .navbar-custom-menu a {
-    padding-right: 20px;
+    padding: 0 10px;
 }
 
 .admin-content-wrapper{

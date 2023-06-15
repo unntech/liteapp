@@ -96,17 +96,18 @@
     <a class="dropdown-item" href="index.php?action=logout">注销退出</a>
 </div>
 <div class="right-sidebar-box shadow-sm" id="admin-right-sidebar">
-<div class="form-group right-sidebar-item">
-    <span class="form-control form-control-sm mb-2">导航菜样式</span>
-    <div id="navMenuStyleSetting">
-    <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" id="navStyle-sider" name="navStyle" {if $navigationConfig == 'sider'}checked {/if} value="sider" class="custom-control-input">
-        <label class="custom-control-label" for="navStyle-sider">侧边</label>
+    <div class="form-group right-sidebar-item">
+        <span class="form-control form-control-sm mb-2">导航菜样式</span>
+        <div id="navMenuStyleSetting">
+        <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="navStyle-sider" name="navStyle" {if $navigationConfig == 'sider'}checked {/if} value="sider" class="custom-control-input">
+            <label class="custom-control-label" for="navStyle-sider">侧边</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="navStyle-top" name="navStyle" {if $navigationConfig == 'top'}checked {/if} value="top" class="custom-control-input">
+            <label class="custom-control-label" for="navStyle-top">顶部</label>
+        </div>
+        </div>
     </div>
-    <div class="custom-control custom-radio custom-control-inline">
-        <input type="radio" id="navStyle-top" name="navStyle" {if $navigationConfig == 'top'}checked {/if} value="top" class="custom-control-input">
-        <label class="custom-control-label" for="navStyle-top">顶部</label>
-    </div>
-    </div>
-</div>
+    <a href="?{$_SERVER['QUERY_STRING']}" class="btn btn-secondary btn-block btn-sm"><i class="bi bi-arrow-repeat"></i> 刷新页面</a>
 </div>

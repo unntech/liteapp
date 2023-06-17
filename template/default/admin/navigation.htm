@@ -11,7 +11,7 @@
             <a href="/"><i class="bi bi-house-door"></i> 主页</a>
             <a href="javascript:LiadminFullScreen()"><i class="bi bi-arrows-fullscreen"></i></a>
             <a href="javascript:userInfoMenu();"><i class="bi bi-person-circle"></i> {$curUser['nickname']}</a>
-            <a href="javascript:rightSidebarBox();" title="样式设置，更多设置"><i class="bi bi-three-dots-vertical"></i></a>
+            <a href="javascript:rightSidebarBox();" data-toggle="tooltip" data-placement="left" title="样式设置，更多设置"><i class="bi bi-three-dots-vertical"></i></a>
         </div>
     </div>
 </header>
@@ -96,11 +96,11 @@
 </style>
 {/if}
 <div class="userinfomenu shadow-sm" id="userinfomenu">
-    <a class="dropdown-item" href="profile.php">个人资料</a>
-    <a class="dropdown-item" href="editpsw.php">修改密码</a>
-    <a class="dropdown-item" href="authenticator.php">动态码绑定</a>
+    <a class="dropdown-item" href="/admin/profile.php">个人资料</a>
+    <a class="dropdown-item" href="/admin/editpsw.php">修改密码</a>
+    <a class="dropdown-item" href="/admin/authenticator.php">动态码绑定</a>
     <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="index.php?action=logout">注销退出</a>
+    <a class="dropdown-item" href="/admin/index.php?action=logout">注销退出</a>
 </div>
 <div class="right-sidebar-box shadow-sm" id="admin-right-sidebar">
     <div class="form-group right-sidebar-item">

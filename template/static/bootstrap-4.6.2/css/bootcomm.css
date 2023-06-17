@@ -294,3 +294,11 @@
 .max-xl {
   max-width: 1140px;
 }
+
+.multiselect-option-item{
+  background-color: transparent;
+  border: 0;
+  float: left;
+  text-align: inherit;
+  white-space: nowrap;
+}

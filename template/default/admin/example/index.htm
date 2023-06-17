@@ -1,0 +1,97 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<!-- Include the plugin's CSS and JS: -->
+<link rel="stylesheet" href="{DT_STATIC}/bootstrap-multiselect/css/bootstrap-multiselect.min.css" type="text/css"/>
+<script type="text/javascript" src="{DT_STATIC}/bootstrap-multiselect/js/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#example-multiple-selected').multiselect({
+            enableFiltering: true,
+            buttonWidth: '100%',
+            maxHeight: 200,
+            nonSelectedText: '请选择',
+            numberDisplayed: 9,
+            nSelectedText: ' - 项已选',
+            allSelectedText: '全选',
+            inheritClass: true,
+            enableCaseInsensitiveFiltering: true,
+            filterBehavior: 'both',
+            buttonTextAlignment: 'left',
+            //widthSynchronizationMode: 'always',
+            templates: {
+                filter: '<div class="multiselect-filter"><div class="input-group input-group-sm p-1"><div class="input-group-prepend"><i class="input-group-text bi bi-search"></i></div><input class="form-control multiselect-search" type="text" /></div></div></div>',
+                //option: '<button type="button" class="multiselect-option multiselect-option-item"></button>',
+            },
+
+        });
+    });
+</script>
+<style>
+</style>
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>Admin管理样式例子</b><BR>
+        典型样式使用例子及文档
+        <div class="b15"></div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="javascript:void(0)" data-toggle="tab" data-target="#nav-home" >标签一</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" data-toggle="tab" data-target="#nav-profile">标签二</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)" data-toggle="tab" data-target="#nav-custom">标签三</a>
+            </li>
+        </ul>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home">标签一</div>
+                <div class="tab-pane fade" id="nav-profile">标签二</div>
+                <div class="tab-pane fade" id="nav-custom">标签三</div>
+            </div>
+            <BR><BR>
+            <a href="testconfirm.php" class="btn btn-success" data-toggle="adminConfirm" title="测试提示" data-msg="点击确认弹框样式？" id="testConfirmBtn">测试确认</a>
+            <BR><BR>
+            <button type="button" class="btn btn-success" data-toggle="adminPopForm" data-target="#adminPopFormExample" title="弹窗样式" data-option='{"height":500}'>可最大化弹窗</button>
+            <BR><BR>
+            下拉多选样式主流为：<BR>
+            1: Multiple-Select源码主页：https://github.com/wenzhixin/multiple-select<BR>
+            2: bootstrap-multiselect源码主页：https://github.com/davidstutz/bootstrap-multiselect<BR>
+            这样以第2种为例，官方文档：https://davidstutz.github.io/bootstrap-multiselect/<BR><BR>
+            <div class="form-group row">
+                <label for="example-multiple-selected" class="col-sm-2 col-form-label">下拉多选示例</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="example-multiple-selected" multiple="multiple">
+                        <option value="1">北京</option>
+                        <option value="2">上海</option>
+                        <option value="3">深圳</option>
+                        <option value="4">广州</option>
+                        <option value="5">福建</option>
+                        <option value="6">北京</option>
+                        <option value="7">上海</option>
+                        <option value="8">深圳</option>
+                        <option value="9">广州</option>
+                        <option value="10">福建</option>
+                        <option value="11">北京</option>
+                        <option value="12">上海</option>
+                        <option value="13">深圳</option>
+                        <option value="14">广州</option>
+                        <option value="15">福建</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="adminPopFormExample" class="d-none">
+    弹窗内容
+</div>
+
+
+{template 'footer','admin'}

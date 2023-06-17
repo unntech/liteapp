@@ -7,7 +7,7 @@ $(document).ready(function() {
             "nav": $(this).val(),
             "action": "SETNAV"
         };
-        adminComm.post('profile.php', d, function (dataBody, status) {
+        adminComm.post('/admin/profile.php', d, function (dataBody, status) {
             if (status == 'success') {
                 let ret = JSON.parse(dataBody);
                 //console.log(ret);
@@ -68,11 +68,11 @@ $(document).ready(function() {
         $("#admin-pop-body").html($(srcdivid).html());
         $("#admin-pop-wrapper .admin-pop-header .header-text").html($(this).attr('title'));
         let _dataopt = $(this).attr('data-option');
-        if(_dataopt == null || _dataopt != undefined || _dataopt == ""){
+        if(_dataopt == null || _dataopt == undefined || _dataopt == ""){
 
         }else {
             let dataOption = JSON.parse(_dataopt);
-            //console.log(dataConfig);
+            //console.log(dataOption);
             if (dataOption.hasOwnProperty('pop')) {
                 if (dataOption.pop == 'full') {
                     $("#admin-pop-wrapper").removeClass('admin-pop-wrapper-modal');
@@ -114,11 +114,8 @@ $(document).ready(function() {
 });
 
 $(function () {
-    let flag = $.cookie('navigatorSiderFlag');
-    if(flag == 1){
-        //navigatorSiderToggle();
-    }
-});
+    $('[data-toggle="tooltip"]').tooltip()
+})
 
 function adminConfirmOptStyle(){
     $('#adminActivityContent').append(`
@@ -145,7 +142,7 @@ function adminConfirmOptStyle(){
 }
 
 function adminPopWrapper(){
-    $('body').append(`
+    $('#adminActivityContent').append(`
     <div class="admin-pop-wrapper admin-pop-wrapper-modal" id="admin-pop-wrapper">
     <div class="admin-pop-header">
         <span class="header-text">弹窗</span>

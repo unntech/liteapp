@@ -6,13 +6,13 @@ require DT_ROOT. '/app/admin/common.php';
 
 $liAdminToken = get_cookie('LiAdmin'.LiteApp\admin\auth::NonceId);
 if (empty($liAdminToken)) {
-    LitePhp\LiHttp::redirect('index.php');
+    LitePhp\LiHttp::redirect('/admin/index.php');
 }
 
 $auth = new \LiteApp\admin\auth();
 $loginSuc = $auth->auth();
 if (!$loginSuc) {
-    LitePhp\LiHttp::redirect('index.php');
+    LitePhp\LiHttp::redirect('/admin/index.php');
 }
 $activeMenu = $activeMenu ?? 1;
 $auth->activeMenu($activeMenu);

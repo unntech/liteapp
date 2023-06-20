@@ -18,6 +18,11 @@ foreach ($a as $k=>$v){
     $Lite->db->table('icons')->insert(['name'=>$s]);
 }
 */
-\LitePhp\Template::message('这是一个提示示例', '错误提示');
+// LitePhp\Template::message('这是一个提示示例', '错误提示');
 
+try{
+    ffff();
+}catch (Throwable $e){
+    echo $e->getMessage();
 
+}

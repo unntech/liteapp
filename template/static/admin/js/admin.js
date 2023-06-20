@@ -200,14 +200,14 @@ function navigatorSiderToggle(){
         $(".main-header").addClass('main-header-sm')
         $("#admin-main-sidebar .menu-text").hide();
         navigatorSiderFlag = 1;
-        $.cookie('navigatorSiderFlag', 1);
+        $.cookie('navigatorSiderFlag', 1, {path: '/'});
     }else{
         $("#admin-main-sidebar").removeClass('main-sidebar-sm');
         $(".admin-content-wrapper").css('padding-left', '245px');
         $(".main-header").removeClass('main-header-sm');
         $("#admin-main-sidebar .menu-text").fadeIn("slow");
         navigatorSiderFlag = 0;
-        $.cookie('navigatorSiderFlag', 0);
+        $.cookie('navigatorSiderFlag', 0, {path: '/'});
     }
 }
 

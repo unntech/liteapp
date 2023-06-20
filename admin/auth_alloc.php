@@ -26,6 +26,7 @@ if(isset($_POST['savebtn'])){
         $rules_ids = implode(',', $rulesCheck);
     }
     $res = $Lite->db->table($auth->tableAdmin.'_auth')->where(['id'=>$id])->fields(['rules'=>$rules_ids])->update();
+    $auth->aLog('角色分配权限：'.$id, json_encode($rulesCheck));
     $ruleName = $auth->getAdminAuth($id);
 }
 

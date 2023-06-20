@@ -1,0 +1,108 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<script type="text/javascript" src="https://apis.zhisg.com/js/echarts/5.4.2/echarts.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        echarts_01();
+        echarts_02();
+    });
+
+    function echarts_01(){
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echarts-01'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'ECharts 入门示例'
+            },
+            tooltip: {},
+            legend: {
+                data: ['数量','金额']
+            },
+            xAxis: {
+                data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: '数量',
+                    type: 'bar',
+                    data: [5, 20, 36, 10, 10, 20]
+                },
+                {
+                    name: '金额',
+                    type: 'bar',
+                    data: [50, 200, 360, 100, 100, 200]
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        myChart.on('click', function(params) {
+            // 控制台打印数据的名称
+            console.log(params);
+        });
+    }
+
+    function echarts_02(){
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echarts-02'), 'dark');
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: 'ECharts 采用数据集数据'
+            },
+            tooltip: {},
+            legend: {},
+            dataset:{
+                // 提供一份数据。
+                source:[
+                    ['item', '数量','金额'],
+                    ['衬衫', 5, 50],
+                    ['羊毛衫', 20, 200],
+                    ['雪纺衫', 36, 250],
+                    ['裤子', 10, 100],
+                    ['高跟鞋', 10, 100],
+                    ['袜子', 20, 200]
+                ]
+            },
+            // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
+            xAxis: {
+                type: 'category'
+            },
+            // 声明一个 Y 轴，数值轴。
+            yAxis: {},
+            // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
+            series: [
+                { type: 'bar' },
+                { type: 'bar' }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+</script>
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>Apache ECharts</b><BR>
+        一个基于 JavaScript 的开源可视化图表库
+        <div class="b15"></div>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+            <div class="alert alert-primary" role="alert">
+                官方文档：https://echarts.apache.org/zh/index.html
+            </div>
+            <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+            <div id="echarts-01" style="width: 960px;height:400px;"></div>
+            <div id="echarts-02" style="width: 960px;height:400px;"></div>
+        </div>
+    </div>
+</div>
+
+
+{template 'footer','admin'}

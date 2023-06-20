@@ -33,8 +33,10 @@ return [
             'password' => 'psw',
             // 端口
             'hostport' => 1433,
-
-            'charset' => ''
+            //连接字符集，默认UTF-8
+            'charset' => 'UTF-8',
+            //信任SSL证书
+            'TrustServerCertificate'=> false
         ],
 
         [

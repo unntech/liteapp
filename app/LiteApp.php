@@ -35,11 +35,13 @@ class LiteApp
 		return $thisdb;
     }
     
-    public function set_redis(){
-        $this->config->load(['redis']);
-        $this->redis = \LitePhp\Redis::Create($this->config->get('redis'));
+    public function set_redis(bool $reconnect = false){
+        if(empty($this->redis) || $reconnect) {
+            $this->config->load(['redis']);
+            $this->redis = \LitePhp\Redis::Create($this->config->get('redis'));
+        }
     }
-    
+
     public function alog($type, $log1='', $log2 = '', $log3 = '' ) {
         if(empty($this->db)){
             $this->set_db();
@@ -48,11 +50,11 @@ class LiteApp
         $this->db->query( $SQLC );
         return $this->db->insert_id();
     }
-    
+
     public function setCookie($var, $value = '', $time = 0): bool
     {
         $time = $time > 0 ? $this->DT_TIME + $time : (empty($value) ? $this->DT_TIME - 3600 : 0);
-        $port = $_SERVER['REQUEST_SCHEME'] == 'https' ? 1 : 0;
+        $port = $_SERVER['REQUEST_SCHEME'] == 'https' ? true : false;
         $var = $this->config->get('app.cookie_pre', 'Lite') . $var;
         return setcookie($var, $value, $time, $this->config->get('app.cookie_path'), $this->config->get('app.cookie_domain'), $port);
     }

@@ -60,6 +60,36 @@ function get_cookie($var) {
     return \LiteApp\app::$Lite->getCookie($var);
 }
 
+function session($name = '', $value = '')
+{
+    if(empty(\LitePhp\Session::$session_id)){
+        $opt = config('session');
+        if($opt['save'] == 'redis'){
+            if(empty(\LiteApp\app::$Lite->redis)){
+                \LiteApp\app::$Lite->set_redis();
+            }
+            $opt['handle'] = \LiteApp\app::$Lite->redis;
+        }
+        \LitePhp\Session::start($opt);
+    }
+
+    if (is_null($name)) {
+        // 清除
+        \LitePhp\Session::clear();
+    } elseif ('' === $name) {
+        return \LitePhp\Session::get();
+    } elseif (is_null($value)) {
+        // 删除
+        \LitePhp\Session::delete($name);
+    } elseif ('' === $value) {
+        // 获取
+        return \LitePhp\Session::get($name);
+    } else {
+        // 设置
+        \LitePhp\Session::set($name, $value);
+    }
+}
+
 function config(string $name = null, $default = null){
     $config = \LiteApp\app::$Lite->config;
     if (false !== strpos($name, '.')) {

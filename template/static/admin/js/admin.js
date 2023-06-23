@@ -111,11 +111,22 @@ $(document).ready(function() {
         $("#presentation-top-bar").slideDown();
     })
 
+    $("[data-toggle|='compare-different-highlights']").compareDifferentHighlights();
+    $('[data-toggle="tooltip"]').tooltip()
 });
 
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-})
+
+$.fn.compareDifferentHighlights = function (){
+    $("[data-toggle|='compare-different-highlights']").each(function (){
+        let od = $(this).attr('title');
+        let nd = $(this).html();
+        if(od != nd){
+            $(this).addClass('text-danger');
+            $(this).attr('data-toggle', 'tooltip');
+            $(this).attr('data-placement', 'bottom');
+        }
+    });
+}
 
 function adminConfirmOptStyle(){
     $('#adminActivityContent').append(`

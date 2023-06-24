@@ -22,7 +22,7 @@
     <script type="text/javascript" src="{DT_STATIC}/admin/js/admin-comm.js?v={$version}"></script>
     <script>
         adminComm = new adminCommFunc('{$apiToken}');
-        var checkSubmitFlag = 0;
+        var checkSubmitFlag = 0, checkRepeatFlag = 0;
         var navigatorSiderFlag = {$navigatorSiderFlag};
     </script>
     <script type="text/javascript" src="{DT_STATIC}/admin/js/admin.js?v={if ENVIRONMENT == 'DEV'}{$DT_TIME}{else}{$version}{/if}"></script>

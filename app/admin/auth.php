@@ -146,7 +146,7 @@ class auth extends app
                 'nickname'  => $user['nickname'],
                 'status'    => $user['status'],
                 'login_num' => $user['login_num'],
-                'auth_ids'  => $user['auth_ids'],
+                'auth_ids'  => empty($user['auth_ids']) ? '0' : $user['auth_ids'],
                 'admin'     => $user['admin'],
                 'params'    => empty($user['params']) ? [] : json_decode($user['params'], true),
             ];
@@ -193,7 +193,7 @@ class auth extends app
             'nickname'  => $user['nickname'],
             'status'    => $user['status'],
             'login_num' => $user['login_num'],
-            'auth_ids'  => $user['auth_ids'],
+            'auth_ids'  => empty($user['auth_ids']) ? '0' : $user['auth_ids'],
             'admin'     => $user['admin'],
             'params'    => empty($user['params']) ? [] : json_decode($user['params'], true),
         ];
@@ -372,7 +372,7 @@ class auth extends app
      */
     public function getAdminAuths($ids = null): array
     {
-        if (empty($ids)) {
+        if (is_null($ids)) {
             $res = $this->db->table($this->tableAdmin . '_auth')->fields(['id', 'title'])->where(['status' => 1])->select(true);
         } else {
             $res = $this->db->table($this->tableAdmin . '_auth')->fields(['id', 'title'])->where(['id' => ['IN', explode(',', $ids)]])->select(true);

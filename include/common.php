@@ -127,17 +127,26 @@ if (!function_exists('array_key_first')) {
  */
 function exception_handler(Throwable $e)
 {
-    if(DT_DEBUG){
-        $html = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><title>HTTP 500</title><style>body{margin: 0 auto;} .header{background: #6c757d; color: #eee; padding: 50px 15px 30px 15px;line-height: 1.5rem} .msg{padding: 15px 15px;line-height: 1.25rem}</style></head><body>';
-        $html .= '<div class="header"><h3>'.$e->getMessage().'</h3>Code: '. $e->getCode().'<BR>File: '. $e->getFile().'<BR>Line: '. $e->getLine().'</div>';
-        $html .= '<div class="msg">'.dv($e, false).'</div>';
-        $html .= '</body></html>';
-        echo $html;
-    }else{
-        $msg =$e->getCode() . ': '. $e->getMessage();
-        $html = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><title>HTTP 500</title><style>body{background-color:#444;font-size:16px;}h3{font-size:32px;color:#eee;text-align:center;padding-top:50px;font-weight:normal;}</style></head>';
-        $html .= '<body><h3>'.$msg.'</h3></body></html>';
-        echo $html;
+    $postDate = json_decode(file_get_contents("php://input"), true);
+    if(!empty($postDate)){ // isAjax Json Request
+        if (DT_DEBUG) {
+            $data = ['request'=>$postDate, 'exception'=>$e, 'code'=>$e->getCode(),'message'=>$e->getMessage(), 'trace'=>$e->getTrace()];
+        }else{
+            $data = ['code'=>$e->getCode(),'message'=>$e->getMessage()];
+        }
+        echo json_encode($data);
+    }else {
+        if (DT_DEBUG) {
+            $html = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><title>HTTP 500</title><style>body{margin: 0 auto;} .header{background: #6c757d; color: #eee; padding: 50px 15px 30px 15px;line-height: 1.5rem} .msg{padding: 15px 15px;line-height: 1.25rem}</style></head><body>';
+            $html .= '<div class="header"><h3>' . $e->getMessage() . '</h3>Code: ' . $e->getCode() . '<BR>File: ' . $e->getFile() . '<BR>Line: ' . $e->getLine() . '</div>';
+            $html .= '<div class="msg">' . dv($e, false) . '</div>';
+            $html .= '</body></html>';
+            echo $html;
+        } else {
+            $msg = $e->getCode() . ': ' . $e->getMessage();
+            $html = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><title>HTTP 500</title><style>body{background-color:#444;font-size:16px;}h3{font-size:32px;color:#eee;text-align:center;padding-top:50px;font-weight:normal;}</style></head>';
+            $html .= '<body><h3>' . $msg . '</h3></body></html>';
+            echo $html;
+        }
     }
-
 }

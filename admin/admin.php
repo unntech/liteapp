@@ -16,6 +16,7 @@ if($isAjax){  //ajax 提交
         }
     }elseif($postData['node'] == 11 && $postData['action'] == 'EDIT') {
         $auth->aLog('编辑用户：'.$postData['rowid'], json_encode($postData));
+        if($postData['useradmin'] == 1){$postData['useradmin'] = 0;}
         $data = ['nickname' => $postData['nickname'], 'status' => $postData['userstatus'], 'admin' => $postData['useradmin']];
         $data['username'] = strtoupper($Lite->db->removeEscape($postData['username']));
         if (!empty($postData['password'])) {
@@ -30,6 +31,7 @@ if($isAjax){  //ajax 提交
         }
     }elseif($postData['node'] == 10 && $postData['action'] == 'ADD'){
         $auth->aLog('添加用户', json_encode($postData));
+        if($postData['useradmin'] == 1){$postData['useradmin'] = 0;}
         $data = ['nickname' => $postData['nickname'], 'status' => $postData['userstatus'], 'admin' => $postData['useradmin']];
         $data['username'] = strtoupper($Lite->db->removeEscape($postData['username']));
         if (!empty($postData['password'])) {

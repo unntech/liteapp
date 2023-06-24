@@ -25,9 +25,29 @@ $(document).ready(function() {
         checkSubmitFlag++;
         if(checkSubmitFlag > 1){
             event.preventDefault();
+            toastr.info('请勿重复提交，请稍等一会儿~');
+        }else if(checkSubmitFlag === 1){
+            setTimeout(function (){
+                checkSubmitFlag = 0;
+            }, 5000);
         }
     });
+    
+    $("[data-click|='once']").click(function (event){
+        $(this).attr('disabled', true);
+    });
 
+    $("[data-click|='repeat']").click(function (event){
+        checkRepeatFlag++;
+        if(checkRepeatFlag > 1){
+            event.preventDefault();
+            toastr.info('请勿重复点击，稍等一会儿~');
+        }else if(checkRepeatFlag === 1){
+            setTimeout(function (){
+                checkRepeatFlag = 0;
+            }, 3000);
+        }
+    });
     $("[data-toggle|='adminConfirm']").click(function (event){
         //console.log(event);
         adminConfirmOptStyle();

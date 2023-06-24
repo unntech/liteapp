@@ -29,3 +29,4 @@ define('DT_SKIN', '/template/' . $Lite->config->get('app.template', 'default') .
 define('DT_STATIC', '/template/static');
 
 require_once DT_ROOT . '/include/common.php';
+set_exception_handler('exception_handler');

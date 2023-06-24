@@ -117,8 +117,12 @@ $(document).ready(function() {
 
 
 $.fn.compareDifferentHighlights = function (){
-    $("[data-toggle|='compare-different-highlights']").each(function (){
+    $(this).each(function (){
         let od = $(this).attr('title');
+        let ocd = $(this).attr('data-compare');
+        if(ocd !== undefined){
+            od = ocd;
+        }
         let nd = $(this).html();
         if(od != nd){
             $(this).addClass('text-danger');

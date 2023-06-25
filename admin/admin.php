@@ -34,7 +34,7 @@ if($isAjax){  //ajax 提交
         if($postData['useradmin'] == 1){$postData['useradmin'] = 0;}
         $data = ['nickname' => $postData['nickname'], 'status' => $postData['userstatus'], 'admin' => $postData['useradmin']];
         $data['username'] = strtoupper($Lite->db->removeEscape($postData['username']));
-        if (!empty($postData['password'])) {
+        if (empty($postData['password'])) {
             $postData['password'] = '123456';
         }
         $data['psw'] = $auth->password($postData['password']);

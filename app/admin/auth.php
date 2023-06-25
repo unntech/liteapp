@@ -6,7 +6,7 @@ use LiteApp\app;
 
 class auth extends app
 {
-    protected $menuNodeCache = false;  //菜单权限列表是否缓存，生产环境建议开启
+    const menuNodeCache = false;  //菜单权限列表是否缓存，生产环境建议开启，需要配置redis参数
     const NonceId = '';
     public $tableAdmin = 'admin';
     public $loginSuccess = false;
@@ -218,11 +218,11 @@ class auth extends app
      */
     protected function updateMenuNode($tag = false)
     {
-        if($this->menuNodeCache){
+        if(self::menuNodeCache){
             self::$Lite->set_redis();
         }
         $user = $this->user;
-        if(!$tag && $this->menuNodeCache){  //不强制更新先偿试读缓存
+        if(!$tag && self::menuNodeCache){  //不强制更新先偿试读缓存
             $_g = true;
             $_c = \LitePhp\Redis::get('adminMenu'.self::NonceId.'_'.$user['id']);
             if(!empty($_c)){
@@ -299,7 +299,7 @@ class auth extends app
         }
         $this->node = $node;
 
-        if($this->menuNodeCache){
+        if(self::menuNodeCache){
             \LitePhp\Redis::set('adminMenu'.self::NonceId.'_'.$user['id'], json_encode($this->menu), 7200);
             \LitePhp\Redis::set('adminNode'.self::NonceId.'_'.$user['id'], json_encode($this->node), 7200);
         }

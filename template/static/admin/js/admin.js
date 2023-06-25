@@ -32,7 +32,7 @@ $(document).ready(function() {
             }, 5000);
         }
     });
-    
+
     $("[data-click|='once']").click(function (event){
         $(this).attr('disabled', true);
     });
@@ -130,6 +130,25 @@ $(document).ready(function() {
     $("#navtop-appname").hover(function (){
         $("#presentation-top-bar").slideDown();
     })
+
+    $("#clear-cache").click(function (){
+        toastr.options.positionClass = "toast-top-center";
+        let d = {
+            "action": "clearCache"
+        };
+        adminComm.post('/admin/profile.php', d, function (dataBody, status) {
+            if (status == 'success') {
+                let ret = JSON.parse(dataBody);
+                //console.log(ret);
+                if(ret.errcode == 0) {
+                    let data = ret.data;
+                    toastr.success('清除缓存成功！');
+                }else{
+                    toastr.warning(ret.errcode + ": "+ret.msg);
+                }
+            }
+        });
+    });
 
     $("[data-toggle|='compare-different-highlights']").compareDifferentHighlights();
     $('[data-toggle="tooltip"]').tooltip()

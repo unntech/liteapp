@@ -5,17 +5,27 @@ $activeMenu = 0;
 require 'auth.inc.php';
 
 if($isAjax){
-    if($postData['action'] == 'SETNAV'){
-        $profile = $auth->getAdminUser($curUserId);
-        $newParams = $profile['params'];
-        $newParams['navigation'] = $postData['nav'];
-        $res = $Lite->db->table($auth->tableAdmin)->where(['id'=>$curUserId])->fields(['params'=>json_encode($newParams)])->update();
-        if($res){
-            \LiteApp\admin\response::success($newParams);
-        }else{
-            \LiteApp\admin\response::error(1001, '更新用户资料失败！');
-        }
-
+    switch ($postData['action']){
+        case 'SETNAV':
+            $profile = $auth->getAdminUser($curUserId);
+            $newParams = $profile['params'];
+            $newParams['navigation'] = $postData['nav'];
+            $res = $Lite->db->table($auth->tableAdmin)->where(['id'=>$curUserId])->fields(['params'=>json_encode($newParams)])->update();
+            if($res){
+                \LiteApp\admin\response::success($newParams);
+            }else{
+                \LiteApp\admin\response::error(1001, '更新用户资料失败！');
+            }
+            break;
+        case 'clearCache':
+            if(LiteApp\admin\auth::menuNodeCache){
+                $Lite->set_redis();
+                \LitePhp\Redis::del('adminMenu'. LiteApp\admin\auth::NonceId.'_'.$curUserId);
+                \LitePhp\Redis::del('adminNode'. LiteApp\admin\auth::NonceId.'_'.$curUserId);
+            }
+            \LiteApp\admin\response::success([]);
+            break;
+        default:
     }
 }
 

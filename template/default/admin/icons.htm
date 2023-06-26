@@ -29,13 +29,13 @@
 </style>
 <script>
     function copyToClipboard(str){
-        var $temp = $('<input>');
-        $('body').append($temp);
-        $temp.val(str).select();
-        document.execCommand('copy');
-        $temp.remove();
-
-        toastr.info(str, '复制成功')
+        navigator.clipboard.writeText(str).then(function() {
+            /* clipboard successfully set */
+            toastr.info(str, '复制至剪切板');
+        }, function() {
+            /* clipboard write failed */
+            toastr.info(str, '复制失败');
+        });
     }
 </script>
 <div class="container-lg">

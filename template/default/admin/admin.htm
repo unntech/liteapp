@@ -127,11 +127,9 @@
 
         $("#randPassword").click(function (){
             let psw = adminComm.randString(6);
-            $("#colPassword").attr('type', 'text');
-            $("#colPassword").val(psw).select();
-            document.execCommand('copy');
-            toastr.info(psw + '已复制至剪贴板');
-            $("#colPassword").attr('type', 'password');
+            $("#colPassword").val(psw);
+            navigator.clipboard.writeText(psw);
+            toastr.info('随机密码:'+ psw + ' 已复制至剪贴板');
         });
 
         function checkFormFields(){

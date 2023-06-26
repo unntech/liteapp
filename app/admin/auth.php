@@ -133,15 +133,19 @@ class auth extends app
      */
     public function auth(): bool
     {
+        $userid = session('admin.id');
+        if(empty($userid)){
+            return false;
+        }
         $liAdminToken = get_cookie('LiAdmin'.self::NonceId);
         $verify = $this->verifyToken($liAdminToken);
-        if ($verify === false) {
+        if ($verify === false || $userid != $verify['sub']) {
             return false;
         } else {
             $this->loginSuccess = true;
             $user = $this->db->table($this->tableAdmin)->where(['id' => $verify['sub']])->selectOne();
             $this->user = [
-                'id'        => $user['id'],
+                'id'        => (int)$user['id'],
                 'username'  => $user['username'],
                 'nickname'  => $user['nickname'],
                 'status'    => $user['status'],
@@ -186,6 +190,7 @@ class auth extends app
             }
         }
 
+        $user['id'] = (int)$user['id'];
         $this->loginSuccess = true;
         $this->user = [
             'id'        => $user['id'],
@@ -208,6 +213,7 @@ class auth extends app
         $jwt = ['sub' => $user['id'], 'exp' => $this->DT_TIME + 86400];
         $token = $this->getToken($jwt);
         set_cookie('LiAdmin'.self::NonceId, $token);
+        session('admin', ['id'=>$user['id'], 'username'=>$user['username']]);
         return (object)['errcode' => 0, 'msg' => '登入成功！'];
     }
 

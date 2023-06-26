@@ -10,7 +10,7 @@ class LiteApp
     /**
      * 配置参数
      */
-    const VERSION = '1.1.4';
+    const VERSION = '1.1.5';
     public $config, $db, $redis;
     public $DT_TIME;
     public $appName;
@@ -69,15 +69,23 @@ class LiteApp
         return \LitePhp\LiHttp::requestHeaders();
     }
     
-    public function do_get($url, $aHeader = null){
-        $res = \LitePhp\LiHttp::get($url, $aHeader);
-        return $res;
-        
+    public function do_get($url, $aHeader = null)
+    {
+        return \LitePhp\LiHttp::get($url, $aHeader);
     }
     
-    public function do_post($url, $data=null, $aHeader = null){
-        $res = \LitePhp\LiHttp::post($url, $data, $aHeader);
-        return $res;
+    public function do_post($url, $data=null, $aHeader = null)
+    {
+        return \LitePhp\LiHttp::post($url, $data, $aHeader);
+    }
+
+    /**
+     * 默认头像图标
+     * @return string
+     */
+    public function defaultAvatar(): string
+    {
+        return DT_STATIC.'/default_avatar_bg.png';
     }
 
     /**

@@ -44,6 +44,42 @@ docs/liteapp.sql 导入至数据库
 composer update unntech/litephp
 ~~~
 
+目录结构
+~~~
+yourApp/
+├── admin                                   #Admin后台管理模块基本程序
+├── app                                     #LiteApp命名空间
+|   ├── admin                               #Admin模块基础类
+|   ├── traits
+|   ├── ...                                 #其它子模块
+|   ├── app.php                             #app基础父类
+│   ├── LiteApp.php                         #LiteApp通用类，自动载入，默认全局变量$Lite
+├── config                                  #配置文件
+│   ├── admin.php                           #Admin后台管理模块配置
+│   ├── app.php                             #项目基础配置
+│   ├── db.php                              #数据库配置文件
+│   ├── redis.php                           #redis配置文件
+│   ├── session.php                         #Session配置文件
+├── docs                                    #文档
+│   ├── litephp.sql.gz                      #Admin模块数据库
+├── include                                 #通用函数库
+│   ├── common.php                          #全局通用函数
+├── runtime                                 #运行临时目录，需可写权限
+├── vendor                                  #composer目录
+├── template                                #视图模板文件
+│   ├── default                             #默认模板目标
+│   │   ├── skin                            #样式css文件目录
+│   │   ├── admin                           #Admin模块视图文件
+│   │   └── ...                             #对应视图文件目录
+│   ├── static                              #静态资源目录
+├── tests                                   #测试样例，可删除
+├── vendor                                  #composer目录
+├── index.php                               #主页
+├── autoload.php                            #autoload载入主程序
+├── qrcode.php                              #二维码生成程序
+└── README.md
+~~~
+
 ## 文档
 Admin后台入口：http://{domain}/admin/index.php
 用户名：admin 密码：123456

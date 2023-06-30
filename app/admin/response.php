@@ -26,7 +26,7 @@ class response
         self::response($ret);
     }
 
-    public static function error($errcode = 0, $msg = 'success', $data = ['sign'=>''])
+    public static function error($errcode = 0, $msg = 'fail', $data = ['sign'=>''])
     {
         $ret = [
             'errcode' => $errcode,

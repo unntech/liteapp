@@ -49,10 +49,13 @@ composer update unntech/litephp
 yourApp/
 ├── admin                                   #Admin后台管理模块基本程序
 ├── app                                     #LiteApp命名空间
-|   ├── admin                               #Admin模块基础类
-|   ├── traits
-|   ├── ...                                 #其它子模块
-|   ├── app.php                             #app基础父类
+│   ├── admin                               #Admin模块基础类
+│   ├── api                                 #Api接口
+│   │   ├── controller                      #接口控制器文件
+│   │   ├── ApiBase.php                     #接口基础类
+│   ├── traits
+│   ├── ...                                 #其它子模块
+│   ├── app.php                             #app基础父类
 │   ├── LiteApp.php                         #LiteApp通用类，自动载入，默认全局变量$Lite
 ├── config                                  #配置文件
 │   ├── admin.php                           #Admin后台管理模块配置
@@ -75,14 +78,22 @@ yourApp/
 ├── tests                                   #测试样例，可删除
 ├── vendor                                  #composer目录
 ├── index.php                               #主页
+├── api.php                                 #接口API方法主入口程序
 ├── autoload.php                            #autoload载入主程序
 ├── qrcode.php                              #二维码生成程序
+├── composer.json                           #
 └── README.md
 ~~~
-
+接口Api使用方法
+~~~
+http://{domain}/api.php/sample/test
+采用PATH_INFO规则，第一项为接口控制器文件名，第二项为方法名
+~~~
 ## 文档
+~~~
 Admin后台入口：http://{domain}/admin/index.php
 用户名：admin 密码：123456
+~~~
 
 [完全开发手册](#)
 

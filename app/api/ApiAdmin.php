@@ -6,9 +6,7 @@ use LiteApp\api\ApiBase;
 
 class ApiAdmin extends ApiBase
 {
-    protected int $uid;
-
-    use \LiteApp\traits\crypt;
+    protected $uid;
 
     public function __construct(){
         parent::__construct();

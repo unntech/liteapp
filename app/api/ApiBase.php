@@ -6,10 +6,12 @@ use LiteApp\app;
 
 class ApiBase extends app
 {
-    protected array $PATH_INFO, $GET, $POST;
-    protected array $postData;
-    protected string $secret = '';
+    protected $PATH_INFO, $GET, $POST;
+    protected $postData;
+    protected $secret = '';
     protected $rsa;
+
+    use \LiteApp\traits\crypt;
 
     public function __construct(){
         parent::__construct();
@@ -66,7 +68,7 @@ class ApiBase extends app
         exit(0);
     }
 
-    public function success(array $data, $errcode = 0, $msg = 'success')
+    public function success(array $data = [], int $errcode = 0, string $msg = 'success')
     {
         $signType = $data['signType'] ?? "NONE";
         $encrypted = $data['encrypted'] ?? false;
@@ -75,7 +77,7 @@ class ApiBase extends app
             'head'  => [
                 'errcode' => $errcode,
                 'msg'     => $msg,
-                'unique_id' => $_SERVER['UNIQUE_ID'],
+                'unique_id' => $_SERVER['UNIQUE_ID'] ?? 'id_' . \LitePhp\SnowFlake::generateParticle(),
                 'timestamp' => $this->DT_TIME,
             ],
             'body'  => $data,
@@ -85,7 +87,7 @@ class ApiBase extends app
         $this->response($ret);
     }
 
-    public function error($errcode = 0, $msg = 'fail', $data = ['void'=>null])
+    public function error(int $errcode = 0, string $msg = 'fail', array $data = ['void'=>null])
     {
         $signType = $data['signType'] ?? "NONE";
         $encrypted = $data['encrypted'] ?? false;
@@ -94,7 +96,7 @@ class ApiBase extends app
             'head'  => [
                 'errcode' => $errcode,
                 'msg'     => $msg,
-                'unique_id' => $_SERVER['UNIQUE_ID'],
+                'unique_id' => $_SERVER['UNIQUE_ID'] ?? 'id_' . \LitePhp\SnowFlake::generateParticle(),
                 'timestamp' => $this->DT_TIME,
             ],
             'body'  => $data,
@@ -109,7 +111,7 @@ class ApiBase extends app
      * @param $path
      * @return mixed|null
      */
-    public function run($path = '')
+    public function run(string $path = '')
     {
         $requestPath = isset($_SERVER['PATH_INFO']) ? explode('/',$_SERVER['PATH_INFO']) : [];
         if(!empty($requestPath[1]) && !empty($requestPath[2])){
@@ -138,7 +140,7 @@ class ApiBase extends app
                     $this->error(404,'接口不存在！');
                 }
 
-            }catch(Exception $e){
+            }catch(\Throwable $e){
                 $emsg = $e->getMessage();
                 $this->error(417, $emsg);
             }

@@ -22,6 +22,7 @@ https://liteapp.unn.tech
 * 对IDE更加友好
 * 统一和精简大量用法
 * 1.1 新增Admin后台管理模块
+* 1.1.6 新增api接口控制器
 
 
 > LiteApp 1.1的运行环境要求PHP7.0+，兼容PHP8.1
@@ -52,7 +53,7 @@ yourApp/
 │   ├── admin                               #Admin模块基础类
 │   ├── api                                 #Api接口
 │   │   ├── controller                      #接口控制器文件
-│   │   ├── ApiBase.php                     #接口基础类
+│   │   └── ApiBase.php                     #接口基础类
 │   ├── traits
 │   ├── ...                                 #其它子模块
 │   ├── app.php                             #app基础父类
@@ -79,6 +80,7 @@ yourApp/
 ├── vendor                                  #composer目录
 ├── index.php                               #主页
 ├── api.php                                 #接口API方法主入口程序
+├── authorize.php                           #接口API获取sercet示例
 ├── autoload.php                            #autoload载入主程序
 ├── qrcode.php                              #二维码生成程序
 ├── composer.json                           #

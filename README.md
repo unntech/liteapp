@@ -54,9 +54,11 @@ yourApp/
 │   ├── api                                 #Api接口
 │   │   ├── controller                      #接口控制器文件
 │   │   └── ApiBase.php                     #接口基础类
+│   ├── controller                          #控制器方法目录，支持分项多级子目录
 │   ├── traits
 │   ├── ...                                 #其它子模块
 │   ├── app.php                             #app基础父类
+│   ├── Controller.php                      #控制器调用基础类
 │   ├── LiteApp.php                         #LiteApp通用类，自动载入，默认全局变量$Lite
 ├── config                                  #配置文件
 │   ├── admin.php                           #Admin后台管理模块配置
@@ -83,13 +85,14 @@ yourApp/
 ├── authorize.php                           #接口API获取sercet示例
 ├── autoload.php                            #autoload载入主程序
 ├── qrcode.php                              #二维码生成程序
+├── route.php                               #控制器方法主入口路由程序
 ├── composer.json                           #
 └── README.md
 ~~~
 接口Api使用方法
 ~~~
 http://{domain}/api.php/sample/test
-采用PATH_INFO规则，第一项为接口控制器文件名，第二项为方法名
+采用PATH_INFO规则，第一项为接口控制器名，第二项为方法名
 ~~~
 ## 文档
 ~~~

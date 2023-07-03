@@ -111,7 +111,7 @@ class ApiBase extends app
      * @param $path
      * @return mixed|null
      */
-    public function run(string $path = '')
+    final public function run(string $path = '')
     {
         $requestPath = isset($_SERVER['PATH_INFO']) ? explode('/',$_SERVER['PATH_INFO']) : [];
         if(!empty($requestPath[1]) && !empty($requestPath[2])){
@@ -119,7 +119,7 @@ class ApiBase extends app
             $func = $requestPath[2];
             $newClass = "\\LiteApp\\api\\controller\\";
             if(!empty($path)){
-                $newClass .= $path . "\\" ;
+                $newClass .= str_replace('/', "\\", $path)  . "\\" ;
             }
             $newClass .= $action;
             try{

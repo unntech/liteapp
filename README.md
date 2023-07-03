@@ -103,7 +103,8 @@ http://{domain}/api.php/sample/test
 http控制器使用方法
 ~~~
 http://{domain}/route.php/sample/test
-采用PATH_INFO规则，控制器名，支持多级目录，最后一项为方法名，方法名后面也可以加后缀 .php|.html (如：test.html)，不影响路由规则
+采用PATH_INFO规则，控制器名，支持多级目录，最后一项为方法名，
+方法名后面也可以加后缀 .php|.html (如：test.html)，不影响路由规则
 ~~~
 
 [完全开发手册](#)

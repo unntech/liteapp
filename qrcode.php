@@ -2,7 +2,7 @@
 
 require 'autoload.php';
 
-$data = isset($_GET['q']) ? $_GET['q'] : $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
+$data = $_GET['q'] ?? $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
 
 //prarm
 $level = 'L';// 纠错级别：L、M、Q、H

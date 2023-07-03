@@ -6,7 +6,7 @@ use LiteApp\app;
 
 class ApiBase extends app
 {
-    protected $PATH_INFO, $GET, $POST;
+    protected $GET, $POST;
     protected $postData;
     protected $secret = '';
     protected $rsa;
@@ -26,9 +26,6 @@ class ApiBase extends app
 
     protected function init_request_data()
     {
-        $requestPath = isset($_SERVER['PATH_INFO']) ? explode('/',$_SERVER['PATH_INFO']) : [];
-        unset($requestPath[0], $requestPath[1], $requestPath[2]);
-        $this->PATH_INFO = array_values($requestPath);
         $this->GET = $_GET;
         $this->POST = $_POST;
         $_str = file_get_contents("php://input");
@@ -114,9 +111,13 @@ class ApiBase extends app
     final public function run(string $path = '')
     {
         $requestPath = isset($_SERVER['PATH_INFO']) ? explode('/',$_SERVER['PATH_INFO']) : [];
-        if(!empty($requestPath[1]) && !empty($requestPath[2])){
-            $action = $requestPath[1];
-            $func = $requestPath[2];
+        $pathInfoCount = count($requestPath);
+        if($pathInfoCount >= 3){
+            $_func = array_pop($requestPath);
+            $_i = strpos($_func, '.');
+            $func = $_i === false ? $_func : substr($_func, 0, $_i);
+            unset($requestPath[0]);
+            $action = implode("\\", $requestPath);
             $newClass = "\\LiteApp\\api\\controller\\";
             if(!empty($path)){
                 $newClass .= str_replace('/', "\\", $path)  . "\\" ;
@@ -127,7 +128,7 @@ class ApiBase extends app
                 if(!empty($path)){
                     $filename .= $path . '/';
                 }
-                $filename .= $action . '.php';
+                $filename .= str_replace("\\", '/', $action) . '.php';
                 if(file_exists($filename)){
 
                     $api = new $newClass();

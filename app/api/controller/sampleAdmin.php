@@ -15,7 +15,6 @@ class sampleAdmin extends ApiAdmin
         $data = [
             'title'=>'This is a testing.',
             'GET'=>$this->GET,
-            'PATH_INFO'=>$this->PATH_INFO,
             'postData' => $this->postData,
             'uid'   => $this->uid,
 

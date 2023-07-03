@@ -16,7 +16,6 @@ class sample extends ApiBase
             'title'=>'This is a testing.',
             'GET'=>$this->GET,
             'POST' => $this->POST,
-            'PATH_INFO'=>$this->PATH_INFO,
             'postData' => $this->postData,
         ];
 

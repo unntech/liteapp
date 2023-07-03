@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.2",
         "unntech/litephp": ">=1.0.7",
         "ext-json": "*"
     },

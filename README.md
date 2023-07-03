@@ -25,7 +25,7 @@ https://liteapp.unn.tech
 * 1.1.6 新增api接口控制器
 
 
-> LiteApp 1.1的运行环境要求PHP7.0+，兼容PHP8.1
+> LiteApp 1.1的运行环境要求PHP7.2+，兼容PHP8
 
 ## 安装
 
@@ -52,7 +52,7 @@ yourApp/
 ├── app                                     #LiteApp命名空间
 │   ├── admin                               #Admin模块基础类
 │   ├── api                                 #Api接口
-│   │   ├── controller                      #接口控制器文件
+│   │   ├── controller                      #接口控制器目录，支持分项多级子目录
 │   │   └── ApiBase.php                     #接口基础类
 │   ├── controller                          #控制器方法目录，支持分项多级子目录
 │   ├── traits
@@ -82,22 +82,28 @@ yourApp/
 ├── vendor                                  #composer目录
 ├── index.php                               #主页
 ├── api.php                                 #接口API方法主入口程序
-├── authorize.php                           #接口API获取sercet示例
+├── authorize.php                           #接口API获取secret示例
 ├── autoload.php                            #autoload载入主程序
 ├── qrcode.php                              #二维码生成程序
 ├── route.php                               #控制器方法主入口路由程序
 ├── composer.json                           #
 └── README.md
 ~~~
-接口Api使用方法
-~~~
-http://{domain}/api.php/sample/test
-采用PATH_INFO规则，第一项为接口控制器名，第二项为方法名
-~~~
+
 ## 文档
 ~~~
 Admin后台入口：http://{domain}/admin/index.php
 用户名：admin 密码：123456
+~~~
+接口Api使用方法
+~~~
+http://{domain}/api.php/sample/test
+采用PATH_INFO规则RESTful，接口控制器名，支持多级目录，最后一项为方法名
+~~~
+http控制器使用方法
+~~~
+http://{domain}/route.php/sample/test
+采用PATH_INFO规则，控制器名，支持多级目录，最后一项为方法名，方法名后面也可以加后缀 .php|.html (如：test.html)，不影响路由规则
 ~~~
 
 [完全开发手册](#)

@@ -16,9 +16,9 @@ class sample extends Controller
         $title = 'Sample controller';
         $list = [
             'name'=>'Lite',
-            'addr'=>'ShenZhen',
+            'addr'=>'深南大道',
         ];
 
-        $this->view('', compact('title', 'list'));
+        $this->view('', compact('title', 'list'), ['sample']);
     }
 }

@@ -28,30 +28,38 @@
     </div>
 </nav>
 <div style="height: 56px; background: #EEE"></div>
-<div class="container mt-3">
+<div class="container mt-3 alert alert-secondary">
 原码下载地址： <a href="https://github.com/unntech/liteapp">https://github.com/unntech/liteapp</a><br>
 安装方法：composer create-project unntech/liteapp yourApp
 </div>
-<div class="container mt-3">
-    <div class="row">
-    <div class="col">
-        Loop Example<BR>
-    {loop $a $k $v}
-    {$v}<BR>
-    {/loop} 
-    </div>
-<div class="col">
-    Format Number:<br>
-        {number_format($n,2)}
-        </div>
-    <div class="col">
-    <img src='{$qrCodeUrl}'>
-    </div>
-    </div>
-</div>
-
-<div class="container mt-3">
+<div class="container mt-3 alert alert-success">
     Admin后台管理演示：<a href="https://liteapp.unn.tech/admin">https://liteapp.unn.tech/admin</a>
 </div>
+<div class="container mt-3 alert alert-info">
+    接口示例方法：https://liteapp.unn.tech/api.php/sample/test<BR>
+    接口API获取secret示例：https://liteapp.unn.tech/authorize.php<BR>
+    <small class="form-text text-muted">建议用postman等调试工具调试</small>
+</div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col alert alert-secondary">
+            Loop Example<BR>
+            {loop $a $k $v}
+            {$v}<BR>
+            {/loop}
+        </div>
+        <div class="col alert alert-secondary ml-3">
+            Format Number:<br>
+                {number_format($n,2)}
+                </div>
+            <div class="col alert alert-info ml-3 text-center">
+            <img src='{$qrCodeUrl}'>
+            </div>
+    </div>
+</div>
+<div class="container alert alert-primary">
+    控制器方法示例页面：<a href="https://liteapp.unn.tech/route.php/sample/test">https://liteapp.unn.tech/route.php/sample/test</a>
+</div>
+
 <div class="footer"> LiteApp @ UNN.tech v{$version}</div>
 {template 'footer'}

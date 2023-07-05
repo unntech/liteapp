@@ -46,7 +46,10 @@ class LiteApp
         if(empty($this->db)){
             $this->set_db();
         }
-        $SQLC = "INSERT INTO alog (type, log1,log2,log3) VALUES ('{$type}', '" . addslashes( $log1 ) . "','" . addslashes( $log2 ) . "','" . addslashes( $log3 ) . "')";
+        $log1 = empty($log1) ? '' : addslashes( $log1 ) ;
+        $log2 = empty($log2) ? '' : addslashes( $log2 ) ;
+        $log3 = empty($log3) ? '' : addslashes( $log3 ) ;
+        $SQLC = "INSERT INTO alog (type, log1,log2,log3) VALUES ('{$type}', '" . $log1 . "','" . $log2 . "','" . $log3 . "')";
         $this->db->query( $SQLC );
         return $this->db->insert_id();
     }

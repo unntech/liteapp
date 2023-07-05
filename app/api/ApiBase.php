@@ -6,7 +6,7 @@ use LiteApp\app;
 
 class ApiBase extends app
 {
-    protected $GET, $POST;
+    protected $GET;
     protected $postData;
     protected $secret = '';
     protected $rsa;
@@ -27,9 +27,9 @@ class ApiBase extends app
     protected function init_request_data()
     {
         $this->GET = $_GET;
-        $this->POST = $_POST;
         $_str = file_get_contents("php://input");
         $_arr = json_decode($_str, true);
+        $this->secret = DT_KEY;  //生产环境需自定义通讯密钥，根据请求传入的参数更新此secret值
 
         /*  //如果需要安全验证，要求必须有签名才可以请求，也可以公共接口不要求，管理接口要求，那就把这个限制放至ApiAdmin里
         if($_arr === false || !isset($_arr['signType']) || !in_array($_arr['signType'], ['MD5', 'SHA256', 'RSA'])){
@@ -45,8 +45,6 @@ class ApiBase extends app
         }
 
         $this->postData = $_arr ?? [];
-
-        $this->secret = DT_KEY;  //生产环境需自定义通讯密钥，根据请求传入的参数更新此secret值
     }
 
     /**
@@ -182,17 +180,19 @@ class ApiBase extends app
             ksort($head);
             $body = $data['body'];
             ksort($body);
-            $signString = json_encode($head,JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . $data['bodyEncrypted'] . $this->secret;
             switch($data['signType']){
                 case 'MD5':
+                    $signString = json_encode($head,JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . $data['bodyEncrypted'] . $this->secret;
                     $sign = strtoupper(md5($signString));
                     $data['sign'] = $sign;
                     break;
                 case 'SHA256':
+                    $signString = json_encode($head,JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . $data['bodyEncrypted'] . $this->secret;
                     $sign = strtoupper(hash("sha256", $signString));
                     $data['sign'] = $sign;
                     break;
                 case 'RSA':
+                    $signString = json_encode($head,JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . $data['bodyEncrypted'] ;
                     $sign = $this->rsa->sign($signString);
                     $data['sign'] = $sign;
                     break;
@@ -221,21 +221,24 @@ class ApiBase extends app
             ksort($head);
             $body = $data['body'];
             ksort($body);
-            $signString = json_encode($head,JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . $data['bodyEncrypted'] . $this->secret;
+            $data_bodyEncrypted =  $data['bodyEncrypted'] ?? '';
             switch($data['signType']){
                 case 'MD5':
+                    $signString = json_encode($head,JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . $data_bodyEncrypted . $this->secret;
                     $sign = strtoupper(md5($signString));
                     if($dataSign == $sign){
                         $verify = true;
                     }
                     break;
                 case 'SHA256':
+                    $signString = json_encode($head,JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . $data_bodyEncrypted . $this->secret;
                     $sign = strtoupper(hash("sha256", $signString));
                     if($dataSign == $sign){
                         $verify = true;
                     }
                     break;
                 case 'RSA':
+                    $signString = json_encode($head,JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . $data_bodyEncrypted ;
                     $verify = $this->rsa->verifySign($signString, $dataSign);
                     break;
                 default:

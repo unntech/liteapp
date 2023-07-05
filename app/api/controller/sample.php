@@ -15,8 +15,10 @@ class sample extends ApiBase
         $data = [
             'title'=>'This is a testing.',
             'GET'=>$this->GET,
-            'POST' => $this->POST,
             'postData' => $this->postData,
+
+            'signType'=> $this->postData['signType'],
+            'encrypted'=>$this->postData['encrypted'],
         ];
 
         $this->success($data,0, "调用方法：test 成功");

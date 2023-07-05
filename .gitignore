@@ -14,3 +14,5 @@ composer.lock
 
 # config
 config/
+
+**/Thumbs.db

@@ -6,7 +6,7 @@ $req = new LiteApp\api\ApiBase();
 $data = [
     'head'  =>  [
         'app' => 'IOS',
-        'unique_id' => $_SERVER['UNIQUE_ID'],
+        'unique_id' => $_SERVER['UNIQUE_ID'] ?? uniqid(),
         'token' => 'hjdp6DnmCZWgQCSzQ43d1Eo7YhES2VZ5I86OOY/L1nY7kqn7gSGdO4SLMg9HIUppdGEEdVz7HyFB1F3eb600A98DqoqcJQrIEis1DmKLLbKQJCtXbi', //用户登入token
         'timestamp' => $DT_TIME,
     ],
@@ -14,8 +14,8 @@ $data = [
         'order_id'=>123,
         'money'=>1001.23,
     ],
-    'signType'=>'RSA',
-    'encrypted'=>true,
+    'signType'=>'SHA256',
+    'encrypted'=>false,
 ];
 
 $data = $req->request($data);

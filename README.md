@@ -67,11 +67,10 @@ yourApp/
 │   ├── redis.php                           #redis配置文件
 │   ├── session.php                         #Session配置文件
 ├── docs                                    #文档
-│   ├── litephp.sql.gz                      #Admin模块数据库
+│   ├── liteapp.sql.gz                      #Admin模块数据库
 ├── include                                 #通用函数库
 │   ├── common.php                          #全局通用函数
 ├── runtime                                 #运行临时目录，需可写权限
-├── vendor                                  #composer目录
 ├── template                                #视图模板文件
 │   ├── default                             #默认模板目标
 │   │   ├── skin                            #样式css文件目录

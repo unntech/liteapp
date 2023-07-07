@@ -20,31 +20,29 @@ return [
             // 数据库编码默认采用utf8
             'charset'  => 'utf8mb4'
         ],
-
         [
-            'database' => 'sqlsrv',
+            'database'               => 'sqlsrv',
             // 服务器地址
-            'hostname' => '127.0.0.1',
+            'hostname'               => '127.0.0.1',
             // 数据库名
-            'dbname'   => 'db',
+            'dbname'                 => 'db',
             // 用户名
-            'username' => 'user',
+            'username'               => 'user',
             // 密码
-            'password' => 'psw',
+            'password'               => 'psw',
             // 端口
-            'hostport' => 1433,
+            'hostport'               => 1433,
             //连接字符集，默认UTF-8
-            'charset' => 'UTF-8',
+            'charset'                => 'UTF-8',
             //信任SSL证书
-            'TrustServerCertificate'=> false
+            'TrustServerCertificate' => false
         ],
-
         [
             'database' => 'mongodb',
             //服务器连接串
             'uri'      => 'mongodb://user:passwd@127.0.0.1:27017',
             // 数据库名
             'dbname'   => 'test'
-        ]
+        ],
     ]
 ];

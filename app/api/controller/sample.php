@@ -17,8 +17,8 @@ class sample extends ApiBase
             'GET'=>$this->GET,
             'postData' => $this->postData,
 
-            'signType'=> $this->postData['signType'],
-            'encrypted'=>$this->postData['encrypted'],
+            'signType'=> $this->postData['signType'] ?? 'NONE',
+            'encrypted'=>$this->postData['encrypted'] ?? false,
         ];
 
         $this->success($data,0, "调用方法：test 成功");

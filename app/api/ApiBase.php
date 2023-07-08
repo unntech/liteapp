@@ -15,6 +15,7 @@ class ApiBase extends app
 
     public function __construct(){
         parent::__construct();
+        $this->apiLog();
         $this->init_request_data();
     }
 
@@ -22,6 +23,22 @@ class ApiBase extends app
         //方法名$name区分大小写
 
         $this->error(400, "调用方法：{$name} 不存在");
+    }
+
+    /**
+     * Api请求日志记录表，生产环境建议单独记录（如mongodb库）以减少主库压力
+     * @return bool|int
+     */
+    protected function apiLog()
+    {
+        $log = [
+            'url'=> $_SERVER['PHP_SELF'],
+            'params'=> json_encode($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+            'postData'=>file_get_contents("php://input"),
+            'ip'=>$this->DT_IP,
+            'addtime'=>$this->DT_TIME,
+        ];
+        return $this->db->table('api_request_log')->insert($log);
     }
 
     protected function init_request_data()
@@ -209,7 +226,7 @@ class ApiBase extends app
      */
     public function verifySign(array &$data) : bool
     {
-        if(($data['encrypted'] === true || $data['signType'] == 'RSA') && empty($this->rsa)){
+        if((isset($data['encrypted']) || isset($data['signType'])) && ($data['encrypted'] === true || $data['signType'] == 'RSA') && empty($this->rsa)){
             $rsaKey = config('app.rsaKey');
             $this->rsa = new \LitePhp\LiRsa($rsaKey['pub'], $rsaKey['priv'], false, $rsaKey['private_key_bits'] );
             $this->rsa->SetThirdPubKey($rsaKey['thirdPub']);
@@ -247,7 +264,7 @@ class ApiBase extends app
         }else{
             $verify = true;
         }
-        if($data['encrypted'] === true && $verify == true){
+        if(isset($data['encrypted']) && $data['encrypted'] === true && $verify == true){
             $data['body'] = json_decode($this->rsa->decrypt($data['bodyEncrypted']), true);
         }
 

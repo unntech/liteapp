@@ -14,7 +14,7 @@ $loginSuc = $auth->auth();
 if (!$loginSuc) {
     LitePhp\LiHttp::redirect('/admin/index.php');
 }
-$activeMenu = $activeMenu ?? 1;
+$activeMenu = $activeMenu ?? $auth->activeMenuFormScriptName();
 $auth->activeMenu($activeMenu);
 if (!$auth->authNode($activeMenu)) {
     LitePhp\Template::message('无此权限，无法操作！', '错误提示');

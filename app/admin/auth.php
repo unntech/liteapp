@@ -431,6 +431,19 @@ class auth extends app
     }
 
     /**
+     * 通过访问的URL自动获取节点ID
+     * @return int
+     */
+    public function activeMenuFormScriptName(): int
+    {
+        $_nodeCode =  substr($_SERVER['SCRIPT_NAME'], 1);
+        $_i = strrpos($_nodeCode, '.');
+        $_nodeCode = $_i === false ? $_nodeCode : substr($_nodeCode, 0, $_i);
+        $row = $this->db->table($this->tableAdmin . '_node')->fields(['id','pid','node'])->where(['node'=>$_nodeCode])->selectOne();
+        return $row ? $row['id'] : 1;
+    }
+
+    /**
      * 输出错误信息提示
      * @param string $promptMessage
      * @param string|null $msgTitle

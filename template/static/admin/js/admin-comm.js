@@ -17,6 +17,23 @@ function adminCommFunc(token) {
         });
     }
 
+    this.apiPost = function (url, d, successFunc) {
+        let p = {};
+        p['head'] = {"unique_id":this.randString(24),"apiToken":this.token};
+        p['body'] = d;
+        p['signType'] = "NONE";
+        $.ajax({
+            url: url,
+            data: JSON.stringify(p),
+            type: 'POST',
+            processData: false,
+            contentType: 'application/json',
+            success: function (data, status) {
+                successFunc(data, status);
+            }
+        });
+    }
+
     this.formatCurrency = function (num) {
         num = num.toString().replace(/\$|\,/g, '');
         if (isNaN(num))
@@ -32,7 +49,7 @@ function adminCommFunc(token) {
                 + num.substring(num.length - (4 * i + 3));
         return (((sign) ? '' : '-') + num + '.' + cents);
     }
-    
+
     /**
      * Function generates a random string for use in unique IDs, etc
      *

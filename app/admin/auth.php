@@ -407,6 +407,7 @@ class auth extends app
      */
     public function presentation(int $activeMenu): array
     {
+        $maxPresentation =config('admin.presentation');
         $presentation = json_decode(get_cookie('presentation'.$this->user['id']), true);
         if(empty($presentation)){
             $presentation = [];
@@ -418,7 +419,7 @@ class auth extends app
                 'hit'=> $this->DT_TIME,
             ];
         }
-        if(count($presentation) > 12){
+        if(count($presentation) > $maxPresentation){
             foreach ($presentation as $k=>$v){
                 $_hit[$k] = $v['hit'];
             }

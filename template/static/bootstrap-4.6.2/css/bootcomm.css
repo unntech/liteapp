@@ -302,3 +302,9 @@
   text-align: inherit;
   white-space: nowrap;
 }
+
+.spacing-line{border-bottom: #e8edf0 1px solid;}
+.spacing-line-dash{border-bottom: #e8edf0 1px dashed;}
+.spacing-line-dot{border-bottom: #e8edf0 1px dotted;}
+
+.text-ellipsis{text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}

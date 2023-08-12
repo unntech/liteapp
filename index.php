@@ -14,5 +14,5 @@ $n = 123456789.363;
 $Lite->setCookie('KEY','VALUES');
 $c = $Lite->getCookie('KEY');
 
-
+$CSS = ['index'];
 include LitePhp\Template::load('index');

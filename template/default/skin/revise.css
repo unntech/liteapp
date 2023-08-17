@@ -1,0 +1,3 @@
+/* 超小设备（手机，小于 768px） */
+.container{padding-left: 0; padding-right: 0;}
+@media (min-width: 992px) {}

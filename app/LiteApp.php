@@ -42,15 +42,16 @@ class LiteApp
         }
     }
 
-    public function alog($type, $log1='', $log2 = '', $log3 = '' ) {
+    public function alog(string $type, ?string $log1='', ?string $log2 = '', ?string $log3 = '' )
+    {
         if(empty($this->db)){
             $this->set_db();
         }
         $log1 = empty($log1) ? '' : addslashes( $log1 ) ;
         $log2 = empty($log2) ? '' : addslashes( $log2 ) ;
         $log3 = empty($log3) ? '' : addslashes( $log3 ) ;
-        $SQLC = "INSERT INTO alog (type, log1,log2,log3) VALUES ('{$type}', '" . $log1 . "','" . $log2 . "','" . $log3 . "')";
-        $this->db->query( $SQLC );
+        $sql = "INSERT INTO alog (type, log1,log2,log3) VALUES ('{$type}', '" . $log1 . "','" . $log2 . "','" . $log3 . "')";
+        $this->db->query( $sql );
         return $this->db->insert_id();
     }
 

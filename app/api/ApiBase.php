@@ -15,7 +15,6 @@ class ApiBase extends app
 
     public function __construct(){
         parent::__construct();
-        $this->apiLog();
         $this->init_request_data();
     }
 
@@ -41,6 +40,22 @@ class ApiBase extends app
         return $this->db->table('api_request_log')->insert($log);
     }
 
+    protected function initialize()
+    {
+        /*  //如果需要安全验证，要求必须有签名才可以请求，也可以公共接口不要求，管理接口要求，那就把这个限制放至ApiAdmin里
+        if($this->postData == [] || !isset($this->postData['signType']) || !in_array($this->postData['signType'], ['MD5', 'SHA256', 'RSA'])){
+            $this->error(400, '无请求数据或无效 signType！', ['request'=>$this->postData]);
+        }
+        //*/
+
+        if($this->postData){
+            $check = $this->verifySign($this->postData);
+            if($check == false){
+                $this->error(405, '数据验签失败！', ['request'=>$this->postData]);
+            }
+        }
+    }
+
     protected function init_request_data()
     {
         $this->GET = $_GET;
@@ -48,18 +63,6 @@ class ApiBase extends app
         $_arr = json_decode($_str, true);
         $this->secret = DT_KEY;  //生产环境需自定义通讯密钥，根据请求传入的参数更新此secret值
 
-        /*  //如果需要安全验证，要求必须有签名才可以请求，也可以公共接口不要求，管理接口要求，那就把这个限制放至ApiAdmin里
-        if($_arr === false || !isset($_arr['signType']) || !in_array($_arr['signType'], ['MD5', 'SHA256', 'RSA'])){
-            $this->error(400, '无请求数据或无效 signType！', ['request'=>$_arr]);
-        }
-        //*/
-
-        if($_arr){
-            $check = $this->verifySign($_arr);
-            if($check == false){
-                $this->error(405, '数据验签失败！', ['request'=>$_arr]);
-            }
-        }
 
         $this->postData = $_arr ?? [];
     }
@@ -125,6 +128,8 @@ class ApiBase extends app
      */
     final public function run(string $path = '')
     {
+        $this->apiLog();
+        $this->initialize();
         $requestPath = isset($_SERVER['PATH_INFO']) ? explode('/',$_SERVER['PATH_INFO']) : [];
         $pathInfoCount = count($requestPath);
         if($pathInfoCount >= 3){

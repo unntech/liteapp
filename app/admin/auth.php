@@ -431,6 +431,17 @@ class auth extends app
         return $presentation;
     }
 
+    public function removePresentation(int $id): array
+    {
+        $presentation = json_decode(get_cookie('presentation'.$this->user['id']), true);
+        if(empty($presentation)){
+            $presentation = [];
+        }
+        unset($presentation[$id]);
+        set_cookie('presentation'.$this->user['id'], json_encode($presentation));
+        return $presentation;
+    }
+
     /**
      * 通过访问的URL自动获取节点ID
      * @return int

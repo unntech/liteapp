@@ -171,6 +171,25 @@ $.fn.compareDifferentHighlights = function (){
     });
 }
 
+function removePresentation(k){
+    let d = {
+        "id": k,
+        "action": "removePresentation"
+    };
+    adminComm.post('/admin/profile.php', d, function (dataBody, status) {
+        if (status == 'success') {
+            let ret = JSON.parse(dataBody);
+            //console.log(ret);
+            if(ret.errcode == 0) {
+                let data = ret.data;
+                $("#presentation-"+data.id).remove();
+            }else{
+                toastr.warning(ret.errcode + ": "+ret.msg);
+            }
+        }
+    });
+}
+
 function adminConfirmOptStyle(){
     $('#adminActivityContent').append(`
     <div class="modal fade" id="adminConfirmOpt" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="adminConfirmOptLabel" aria-hidden="true">
@@ -228,6 +247,22 @@ function adminPopWraFullsreen(){
         $("#admin-pop-wrapper").removeClass('admin-pop-wrapper-full1');
         $("#admin-pop-wrapper").addClass('admin-pop-wrapper-modal');
     }
+}
+
+function adminLoadingOpen(){
+    $("#admin-pop-background").show();
+    $('#adminActivityContent').append(`
+    <div class="text-center" id="admin-loading">
+        <button class="btn btn-primary btn-lg" type="button" disabled>
+        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+        Loading...
+        </button>
+    </div>
+    `);
+}
+function adminLoadingClose(){
+    $('#admin-pop-background').hide();
+    $("#admin-loading").hide().remove();
 }
 
 function treeviewopen(id){

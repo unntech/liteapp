@@ -4,7 +4,8 @@
         <div class="navtoolbar-main">
         <a class="float-left" href="javascript:navigatorSiderToggle()"><i class="bi bi-distribute-vertical"></i></a>
         {loop $presentation $k $v}
-        <a class="{if $k == $activeMenu}presentation-active{else}presentation{/if} float-left" href="{$v[href]}">{if $k == $activeMenu}<i class="bi bi-record-fill text-primary"></i> {/if}{$v[title]}</a>
+        <a class="{if $k == $activeMenu}presentation-active{else}presentation{/if} float-left" href="{$v[href]}" id="presentation-{$k}">{if $k == $activeMenu}<i class="bi bi-record-fill text-primary"></i> {/if}{$v[title]}</a>
+            <i class="bi bi-x-circle-fill remove-presentation float-left text-secondary" onclick="removePresentation({$k});"></i>
         {/loop}
         </div>
         <div class="navbar-custom-menu">

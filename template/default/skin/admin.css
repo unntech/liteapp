@@ -151,6 +151,16 @@ body{
     background: #e2e3e5;
 }
 
+.remove-presentation{
+    cursor: pointer;
+    position: absolute;
+    margin-left: -14px;
+    margin-top: -2px;
+    font-size: 0;
+}
+.presentation:hover + .remove-presentation{
+    font-size: 16px;
+}
 
 .main-header .navtoolbar .navbar-custom-menu {
     float: right;
@@ -323,4 +333,11 @@ body{
     width: 28px;
     height: 28px;
     border-radius: 50%;
+}
+
+#admin-loading{
+    position: fixed;
+    top:30vh;
+    width: 100%;
+    z-index: 2048;
 }

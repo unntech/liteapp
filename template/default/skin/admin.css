@@ -154,7 +154,7 @@ body{
 .remove-presentation{
     cursor: pointer;
     position: absolute;
-    margin-left: -14px;
+    margin-left: -18px;
     margin-top: -2px;
     font-size: 0;
 }

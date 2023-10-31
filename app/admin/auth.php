@@ -249,10 +249,10 @@ class auth extends app
 
         //获取菜单权限
         if ($user['admin'] == 1) {
-            $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1])->order('sort')->select(true);
+            $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1])->order('pid, sort')->select(true);
         } else {
             $authIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
-            $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1, 'id' => ['IN', explode(',', $authIds)]])->order('sort')->select(true);
+            $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1, 'id' => ['IN', explode(',', $authIds)]])->order('pid, sort')->select(true);
         }
         $node = [];
         while ($r = $res->fetch_assoc()) {

@@ -154,9 +154,12 @@ body{
 .remove-presentation{
     cursor: pointer;
     position: absolute;
-    margin-left: -18px;
+    margin-left: -12px;
     margin-top: -2px;
     font-size: 0;
+}
+.remove-presentation:hover{
+    font-size: 16px;
 }
 .presentation:hover + .remove-presentation{
     font-size: 16px;

@@ -95,9 +95,10 @@ class LiteApp
      * 输出分页HTML
      * @param int $count
      * @param int $pagenum
+     * @param string $pageKey
      * @return string
      */
-    public function pagination(int $count, int $pagenum = 0): string
+    public function pagination(int $count, int $pagenum = 0, string $pageKey = 'page'): string
     {
         if($pagenum <= 0){
             $pagenum = $this->config->get('admin.pageNum');
@@ -105,19 +106,19 @@ class LiteApp
         if($pagenum <= 0) $pagenum = 1;
         if(empty($count)) $count = 0;
         $p = ceil($count / $pagenum);
-        //if($p ==1) return '';
+        //if($p ==1) return '';   //只有一页时，不显示分页条
         $a = '';
         foreach($_GET as $k=>$v){
-            if($k !='page' ) $a.='&'.$k.'='.$v;
+            if($k != $pageKey ) $a.='&'.$k.'='.$v;
         }
-        $curPage = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $curPage = isset($_GET[$pageKey]) ? intval($_GET[$pageKey]) : 1;
         if($curPage < 1) $curPage = 1;
         $ret = '<nav aria-label="Page navigation admin"><ul class="pagination pagination-sm"><li class="page-item';
         if($curPage == 1){
             $ret .= ' disabled';
         }
         $prePage = $curPage - 1;
-        $ret .= '"><a class="page-link" href="?page='.$prePage.$a.'">Previous</a></li>';
+        $ret .= '"><a class="page-link" href="?'.$pageKey.'='.$prePage.$a.'">Previous</a></li>';
         if($curPage > 10){ $bi = $curPage - 9; $pi = $bi + 30;}
         else{$bi = 1; $pi = 30;}
         if($pi > $p){ $pi = $p;}
@@ -125,7 +126,7 @@ class LiteApp
             if($curPage == $i){
                 $ret .='<li class="page-item active" aria-current="page"><span class="page-link">'.$i.'</span></li>';
             }else{
-                $ret .= '<li class="page-item"><a class="page-link" href="?page='.$i.$a.'">'.$i.'</a></li>';
+                $ret .= '<li class="page-item"><a class="page-link" href="?'.$pageKey.'='.$i.$a.'">'.$i.'</a></li>';
             }
         }
         $ret .= '<li class="page-item';
@@ -133,7 +134,7 @@ class LiteApp
             $ret .= ' disabled';
         }
         $nextPage = $curPage + 1;
-        $ret .= '"><a class="page-link" href="?page='.$nextPage.$a.'">Next</a></li><li class="page-item"><span class="page-link">共'.$count.'条记录</span></li></ul></nav>';
+        $ret .= '"><a class="page-link" href="?'.$pageKey.'='.$nextPage.$a.'">Next</a></li><li class="page-item"><span class="page-link">共'.$count.'条记录</span></li></ul></nav>';
         return $ret;
     }
 }

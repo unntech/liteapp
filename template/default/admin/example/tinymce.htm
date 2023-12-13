@@ -1,0 +1,40 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<script type="text/javascript" src="https://apis.zhisg.com/editor/tinymce/tinymce.min.js"></script>
+<style>
+
+</style>
+<script>
+    $(document).ready(function (){
+        tinymce.init({
+            selector: '#tiny',
+            plugins: [ 'quickbars' ],
+            language:'zh-Hans',
+            //skin: 'oxide-dark',
+        });
+    });
+
+</script>
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>tinyMCE示例</b><BR>
+        https://www.tiny.cloud/docs/tinymce/6/bootstrap-zip<BR>
+        http://tinymce.ax-z.cn
+        <div class="b15"></div>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+
+
+            <div>
+                <textarea id="tiny"></textarea>
+            </div>
+            <div class="b30"></div>
+
+
+
+        </div>
+    </div>
+</div>
+
+{template 'footer','admin'}

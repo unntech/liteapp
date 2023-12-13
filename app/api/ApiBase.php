@@ -3,6 +3,8 @@
 namespace LiteApp\api;
 
 use LiteApp\app;
+use LitePhp\Redis;
+use LitePhp\LiRsa;
 
 class ApiBase extends app
 {
@@ -61,7 +63,12 @@ class ApiBase extends app
         $this->GET = $_GET;
         $_str = file_get_contents("php://input");
         $_arr = json_decode($_str, true);
-        $this->secret = DT_KEY;  //生产环境需自定义通讯密钥，根据请求传入的参数更新此secret值
+        if(empty($_arr['head']['uuid'])){
+            $this->secret = DT_KEY;  //生产环境需自定义通讯密钥，根据请求传入的参数更新此secret值
+        }else{
+            self::$Lite->set_redis();
+            $this->secret = Redis::get('uuid:'.$_arr['head']['uuid']);
+        }
 
 
         $this->postData = $_arr ?? [];
@@ -182,7 +189,7 @@ class ApiBase extends app
     {
         if(($data['encrypted'] === true || $data['signType'] == 'RSA') && empty($this->rsa)){
             $rsaKey = config('app.rsaKey');
-            $this->rsa = new \LitePhp\LiRsa($rsaKey['pub'], $rsaKey['priv'], false, $rsaKey['private_key_bits'] );
+            $this->rsa = new LiRsa($rsaKey['pub'], $rsaKey['priv'], false, $rsaKey['private_key_bits'] );
             $this->rsa->SetThirdPubKey($rsaKey['thirdPub']);
         }
         if($data['encrypted'] === true){
@@ -233,7 +240,7 @@ class ApiBase extends app
     {
         if((isset($data['encrypted']) || isset($data['signType'])) && ($data['encrypted'] === true || $data['signType'] == 'RSA') && empty($this->rsa)){
             $rsaKey = config('app.rsaKey');
-            $this->rsa = new \LitePhp\LiRsa($rsaKey['pub'], $rsaKey['priv'], false, $rsaKey['private_key_bits'] );
+            $this->rsa = new LiRsa($rsaKey['pub'], $rsaKey['priv'], false, $rsaKey['private_key_bits'] );
             $this->rsa->SetThirdPubKey($rsaKey['thirdPub']);
         }
         $dataSign = $data['sign'] ?? 'NONE';
@@ -274,6 +281,16 @@ class ApiBase extends app
         }
 
         return $verify;
+    }
+
+    public function bodyDecrypt($data): array
+    {
+        if(empty($this->rsa)){
+            $rsaKey = config('app.rsaKey');
+            $this->rsa = new LiRsa($rsaKey['pub'], $rsaKey['priv'], false, $rsaKey['private_key_bits'] );
+            $this->rsa->SetThirdPubKey($rsaKey['thirdPub']);
+        }
+        return json_decode($this->rsa->decrypt($data), true);
     }
 
 }

@@ -20,6 +20,7 @@ class ApiAdmin extends ApiBase
             $this->error(400, '无请求数据或无效 signType！', ['request'=>$this->postData]);
         }
         //*/
+        parent::initialize();
 
         //验证接口权限等初始化过程
         $this->uid = 10001;

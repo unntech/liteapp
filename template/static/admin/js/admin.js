@@ -52,7 +52,7 @@ $(document).ready(function() {
         //console.log(event);
         adminConfirmOptStyle();
         if(event.target.dataset.yes){
-            $(this).removeAttr('data-yes');
+            //$(this).removeAttr('data-yes');
         }else{
             event.preventDefault();
             $("#adminConfirmOpt").modal('show');

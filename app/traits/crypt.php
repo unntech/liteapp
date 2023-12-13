@@ -2,24 +2,49 @@
 
 namespace LiteApp\traits;
 
-trait crypt{
+use LitePhp\LiCrypt;
+
+trait crypt
+{
+    /**
+     * @var LiCrypt
+     */
     protected $trait_jwt;
-    public function construct() {
-        $this->trait_jwt = new \LitePhp\LiCrypt(DT_KEY);
-    }
-    public function getToken($arr) {
-        if(empty($this->trait_jwt)){
-            $this->construct();
-        }
-        $token = $this->trait_jwt -> getToken($arr);
-        return $token;
+
+    public function construct()
+    {
+        $this->trait_jwt = new LiCrypt(DT_KEY);
     }
 
-    public function verifyToken($token){
-        if(empty($this->trait_jwt)){
+    public function getToken(array $jwt, bool $needSign = false)
+    {
+        if (empty($this->trait_jwt)) {
             $this->construct();
         }
-        $jwt = $this->trait_jwt -> verifyToken($token);
-        return $jwt;
+        return $this->trait_jwt->getToken($jwt, $needSign);
+    }
+
+    public function verifyToken(string $Token, bool $needSign = false)
+    {
+        if (empty($this->trait_jwt)) {
+            $this->construct();
+        }
+        return $this->trait_jwt->verifyToken($Token, $needSign);
+    }
+
+    public function jencrypt($arr, $key = '', $iv = '')
+    {
+        if (empty($this->trait_jwt)) {
+            $this->construct();
+        }
+        return $this->trait_jwt->jencrypt($arr, $key, $iv);
+    }
+
+    public function jdecrypt($ciphertext, $key = '', $iv = '')
+    {
+        if (empty($this->trait_jwt)) {
+            $this->construct();
+        }
+        return $this->trait_jwt->jdecrypt($ciphertext, $key, $iv);
     }
 }

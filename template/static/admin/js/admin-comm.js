@@ -17,6 +17,17 @@ function adminCommFunc(token) {
         });
     }
 
+    this.awaitPost = function (url, d) {
+        d['token'] = this.token;
+        return $.ajax({
+            url: url,
+            data: JSON.stringify(d),
+            type: 'POST',
+            async: false,
+            contentType: 'application/json'
+        });
+    }
+
     this.apiPost = function (url, d, successFunc) {
         let p = {};
         p['head'] = {"unique_id":this.randString(24),"apiToken":this.token};

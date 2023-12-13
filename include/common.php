@@ -106,9 +106,9 @@ function config(string $name = null, $default = null){
     return $r;
 }
 
-function pagination(int $count, int $pagenum = 0): string
+function pagination(int $count, int $pagenum = 0, string $pageKey = 'page'): string
 {
-    return \LiteApp\app::$Lite->pagination($count, $pagenum);
+    return \LiteApp\app::$Lite->pagination($count, $pagenum, $pageKey);
 }
 
 if (!function_exists('array_key_first')) {

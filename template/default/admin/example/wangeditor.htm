@@ -1,0 +1,153 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<link href="https://apis.zhisg.com/editor/wangeditor/editor/dist/css/style.css" rel="stylesheet">
+<style>
+    #editor—wrapper {
+        border: 1px solid #ccc;
+        z-index: 100; /* 按需定义 */
+    }
+    #toolbar-container { border-bottom: 1px solid #ccc; }
+    #editor-container { height: 680px; }
+</style>
+<script>
+    $(document).ready(function (){
+
+        initContent();
+    });
+
+    function initContent(){
+        editor.setHtml($("#article-content-origin").val());
+    }
+
+</script>
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>wangEditor示例</b><BR>
+        https://www.wangeditor.com/v5/getting-started.html
+        <div class="b15"></div>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+
+
+            <div>
+                <div id="editor—wrapper">
+                    <div id="toolbar-container"><!-- 工具栏 --></div>
+                    <div id="editor-container"><!-- 编辑器 --></div>
+                </div>
+            </div>
+            <div class="d-none">
+                <textarea id="article-content" name="content" style="font-family: Arial,sans-serif , PuHuiTi;"></textarea>
+                <textarea id="article-content-origin"></textarea>
+            </div>
+            <div class="b30"></div>
+
+
+
+        </div>
+    </div>
+</div>
+<script src="https://apis.zhisg.com/editor/wangeditor/editor/dist/index.js"></script>
+<script>
+    const { createEditor, createToolbar } = window.wangEditor
+
+    const editorConfig = {
+        placeholder: 'Type here...',
+        MENU_CONF: {},
+        onChange(editor) {
+            const html = editor.getHtml()
+            console.log('editor content', html)
+            // 也可以同步到 <textarea>
+            //$("#article-content").val(html);
+            document.getElementById("article-content").value = html;
+        }
+    }
+
+    // 修改 uploadImage 菜单配置
+    editorConfig.MENU_CONF['uploadImage'] = {
+        server: '/api.php/wangeditor/uploadImage',
+        fieldName: 'upload',
+        // 最多可上传几个文件，默认为 100
+        maxNumberOfFiles: 10,
+        // 自定义上传参数，例如传递验证的 token 等。参数会被添加到 formData 中，一起上传到服务端。
+        meta: {
+            token: '{$apiToken}',
+            cls: 'Example'
+        },
+        // 超时时间，默认为 10 秒
+        timeout: 60 * 1000, // 5 秒
+        // 小于该值就插入 base64 格式（而不上传），默认为 0
+        base64LimitSize: 10 * 1024, // 10kb
+
+        // 单个文件上传成功之后
+        onSuccess(file, res) {          // JS 语法
+            console.log(`${file.name} 上传成功`, res)
+        },
+
+        // 单个文件上传失败
+        onFailed(file, res) {           // JS 语法
+            console.log(`${file.name} 上传失败`, res)
+            toastr.warning(file.name + '上传失败：' + res.message)
+        },
+
+        // 上传错误，或者触发 timeout 超时
+        onError(file, err, res) {               // JS 语法
+            console.log(`${file.name} 上传出错`, err, res)
+            toastr.warning(file.name + '上传出错：' + err)
+        },
+        //【注意】不需要修改的不用写，wangEditor 会去 merge 当前其他配置
+    }
+    editorConfig.MENU_CONF['uploadVideo'] = {
+        server: '/api.php/wangeditor/uploadVideo',
+        // form-data fieldName ，默认值 'wangeditor-uploaded-video'
+        fieldName: 'upload',
+
+        // 单个文件的最大体积限制，默认为 10M
+        maxFileSize: 100 * 1024 * 1024, // 5M
+
+        // 最多可上传几个文件，默认为 5
+        maxNumberOfFiles: 5,
+
+
+        // 自定义上传参数，例如传递验证的 token 等。参数会被添加到 formData 中，一起上传到服务端。
+        meta: {
+            token: '{$apiToken}',
+            cls: 'Example'
+        },
+
+        // 超时时间，默认为 30 秒
+        timeout: 60 * 1000, // 15 秒
+
+
+        // 单个文件上传失败
+        onFailed(file, res) {          // JS 语法
+            console.log(`${file.name} 上传失败`, res)
+            toastr.warning(file.name + '上传失败：' + res.message)
+        },
+
+        // 上传错误，或者触发 timeout 超时
+        onError(file, err, res) {               // JS 语法
+            console.log(`${file.name} 上传出错`, err, res)
+            toastr.warning(file.name + '上传出错：' + err)
+        },
+    }
+
+    const editor = createEditor({
+        selector: '#editor-container',
+        html: '',
+        config: editorConfig,
+        mode: 'default', // or 'simple'
+    })
+
+    const toolbarConfig = {}
+    toolbarConfig.excludeKeys = ['fullScreen'];
+
+    const toolbar = createToolbar({
+        editor,
+        selector: '#toolbar-container',
+        config: toolbarConfig,
+        mode: 'default', // or 'simple'
+    })
+</script>
+
+{template 'footer','admin'}

@@ -8,7 +8,7 @@
     <link href="{DT_STATIC}/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="{DT_STATIC}/bootstrap/icon/bootstrap-icons.min.css" rel="stylesheet">
     <link href="{DT_STATIC}/bootstrap/css/bootcomm.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{DT_SKIN}/common.css?v={$version}"/>
+<link rel="stylesheet" type="text/css" href="{DT_SKIN}/base.css?v={$version}"/>
 {if isset($CSS) && is_array($CSS)}
 {loop $CSS $css}
 <link rel="stylesheet" type="text/css" href="{DT_SKIN}/{$css}.css?v={if ENVIRONMENT == 'DEV'}{$DT_TIME}{else}{$version}{/if}"/>

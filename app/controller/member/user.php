@@ -2,7 +2,9 @@
 
 namespace LiteApp\controller\member;
 
-class user extends \LiteApp\Controller
+use LiteApp\Controller;
+
+class user extends Controller
 {
     public function __construct(){
         parent::__construct();

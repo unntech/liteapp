@@ -71,6 +71,23 @@ class Admin extends Controller
         $this->appName = self::$Lite->appName;
         $this->curUser = $this->auth->curUser();
         $this->curUserId = $this->auth->curUserId();
+        if (!empty($this->postData)) {
+            $_jwt = $this->verifyToken($this->postData['token']);
+            if ($_jwt === false) {
+                $this->error(2, 'TOKEN无效！');
+            }
+            if ($_jwt['sub'] != $this->curUserId) {
+                $this->error(4, '非当前登入用户！');
+            }
+            if (isset($this->postData['node'])) {
+                if(!is_numeric($this->postData['node'])){
+                    $this->error(1, '无效权限，无法操作！', $this->postData);
+                }
+                if (!$this->auth->authNode($this->postData['node'])) {
+                    $this->error(1, '无此权限，无法操作！');
+                }
+            }
+        }
     }
 
     /**

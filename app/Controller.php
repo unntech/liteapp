@@ -5,7 +5,7 @@ use LitePhp\Template;
 
 class Controller extends app
 {
-    protected $GET, $POST;
+    protected $GET, $POST, $postData;
     protected $title;
     protected $functionName = '', $className = '';
 
@@ -27,6 +27,8 @@ class Controller extends app
     {
         $this->GET = $_GET;
         $this->POST = $_POST;
+        $postStr = file_get_contents("php://input");
+        $this->postData = empty($postStr) ? [] : json_decode($postStr, true);
     }
 
     /**
@@ -117,6 +119,38 @@ class Controller extends app
         }
 
         include Template::load($_filename, $_dir);
+    }
+
+    public function message(string $promptMessage, ?string $msgTitle = '')
+    {
+        Template::message($promptMessage, $msgTitle);
+    }
+
+    public function response(array $ret)
+    {
+        header("Access-Control-Allow-Origin: *");
+        echo json_encode($ret);
+        exit(0);
+    }
+
+    public function success(array $data, $errcode = 0, $msg = 'success')
+    {
+        $ret = [
+            'errcode' => $errcode,
+            'msg'     => $msg,
+            'data'    => $data,
+        ];
+        $this->response($ret);
+    }
+
+    public function error($errcode = 0, $msg = 'fail', $data = ['sign'=>''])
+    {
+        $ret = [
+            'errcode' => $errcode,
+            'msg'     => $msg,
+            'data'    => $data,
+        ];
+        $this->response($ret);
     }
 
     protected function setCurFuncName(string $func)

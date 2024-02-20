@@ -79,6 +79,11 @@ $(document).ready(function() {
         $("#adminActivityContent #adminConfirmOpt").remove();
     });
 
+    $("[data-toggle|='previewImage']").click(function (){
+        let img = $(this).attr('src');
+        adminPreviewImage(img);
+    });
+
     $("[data-toggle|='adminPopForm']").click(function (){
         //toastr.info($(this).attr('data-target'));
         let srcdivid = $(this).attr('data-target');
@@ -249,6 +254,25 @@ function adminPopWraFullsreen(){
     }
 }
 
+function adminPreviewImage(img){
+    let ntop = getScrollTop();
+    $("#admin-pop-background").show();
+    $('#adminActivityContent').append(`
+    <div id="admin-preview-image">
+    <i class="bi bi-x-circle-fill pi-close" onclick="closePreviewImage();"></i>
+        <div class="image"><img src="${img}" alt=""></div>
+    </div>
+    `);
+    $("#admin-preview-image").css("top", ntop + 'px');
+    $("body").css('overflow', 'auto');
+}
+
+function closePreviewImage(){
+    $('#admin-pop-background').hide();
+    $("#admin-preview-image").hide().remove();
+    $("body").css('overflow', '');
+}
+
 function adminLoadingOpen(){
     $("#admin-pop-background").show();
     $('#adminActivityContent').append(`
@@ -268,6 +292,17 @@ function adminLoadingClose(){
 function treeviewopen(id){
     //$(".sidebar-menu-sub").hide();
     $("#sidebar-submenu-"+id).toggle();
+}
+
+//获取当前滚动条的位置
+function getScrollTop(){
+    var scrollTop=0
+    if(document.documentElement && document.documentElement.scrollTop){
+        scrollTop = document.documentElement.scrollTop
+    }else if(document.body){
+        scrollTop = document.body.scrollTop
+    }
+    return scrollTop
 }
 
 function ajaxviewopen(id){

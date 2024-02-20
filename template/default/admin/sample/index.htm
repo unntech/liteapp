@@ -1,0 +1,53 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<script>
+    $(document).ready(function (){
+        $("#ajax-sample").click(function (){
+            let d = {
+                "rowid": 123,
+                "action": "TEST"
+            };
+            adminComm.post('api', d, function (dataBody, status) {
+                if (status == 'success') {
+                    let ret = JSON.parse(dataBody);
+                    console.log(ret);
+                    if(ret.errcode == 0) {
+                        $("#ajax-result").html(dataBody);
+                    }else{
+                        toastr.warning(ret.errcode + ": "+ret.msg);
+                    }
+                }
+            });
+        });
+    });
+</script>
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>控制器示例</b><BR>
+        MVVC代码写法示例
+        <div class="b15"></div>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+            <a href="?{$_SERVER['QUERY_STRING']}" title="刷新" data-toggle="tooltip" data-placement="bottom" class="btn btn-secondary"><i class="bi bi-arrow-repeat"></i></a>
+            控制器视图<BR>
+            {if $auth->authNode(10)}
+            <BR>
+            此数据，有对应权限的才显示
+            {/if}
+            <BR><BR>
+            <button type="button" class="btn btn-primary" id="ajax-sample">本控制器接口调用示例</button>
+            <div id="ajax-result"></div>
+            <BR>
+            Loop Example<BR>
+            {loop $list $k $v}
+            {$v}<BR>
+            {/loop}
+            <BR>
+            {pagination($pageTotal)}
+        </div>
+    </div>
+</div>
+
+
+{template 'footer','admin'}

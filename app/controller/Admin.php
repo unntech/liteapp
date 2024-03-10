@@ -17,12 +17,20 @@ class Admin extends Controller
     protected $auth;
     protected $appName, $curUser, $curUserId;
     protected $activeMenu=0, $currentAuthNode =0;
+    protected $pageStart, $pageNum, $page;
 
     use \LiteApp\traits\crypt;
 
     public function __construct(){
         parent::__construct();
         $this->auth();
+        $this->pageNum = config('admin.pageNum');
+        $_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        if ($_page < 1) {
+            $_page = 1;
+        }
+        $this->page = $_page;
+        $this->pageStart = ($_page - 1) * $this->pageNum;
     }
 
     public function view(string $template = '', array $vars = [], array $CSS = [])
@@ -30,17 +38,14 @@ class Admin extends Controller
         if ($this->title == $this->appName){
             $this->title = $this->appName . '-' . $this->auth->nodeName($this->activeMenu);
         }
-        $vars['pageNum'] = config('admin.pageNum');
+        $vars['pageNum'] = $this->pageNum;
         $vars['navigationConfig'] = $this->curUser['params']['navigation'] ?? config('admin.navigation');
 
         if (\LitePhp\LiComm::is_mobile()) {
             $vars['navigationConfig'] = 'top';
         }
-        $vars['page'] = isset($_GET['page']) ? intval($_GET['page']) : 1;
-        if ($vars['page'] < 1) {
-            $vars['page'] = 1;
-        }
-        $vars['pageStart'] = ($vars['page'] - 1) * $vars['pageNum'];
+        $vars['page'] = $this->page;
+        $vars['pageStart'] = $this->pageStart;
         $jwt = ['sub' => $this->curUserId, 'node' => $this->activeMenu, 'exp' => time() + 18000];
         $vars['apiToken'] = $this->getToken($jwt);
         $vars['presentation'] = $this->auth->presentation($this->activeMenu);

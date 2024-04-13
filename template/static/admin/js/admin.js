@@ -21,64 +21,6 @@ $(document).ready(function() {
         });
     });
 
-    $("form").submit(function(event){
-        checkSubmitFlag++;
-        if(checkSubmitFlag > 1){
-            event.preventDefault();
-            toastr.info('请勿重复提交，请稍等一会儿~');
-        }else if(checkSubmitFlag === 1){
-            setTimeout(function (){
-                checkSubmitFlag = 0;
-            }, 5000);
-        }
-    });
-
-    $("[data-click|='once']").click(function (event){
-        $(this).attr('disabled', true);
-    });
-
-    $("[data-click|='repeat']").click(function (event){
-        checkRepeatFlag++;
-        if(checkRepeatFlag > 1){
-            event.preventDefault();
-            toastr.info('请勿重复点击，稍等一会儿~');
-        }else if(checkRepeatFlag === 1){
-            setTimeout(function (){
-                checkRepeatFlag = 0;
-            }, 3000);
-        }
-    });
-    $("[data-toggle|='adminConfirm']").click(function (event){
-        //console.log(event);
-        adminConfirmOptStyle();
-        if(event.target.dataset.yes){
-            //$(this).removeAttr('data-yes');
-        }else{
-            event.preventDefault();
-            $("#adminConfirmOpt").modal('show');
-            $("#adminConfirmOptLabel").html(event.target.attributes.title.value)
-            $("#adminConfirmOpt .modal-body").html(event.target.dataset.msg);
-            $("#adminConfirmOptYes").attr("data-nodename", event.target.nodeName);
-            $("#adminConfirmOptYes").attr("data-targetid", '#'+event.target.id);
-        }
-    });
-
-    $("#adminActivityContent").on('click', '#adminConfirmOptYes', function (event){
-        //console.log(event);
-        if(event.target.dataset.nodename == 'A'){
-            window.location.href = $(event.target.dataset.targetid).attr('href');
-        }else{
-            $(event.target.dataset.targetid).attr('data-yes', true);
-            $(event.target.dataset.targetid).click();
-        }
-        $("#adminConfirmOpt").modal('hide');
-    });
-
-    $('#adminActivityContent').on('hidden.bs.modal', '#adminConfirmOpt', function (event) {
-        //console.log('hidden');
-        $("#adminActivityContent #adminConfirmOpt").remove();
-    });
-
     $("[data-toggle|='previewImage']").click(function (){
         let img = $(this).attr('src');
         adminPreviewImage(img);
@@ -195,30 +137,6 @@ function removePresentation(k){
     });
 }
 
-function adminConfirmOptStyle(){
-    $('#adminActivityContent').append(`
-    <div class="modal fade" id="adminConfirmOpt" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="adminConfirmOptLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="adminConfirmOptLabel">操作提示</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-danger" id="adminConfirmOptYes">确定</button>
-            </div>
-        </div>
-    </div>
-    </div>
-    `);
-}
-
 function adminPopWrapper(){
     $('#adminActivityContent').append(`
     <div class="admin-pop-wrapper admin-pop-wrapper-modal" id="admin-pop-wrapper">
@@ -259,8 +177,9 @@ function adminPreviewImage(img){
     $("#admin-pop-background").show();
     $('#adminActivityContent').append(`
     <div id="admin-preview-image">
-    <i class="bi bi-x-circle-fill pi-close" onclick="closePreviewImage();"></i>
-        <div class="image"><img src="${img}" alt=""></div>
+        <i class="bi bi-x-circle-fill pi-close" onclick="closePreviewImage();"></i>
+        <i class="bi bi-arrow-clockwise pi-close" onclick="rotatePreviewImage();"></i>
+        <div class="image"><img src="${img}" alt="" data-rotate="0"></div>
     </div>
     `);
     $("#admin-preview-image").css("top", ntop + 'px');
@@ -271,6 +190,14 @@ function closePreviewImage(){
     $('#admin-pop-background').hide();
     $("#admin-preview-image").hide().remove();
     $("body").css('overflow', '');
+}
+
+function rotatePreviewImage(){
+    let img = $("#admin-preview-image img");
+    let rd = Number(img[0].dataset.rotate);
+    rd += 90;
+    img.css('transform','rotate('+ rd + 'deg)');
+    img.attr('data-rotate', rd);
 }
 
 function adminLoadingOpen(){

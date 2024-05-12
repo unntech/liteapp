@@ -220,7 +220,20 @@ body{
     padding-right: 20px;
 }
 
-.listcol-ellipsis-w200{max-width: 200px; text-overflow: ellipsis; white-space: nowrap; text-align: left; overflow: hidden;}
+.listcol-ellipsis, .listcol-ellipsis-w200, .listcol-ellipsis-w300 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    overflow: hidden;
+}
+
+.listcol-ellipsis-w200{
+    max-width: 200px;
+}
+
+.listcol-ellipsis-w300{
+    max-width: 300px;
+}
 
 .admin-switch-wrap input[type=checkbox]{
     height: 0px;

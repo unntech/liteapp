@@ -101,11 +101,50 @@ class Admin extends Controller
      */
     protected function author()
     {
+        $this->auth->activeMenu($this->activeMenu);
         if (!$this->auth->authNode($this->activeMenu)) {
             Template::message('无此权限，无法操作！', '错误提示');
         }
         if (isset($this->currentAuthNode) && !$this->auth->authNode($this->currentAuthNode)) {
             Template::message('无此权限，无法操作！！', '错误提示');
         }
+    }
+
+    protected function authorApiNode($node)
+    {
+        if(is_array($node)){
+            $d = array_intersect($node, array_keys($this->auth->node));
+            if(empty($d)){
+                $this->error(1, '无效权限，无法操作！', $this->postData);
+            }
+        }else{
+            if(!$this->auth->authNode($node)){
+                $this->error(1, '无效权限，无法操作！', $this->postData);
+            }
+        }
+    }
+
+    protected function adminMessage(string $promptMessage, string $msgTitle = null, array $param = [])
+    {
+        if ($this->title == $this->appName){
+            $this->title = $this->appName . '-' . $this->auth->nodeName($this->activeMenu);
+        }
+        $vars['navigationConfig'] = $this->curUser['params']['navigation'] ?? config('admin.navigation');
+
+        if (\LitePhp\LiComm::is_mobile()) {
+            $vars['navigationConfig'] = 'top';
+        }
+        $jwt = ['sub' => $this->curUserId, 'node' => $this->activeMenu, 'exp' => time() + 18000];
+        $vars['apiToken'] = $this->getToken($jwt);
+        $vars['presentation'] = $this->auth->presentation($this->activeMenu);
+        $vars['navigatorSiderFlag'] = $_COOKIE['navigatorSiderFlag'] ?? 0;
+        $vars['auth'] = $this->auth;
+        $vars['activeMenu'] = $this->activeMenu;
+        $vars['curUser'] = $this->curUser;
+        $vars['appName'] = $this->appName;
+        $vars['promptMessage'] = $promptMessage;
+        $vars['msgTitle'] = $msgTitle;
+        parent::view("admin/message", $vars);
+        exit(0);
     }
 }

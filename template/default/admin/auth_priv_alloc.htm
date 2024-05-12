@@ -1,0 +1,68 @@
+{template 'header','admin'}
+{template 'navigation','admin'}
+<script>
+    listTreeArr = {json_encode($listTreeArr)};
+    $(document).ready(function(){
+
+        $("#rulesform :checkbox").click(function (){
+            unionCheckbox($(this).attr('value'), $(this).is(':checked'));
+        });
+
+    });
+
+    function unionCheckbox(sid, stat){
+        if(stat){
+            $.each(listTreeArr[sid]['c'], function (index, value){
+                $("#allocCheck"+value).prop('checked', true);
+            });
+            $.each(listTreeArr[sid]['p'], function (index, value){
+                $("#allocCheck"+value).prop('checked', true);
+            });
+        }else{
+            $.each(listTreeArr[sid]['c'], function (index, value){
+                $("#allocCheck"+value).prop('checked', false);
+            });
+        }
+    }
+
+    $(function () {
+        {if isset($_POST['savebtn'])}
+        toastr.success('保存成功！','');
+        {/if}
+    })
+</script>
+<div class="admin-content-wrapper">
+    <div class="admin-content-heading">
+        <b>私有权限分配 - {$user[nickname]}</b><BR>
+        勾选对应的权限，保存即可。
+        <div class="b15"></div>
+    </div>
+    <div class="admin-content-body">
+        <div class="container-fluid">
+            <form method="post" id="rulesform">
+            <table class="table table-bordered table-striped text-center form-group">
+                <tbody>
+                {loop $ruleList $k $v}
+                <tr>
+                    <td>{$v[id]}</td>
+                    <td><input class="form-check-input" type="checkbox" name="rulesCheck[]" value="{$v[id]}" id="allocCheck{$v[id]}" {if $v[check]} checked {/if} ></td>
+                    <td align="left">{$v[title]}</td>
+                    <td align="left">{$v[node]}</td>
+                    <td>{if !empty($v['icon'])}<i class="{$v[icon]}" title="{$v[icon]}"></i>{/if}</td>
+                    <td>{$menuNode[$v[is_menu]]}</td>
+                </tr>
+                {/loop}
+                </tbody>
+            </table>
+                <div class="b30"></div>
+                <div class="container">
+                    <div class="btn-group d-flex" role="group">
+                        <button type="submit" name="savebtn" id="savebtn" class="btn btn-success">保存</button>
+                        <a href="admin.php" class="btn btn-secondary">关闭返回</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{template 'footer','admin'}

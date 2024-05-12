@@ -11,7 +11,7 @@ $(document).ready(function() {
             }, 5000);
         }
     });
-    
+
     $("[data-click|='once']").click(function (event){
         $(this).attr('disabled', true);
     });

@@ -41,6 +41,7 @@
                             let data = ret.data;
                             $("#colUsername").val(data.username);
                             $("#colNickname").val(data.nickname);
+                            $("#colAuthPriv").val(data.auth_priv);
                             $("#customuserstatus" + data.status).prop('checked', true);
                             $("#useradminInline" + data.admin).prop('checked', true);
                             $.each(data.auths, function (index, value) {
@@ -133,6 +134,11 @@
             toastr.info('随机密码:'+ psw + ' 已复制至剪贴板');
         });
 
+        $("#auth-priv-btn").click(function (){
+            let id = $("#colUserid").val();
+            window.location.href = 'auth_priv_alloc.php?id='+id;
+        });
+
         function checkFormFields(){
             let formCheck = true;
             if($("#colUsername").val().length<3){
@@ -206,6 +212,7 @@
                     <th>登入次数</th>
                     <th>状态</th>
                     <th>角色组</th>
+                    <th>私有权限</th>
                     <th>管理员</th>
                     <th>动态码</th>
                     <th>操作</th>
@@ -220,6 +227,7 @@
                     <td>{$v[login_num]}</td>
                     <td>{$v['statusName']}</td>
                     <td>{$v[authRules]}</td>
+                    <td>{$v[auth_priv]}</td>
                     <td>{$v[adminTag]}</td>
                     <td>{if $v[authenticator]!=''} {if $auth->authNode(18)}
                         <button type="button" data-toggle="modal" data-target="#deleteAdminUser" title="解除动态码绑定" data-node="18" data-rowid="{$v[id]}" data-action ="SECURE" class="btn btn-danger btn-ssm">解除绑定</button>
@@ -306,6 +314,17 @@
                                 <label class="custom-control-label" for="rulesName-{$k}">{$v}</label>
                             </div>
                             {/loop}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="colPassword" class="col-sm-2 col-form-label">私有权限</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-plaintext" name="auth_priv" required id="colAuthPriv" value="" placeholder="个人私有权限" aria-describedby="basic-addon09">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon09"><a href="javascript:void(0);" id="auth-priv-btn">设置</a></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">

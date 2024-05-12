@@ -151,6 +151,7 @@ class auth extends app
                 'status'    => $user['status'],
                 'login_num' => $user['login_num'],
                 'auth_ids'  => empty($user['auth_ids']) ? '0' : $user['auth_ids'],
+                'authPrivs' => empty($user['auth_priv']) ? [] : explode(',', $user['auth_priv']),
                 'admin'     => $user['admin'],
                 'params'    => empty($user['params']) ? [] : json_decode($user['params'], true),
             ];
@@ -199,6 +200,7 @@ class auth extends app
             'status'    => $user['status'],
             'login_num' => $user['login_num'],
             'auth_ids'  => empty($user['auth_ids']) ? '0' : $user['auth_ids'],
+            'authPrivs' => empty($user['auth_priv']) ? [] : explode(',', $user['auth_priv']),
             'admin'     => $user['admin'],
             'params'    => empty($user['params']) ? [] : json_decode($user['params'], true),
         ];
@@ -247,12 +249,15 @@ class auth extends app
             }
         }
 
+        $_aIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
+        $authIds = explode(',', $_aIds);
+        $authIds = array_merge($authIds, $this->user['authPrivs']);
         //获取菜单权限
         if ($user['admin'] == 1) {
             $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1])->order('pid, sort desc')->select(true);
         } else {
             $authIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
-            $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1, 'id' => ['IN', explode(',', $authIds)]])->order('pid, sort desc')->select(true);
+            $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1, 'id' => ['IN', $authIds]])->order('pid, sort desc')->select(true);
         }
         $node = [];
         while ($r = $res->fetch_assoc()) {
@@ -286,7 +291,7 @@ class auth extends app
             $res = $this->db->table($this->tableAdmin . '_node')->where(['status' => 1])->order('sort')->select(true);
         } else {
             $authIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
-            $res = $this->db->table($this->tableAdmin . '_node')->where(['status' => 1, 'id' => ['IN', explode(',', $authIds)]])->order('sort')->select(true);
+            $res = $this->db->table($this->tableAdmin . '_node')->where(['status' => 1, 'id' => ['IN', $authIds]])->order('sort')->select(true);
         }
         $node = [];
         while ($r = $res->fetch_assoc()) {
@@ -361,6 +366,7 @@ class auth extends app
         $row = $this->db->table($this->tableAdmin)->where(['id' => $id])->selectOne();
         $row['auths'] = empty($row['auth_ids']) ? [] : $this->getAdminAuths($row['auth_ids']);
         $row['params'] = empty($row['params']) ? [] : json_decode($row['params'], true);
+        $row['authPrivs'] = empty($row['auth_priv']) ? [] : explode(',', $row['auth_priv']);
         return $row;
     }
 
@@ -475,6 +481,7 @@ class auth extends app
     public function message(string $promptMessage, string $msgTitle = null, array $param = [])
     {
         global $activeMenu;
+        if(isset($param['activeMenu'])) $activeMenu = $param['activeMenu'];
         $admin_dir = 'admin';
         $DT_TIME = $this->DT_TIME;
         $title = $appName = app::$Lite->appName;

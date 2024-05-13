@@ -250,7 +250,7 @@ class auth extends app
         }
 
         $_aIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
-        $authIds = explode(',', $_aIds);
+        $authIds = empty($_aIds) ? [] : explode(',', $_aIds);
         $authIds = array_merge($authIds, $this->user['authPrivs']);
         //获取菜单权限
         if ($user['admin'] == 1) {

@@ -77,20 +77,28 @@ class Admin extends Controller
         $this->curUser = $this->auth->curUser();
         $this->curUserId = $this->auth->curUserId();
         if (!empty($this->postData)) {
-            $_jwt = $this->verifyToken($this->postData['token']);
-            if ($_jwt === false) {
-                $this->error(2, 'TOKEN无效！');
+            $this->verifyAjaxToken($this->postData);
+        }
+        if(isset($this->POST['apiToken'])){
+            $this->verifyAjaxToken($this->POST);
+        }
+    }
+
+    private function verifyAjaxToken($postData)
+    {
+        $_jwt = $this->verifyToken($postData['apiToken']);
+        if ($_jwt === false) {
+            $this->error(2, 'TOKEN无效！');
+        }
+        if ($_jwt['sub'] != $this->curUserId) {
+            $this->error(4, '非当前登入用户！');
+        }
+        if (isset($postData['node'])) {
+            if(!is_numeric($postData['node'])){
+                $this->error(1, '无效权限，无法操作！', $this->postData);
             }
-            if ($_jwt['sub'] != $this->curUserId) {
-                $this->error(4, '非当前登入用户！');
-            }
-            if (isset($this->postData['node'])) {
-                if(!is_numeric($this->postData['node'])){
-                    $this->error(1, '无效权限，无法操作！', $this->postData);
-                }
-                if (!$this->auth->authNode($this->postData['node'])) {
-                    $this->error(1, '无此权限，无法操作！');
-                }
+            if (!$this->auth->authNode($postData['node'])) {
+                $this->error(1, '无此权限，无法操作！');
             }
         }
     }

@@ -87,7 +87,7 @@ function adminCommFunc(token) {
     this.token = token === undefined ? '' : token;
 
     this.post = function (url, d, successFunc) {
-        d['token'] = this.token;
+        d['apiToken'] = this.token;
         $.ajax({
             url: url,
             data: JSON.stringify(d),

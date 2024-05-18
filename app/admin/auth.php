@@ -3,6 +3,9 @@
 namespace LiteApp\admin;
 
 use LiteApp\app;
+use LitePhp\GoogleAuthenticator;
+use LitePhp\Template;
+use LitePhp\Redis;
 
 class auth extends app
 {
@@ -184,7 +187,7 @@ class auth extends app
             return (object)['errcode' => 3, 'msg' => '密码输入有误'];
         }
         if (!empty($user['authenticator'])) {
-            $ga = new \LitePhp\GoogleAuthenticator(); //谷歌验证器示例
+            $ga = new GoogleAuthenticator(); //谷歌验证器示例
             $_check_google = $ga->verifyCode($user['authenticator'], $authenticator);
             if (!$_check_google) {
                 return (object)['errcode' => 4, 'msg' => '动态码二次验证失败'];
@@ -216,7 +219,7 @@ class auth extends app
         $token = $this->getToken($jwt);
         set_cookie('LiAdmin'.self::NonceId, $token);
         session('admin', ['id'=>$user['id'], 'username'=>$user['username']]);
-        return (object)['errcode' => 0, 'msg' => '登入成功！'];
+        return (object)['errcode' => 0, 'msg' => '登入成功！', 'token'=>$token];
     }
 
     /**
@@ -232,13 +235,13 @@ class auth extends app
         $user = $this->user;
         if(!$tag && self::menuNodeCache){  //不强制更新先偿试读缓存
             $_g = true;
-            $_c = \LitePhp\Redis::get('adminMenu'.self::NonceId.'_'.$user['id']);
+            $_c = Redis::get('adminMenu'.self::NonceId.'_'.$user['id']);
             if(!empty($_c)){
                 $this->menu = json_decode($_c, true);
             }else{
                 $_g = false;
             }
-            $_c = \LitePhp\Redis::get('adminNode'.self::NonceId.'_'.$user['id']);
+            $_c = Redis::get('adminNode'.self::NonceId.'_'.$user['id']);
             if(!empty($_c)){
                 $this->node = json_decode($_c, true);
             }else{
@@ -256,7 +259,6 @@ class auth extends app
         if ($user['admin'] == 1) {
             $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1])->order('pid, sort desc')->select(true);
         } else {
-            $authIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
             $res = $this->db->table($this->tableAdmin . '_node')->where(['is_menu' => 1, 'status' => 1, 'id' => ['IN', $authIds]])->order('pid, sort desc')->select(true);
         }
         $node = [];
@@ -290,7 +292,6 @@ class auth extends app
         if ($user['admin'] == 1) {
             $res = $this->db->table($this->tableAdmin . '_node')->where(['status' => 1])->order('sort')->select(true);
         } else {
-            $authIds = $this->db->get_value("SELECT GROUP_CONCAT(rules) FROM `{$this->tableAdmin}_auth` WHERE id IN ({$user['auth_ids']})");
             $res = $this->db->table($this->tableAdmin . '_node')->where(['status' => 1, 'id' => ['IN', $authIds]])->order('sort')->select(true);
         }
         $node = [];
@@ -314,8 +315,8 @@ class auth extends app
         $this->node = $node;
 
         if(self::menuNodeCache){
-            \LitePhp\Redis::set('adminMenu'.self::NonceId.'_'.$user['id'], json_encode($this->menu), 7200);
-            \LitePhp\Redis::set('adminNode'.self::NonceId.'_'.$user['id'], json_encode($this->node), 7200);
+            Redis::set('adminMenu'.self::NonceId.'_'.$user['id'], json_encode($this->menu), 7200);
+            Redis::set('adminNode'.self::NonceId.'_'.$user['id'], json_encode($this->node), 7200);
         }
     }
 
@@ -334,7 +335,7 @@ class auth extends app
      * 写入管理员操作日志
      * @param $title
      * @param $content
-     * @return bool|int|\MongoDB\Driver\WriteResult|\mysqli_result|string|null
+     * @return
      */
     public function aLog($title, $content = '')
     {
@@ -488,7 +489,39 @@ class auth extends app
         $curUser = $this->curUser();
         $presentation = $this->presentation($activeMenu);
 
-        include \LitePhp\Template::load('message_thin', 'admin');
+        include Template::load('message_thin', 'admin');
         exit(0);
+    }
+
+    public function checkGoogleAuth($uid, $authenticator): bool
+    {
+        $user = $this->getAdminUser($uid);
+        $ga = new GoogleAuthenticator(); //谷歌验证器示例
+        return $ga->verifyCode($user['authenticator'], $authenticator);
+    }
+
+    /**
+     * 验证Post Ajax 数据请求合法apiToken 和 node
+     * @param $postData
+     * @return bool
+     */
+    public function verifyAjaxToken($postData): bool
+    {
+        $_jwt = $this->verifyToken($postData['apiToken']);
+        if ($_jwt === false) {
+            response::error(2, 'TOKEN无效！');
+        }
+        if ($_jwt['sub'] != $this->user['id']) {
+            response::error(4, '非当前登入用户！');
+        }
+        if (isset($postData['node'])) {
+            if(!is_numeric($postData['node'])){
+                response::error(1, '无效权限，无法操作！', $postData);
+            }
+            if (!$this->authNode($postData['node'])) {
+                response::error(1, '无此权限，无法操作！');
+            }
+        }
+        return true;
     }
 }

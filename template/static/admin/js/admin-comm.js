@@ -100,6 +100,44 @@ function adminCommFunc(token) {
         });
     }
 
+    this.formPost = function (url, formData = {}, fileData =[], successFunc) {
+        let postData = new FormData();
+        postData.append("apiToken", this.token);
+
+        $.each(formData, function (key, value){
+            postData.append(`${key}`, value);
+        });
+        if(Array.isArray(fileData)){
+            fileData.forEach(el=>{
+                let l = el.file.length;
+                let field = el.name;
+                if(l === 0){
+                    postData.append(field, null);
+                    return;
+                }
+                if(l > 1){
+                    field = field + '[]';
+                }
+                for(let i = 0; i < l; i++){
+                    postData.append(field, el.file[i]);
+                }
+            })
+        }
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            async: true,
+            data: postData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data, status) {
+                successFunc(data, status);
+            }
+        });
+    }
+
     this.awaitPost = function (url, d) {
         d['token'] = this.token;
         return $.ajax({

@@ -84,6 +84,11 @@ class Admin extends Controller
         }
     }
 
+    /**
+     * 验证Ajax请求的ApiToken
+     * @param $postData
+     * @return void
+     */
     private function verifyAjaxToken($postData)
     {
         $_jwt = $this->verifyToken($postData['apiToken']);
@@ -132,6 +137,13 @@ class Admin extends Controller
         }
     }
 
+    /**
+     * Admin框架的错误信息提示
+     * @param string $promptMessage
+     * @param string|null $msgTitle
+     * @param array $param
+     * @return void
+     */
     protected function adminMessage(string $promptMessage, string $msgTitle = null, array $param = [])
     {
         if ($this->title == $this->appName){

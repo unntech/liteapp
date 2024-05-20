@@ -25,6 +25,7 @@ https://liteapp.unn.tech
 * 1.1.6 新增api接口控制器
 * 1.1.8 新增Model支持
 * 1.1.10 增加私有权限，用户分配权限除了角色外，可以支持用户级别分配
+* 1.1.11 修改Ajax请求验正字段统一为apiToken，增加formPost支持
 
 
 > LiteApp 1.1的运行环境要求PHP7.2+，兼容PHP8

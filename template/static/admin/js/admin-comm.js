@@ -27,6 +27,7 @@ $(document).ready(function() {
             }, 3000);
         }
     });
+
     $("[data-toggle|='adminConfirm']").click(function (event){
         //console.log(event);
         adminConfirmOptStyle();
@@ -139,7 +140,7 @@ function adminCommFunc(token) {
     }
 
     this.awaitPost = function (url, d) {
-        d['token'] = this.token;
+        d['apiToken'] = this.token;
         return $.ajax({
             url: url,
             data: JSON.stringify(d),

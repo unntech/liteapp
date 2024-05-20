@@ -23,7 +23,11 @@ class ApiAdmin extends ApiBase
         parent::initialize();
 
         //验证接口权限等初始化过程
-        $this->uid = 10001;
+        $jwt = $this->verifyToken($this->postData['head']['apiToken'] ?? '');
+        if($jwt === false){
+            $this->error(401, 'Unauthorized');
+        }
+        $this->uid = $jwt['sub'] ?? 0;
 
         /* ---  鉴权不成功则退出
         $notAllow = true;

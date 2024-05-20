@@ -8,7 +8,7 @@ abstract class app
     const VERSION = '1.0.1';
 
     /**
-     * @var \LiteApp\LiteApp
+     * @var LiteApp
      */
     public static $Lite;
 

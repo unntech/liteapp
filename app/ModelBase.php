@@ -2,7 +2,9 @@
 
 namespace LiteApp;
 
-class ModelBase extends \LitePhp\Model
+use LitePhp\Model;
+
+class ModelBase extends Model
 {
     public function __construct() {
 

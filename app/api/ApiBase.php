@@ -32,14 +32,18 @@ class ApiBase extends app
      */
     protected function apiLog()
     {
-        $log = [
-            'url'=> $_SERVER['PHP_SELF'],
-            'params'=> json_encode($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-            'postData'=>file_get_contents("php://input"),
-            'ip'=>$this->DT_IP,
-            'addtime'=>$this->DT_TIME,
-        ];
-        return $this->db->table('api_request_log')->insert($log);
+        if (DT_DEBUG){
+            $log = [
+                'url'=> $_SERVER['PHP_SELF'],
+                'params'=> json_encode($_GET, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+                'postData'=>file_get_contents("php://input"),
+                'ip'=>$this->DT_IP,
+                'addtime'=>$this->DT_TIME,
+            ];
+            return $this->db->table('api_request_log')->insert($log);
+        }else{
+            return 0;
+        }
     }
 
     protected function initialize()

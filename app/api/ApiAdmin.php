@@ -2,8 +2,6 @@
 
 namespace LiteApp\api;
 
-use LiteApp\api\ApiBase;
-
 class ApiAdmin extends ApiBase
 {
     protected $uid;
@@ -28,6 +26,20 @@ class ApiAdmin extends ApiBase
             $this->error(401, 'Unauthorized');
         }
         $this->uid = $jwt['sub'] ?? 0;
+
+        //验证是否已登入用户
+        $_token = $this->postData['head']['token'] ?? '';
+        if(empty($_token)){
+            $this->error(5, '登入超时');
+        }
+        $jwt = $this->verifyToken($_token);
+        if($jwt === false){
+            $this->error(5, '登入超时');
+        }
+        $this->uid = $jwt['sub'] ?? 0;
+        if(empty($this->uid)){
+            $this->error(5, '登入超时');
+        }
 
         /* ---  鉴权不成功则退出
         $notAllow = true;

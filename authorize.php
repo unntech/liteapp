@@ -38,7 +38,7 @@ if($pass){
     $token = $Aes->getToken($jwt);
     $data = [
         'secret'        =>  $token,
-        'expires_in'    =>  $exp * 1000, //过期时间按毫秒适应APP前端
+        'expires_in'    =>  ($exp - 30) * 1000, //过期时间按毫秒适应APP前端
         'sessid'        =>  $key,
         'signType'      =>  'MD5',
     ];

@@ -56,7 +56,7 @@ class ApiBase extends app
 
         if($this->postData){
             $check = $this->verifySign($this->postData);
-            if($check == false){
+            if($check === false){
                 $this->error(405, '数据验签失败！', ['request'=>$this->postData]);
             }
         }

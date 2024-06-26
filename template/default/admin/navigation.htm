@@ -27,13 +27,13 @@
     <ul class="sidebar-menu">
         {loop $auth->menu $k $v}
         <li {if $k == $activeMenu} class="active" {/if}>
-            <a href="{$v[href]}"><i class="{if empty($v['icon'])}bi bi-list-ul{else}{$v[icon]}{/if}"></i><span class="menu-text {if $navigatorSiderFlag}d_none{/if}"> {$v[title]}</span></a>
+            <a href="{$v[href]}"><i class="{if empty($v['icon'])}bi bi-list-ul{else}{$v[icon]}{/if}" title="{$v[title]}"></i><span class="menu-text {if $navigatorSiderFlag}d_none{/if}"> {$v[title]}</span></a>
         </li>
         {if isset($v['sub'])}
         <ul class="sidebar-menu sidebar-menu-sub" id="sidebar-submenu-{$k}" {if !empty($v['menuShow'])} style="display:block" {/if}>
         {loop $v['sub'] $subk $subv}
         <li {if $subk == $activeMenu} class="active" {/if}>
-            <a href="{$subv[href]}"><i class="{if empty($subv['icon'])}bi bi-list{else}{$subv[icon]}{/if}"></i><span class="menu-text {if $navigatorSiderFlag}d_none{/if}"> {$subv[title]}</span></a>
+            <a href="{$subv[href]}"><i class="{if empty($subv['icon'])}bi bi-list{else}{$subv[icon]}{/if}" title="{$subv[title]}"></i><span class="menu-text {if $navigatorSiderFlag}d_none{/if}"> {$subv[title]}</span></a>
         </li>
         {/loop}
         </ul>

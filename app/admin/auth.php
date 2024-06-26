@@ -299,7 +299,10 @@ class auth extends app
             if (empty($r['node'])) {
                 $href = "javascript:void(0);";
             } else {
-                if ($_rpos = strrpos($r['node'], '#')) {
+                if (strpos($r['node'], '@') === 0){
+                    $_url = substr($r['node'], 1);
+                    $href = '/route.php/'.$_url;
+                } elseif ($_rpos = strrpos($r['node'], '#')) {
                     $action = substr($r['node'], $_rpos + 1);
                     $_url = substr($r['node'], 0, $_rpos);
                     $href = '/' . $_url . '.php?action=' . $action . '&';
@@ -461,7 +464,7 @@ class auth extends app
         $_nodeCode = substr($_SERVER['SCRIPT_NAME'], 1);
         $_i = strrpos($_nodeCode, '.');
         $_nodeCode = $_i === false ? $_nodeCode : substr($_nodeCode, 0, $_i);
-        $row = $this->db->table($this->tableAdmin . '_node')->fields(['id','pid','node'])->where(['node'=>$_nodeCode])->selectOne();
+        $row = $this->db->table($this->tableAdmin . '_node')->fields(['id','pid','node'])->where(['node'=>$_nodeCode, 'is_menu'=>1])->selectOne();
         return $row ? $row['id'] : 1;
     }
     public function activeMenuFormPathInfo(): int

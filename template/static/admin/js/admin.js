@@ -97,26 +97,7 @@ $(document).ready(function() {
         });
     });
 
-    $("[data-toggle|='compare-different-highlights']").compareDifferentHighlights();
-    $('[data-toggle="tooltip"]').tooltip()
 });
-
-
-$.fn.compareDifferentHighlights = function (){
-    $(this).each(function (){
-        let od = $(this).attr('title');
-        let ocd = $(this).attr('data-compare');
-        if(ocd !== undefined){
-            od = ocd;
-        }
-        let nd = $(this).html();
-        if(od != nd){
-            $(this).addClass('text-danger');
-            $(this).attr('data-toggle', 'tooltip');
-            $(this).attr('data-placement', 'bottom');
-        }
-    });
-}
 
 function removePresentation(k){
     let d = {

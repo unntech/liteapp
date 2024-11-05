@@ -420,7 +420,7 @@ class auth extends app
      */
     public function presentation(int $activeMenu): array
     {
-        $maxPresentation =config('admin.presentation');
+        $maxPresentation =config('admin.presentation', 10);
         $presentation = json_decode(get_cookie('presentation'.$this->user['id']), true);
         if(empty($presentation)){
             $presentation = [];

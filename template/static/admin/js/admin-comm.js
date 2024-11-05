@@ -58,7 +58,37 @@ $(document).ready(function() {
         //console.log('hidden');
         $("#adminActivityContent #adminConfirmOpt").remove();
     });
+
+    //$("[data-display|='decimal-small']").numberDecimalSmall();
+    $("[data-toggle|='compare-different-highlights']").compareDifferentHighlights();
+    $('[data-toggle="tooltip"]').tooltip();
 });
+
+$.fn.numberDecimalSmall = function (){
+    $(this).each(function (){
+        let number = $(this)[0].textContent;
+        let parts = number.split('.');
+        let integer = parts[0];
+        let decimal = parts[1] ? parts[1] : '00';
+        $(this).html(`${integer}.<small>${decimal}</small>`);
+    });
+}
+
+$.fn.compareDifferentHighlights = function (){
+    $(this).each(function (){
+        let od = $(this).attr('title');
+        let ocd = $(this).attr('data-compare');
+        if(ocd !== undefined){
+            od = ocd;
+        }
+        let nd = $(this).html();
+        if(od !== nd){
+            $(this).addClass('text-danger');
+            $(this).attr('data-toggle', 'tooltip');
+            $(this).attr('data-placement', 'bottom');
+        }
+    });
+}
 
 function adminConfirmOptStyle(){
     $('#adminActivityContent').append(`

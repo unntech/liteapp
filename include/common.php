@@ -150,3 +150,21 @@ function exception_handler(Throwable $e)
         }
     }
 }
+
+/**
+ * 将数字格式化，小数部份变小一号
+ * @param $number
+ * @param int $decimals
+ * @param string|null $thousands_separator
+ * @return string
+ */
+function decimal_small_format($number, int $decimals =2, ?string $thousands_separator = null): string
+{
+    $num = number_format($number, $decimals, '.', $thousands_separator);
+    $p = explode('.', $num);
+    $str = (string)$p[0];
+    if($p[1]){
+        $str .= '.<small>' .$p[1].'</small>';
+    }
+    return $str;
+}

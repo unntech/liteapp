@@ -24,7 +24,7 @@ class Tree
     public $nbsp = "&nbsp;";
     public $pidname = 'pid';
 
-    public function __construct()
+    public function __construct($options = [])
     {
 
     }
@@ -70,6 +70,26 @@ class Tree
             $this->nbsp = $nbsp;
         }
         return $this;
+    }
+
+    /**
+     * 得到节点数组
+     * @param $myid
+     * @return array
+     */
+    public function getNode($myid): array
+    {
+        $newarr = [];
+        foreach ($this->arr as $value) {
+            if (!isset($value['id'])) {
+                continue;
+            }
+            if($value['id'] == $myid) {
+                $newarr = $value;
+                break;
+            }
+        }
+        return $newarr;
     }
 
     /**

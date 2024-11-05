@@ -294,6 +294,9 @@
 .max-xl {
   max-width: 1140px;
 }
+.max-xxl {
+  max-width: 1320px;
+}
 
 .multiselect-option-item{
   background-color: transparent;
@@ -308,3 +311,43 @@
 .spacing-line-dot{border-bottom: #e8edf0 1px dotted;}
 
 .text-ellipsis{text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
+
+.container-xxl {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 1400px) {
+  .container, .container-xxl {
+    max-width: 1320px;
+  }
+}
+
+@media (min-width: 576px) {
+  .modal-xxl {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .modal-xxl {
+    max-width: 1320px;
+  }
+}
+
+.modal-fullscreen{
+  width: 100vw;
+  max-width: none;
+  max-height: none !important;
+  height: 100%;
+  margin: 0;
+}
+
+.modal-fullscreen .modal-content{
+  height: 100vh;
+  border-radius: 0;
+  border: 0;
+}

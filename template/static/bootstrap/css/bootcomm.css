@@ -312,7 +312,7 @@
 
 .text-ellipsis{text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
 
-.container-xxl {
+.container-xxl, .container-xlg {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
@@ -321,20 +321,37 @@
 }
 
 @media (min-width: 1400px) {
-  .container, .container-xxl {
+  .container, .container-xxl, .container-xlg {
     max-width: 1320px;
   }
 }
 
+@media (min-width: 1600px) {
+  .container-xlg {
+    max-width: 1520px;
+  }
+}
+@media (min-width: 2000px) {
+  .container {
+    max-width: 1520px;
+  }
+}
+
 @media (min-width: 576px) {
-  .modal-xxl {
+  .modal-xxl, .modal-xlg {
     max-width: 1140px;
   }
 }
 
 @media (min-width: 1400px) {
-  .modal-xxl {
+  .modal-xxl, .modal-xlg {
     max-width: 1320px;
+  }
+}
+
+@media (min-width: 1600px) {
+  .modal-xlg {
+    max-width: 1520px;
   }
 }
 

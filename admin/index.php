@@ -12,7 +12,8 @@ $username = '';
 
 if($action == 'logout'){
     set_cookie("LiAdmin".auth::NonceId, '');
-    LitePhp\LiHttp::redirect('index.php');
+    $href = empty($_GET['href']) ? 'index.php' : $_GET['href'];
+    LitePhp\LiHttp::redirect($href);
 }
 
 if(isset($_POST['login'])) {

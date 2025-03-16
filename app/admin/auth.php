@@ -82,12 +82,25 @@ class auth extends app
      * @param bool $tag 为true时，如果验证无权则直接退出
      * @return bool
      */
-    public function authNode(int $authId, bool $tag = false): bool
+    public function authNode($authId, bool $tag = false): bool
     {
-        if ($authId == 0) {
-            return true;
+        if(is_array($authId)){
+            if(empty($authId)){
+                return true;
+            }
+            $auth = false;
+            foreach($authId as $v){
+                if(array_key_exists($v, $this->node)){
+                    $auth = true;
+                    break;
+                }
+            }
+        }else{
+            if ($authId == 0) {
+                return true;
+            }
+            $auth =  array_key_exists($authId, $this->node);
         }
-        $auth =  array_key_exists($authId, $this->node);
         if($tag && $auth == false){
             $this->message('对不起，您无权限进行此操作！', '错误提示');
         }
@@ -128,6 +141,36 @@ class auth extends app
     public function nodeHref($authId): string
     {
         return $this->node[$authId]['href'] ?? '';
+    }
+
+    /**
+     * 判断是否已登入
+     * @return array
+     */
+    public function hasLogin(): array
+    {
+        $apiToken = $this->getToken(['sub'=>0, 'exp'=>$this->DT_TIME + 1800]);
+        $ret = ['login'=>false, 'apiToken'=>$apiToken];
+        $userid = session('admin.id');
+        if(empty($userid)){
+            return $ret;
+        }
+        $liAdminToken = get_cookie('LiAdmin'.self::NonceId);
+        $verify = $this->verifyToken($liAdminToken);
+        if ($verify === false || $userid != $verify['sub']) {
+            return $ret;
+        } else {
+            $user = $this->db->table($this->tableAdmin)->where(['id' => $verify['sub']])->selectOne();
+
+            return [
+                'login'    => true,
+                'apiToken' => $this->getToken(['sub' => (int)$userid, 'exp' => $this->DT_TIME + 7200]),
+                'id'       => (int)$user['id'],
+                'username' => $user['username'],
+                'nickname' => $user['nickname'],
+                'token'    => $liAdminToken,
+            ];
+        }
     }
 
     /**

@@ -116,6 +116,15 @@ function adminConfirmOptStyle(){
 
 function adminCommFunc(token) {
     this.token = token === undefined ? '' : token;
+    this.loginToken = '';
+
+    this.setLoginToken = function (token){
+        this.loginToken = token;
+    }
+
+    this.getLoginToken = function (){
+        return this.loginToken;
+    }
 
     this.post = function (url, d, successFunc) {
         d['apiToken'] = this.token;
@@ -182,7 +191,7 @@ function adminCommFunc(token) {
 
     this.apiPost = function (url, d, successFunc) {
         let p = {};
-        p['head'] = {"unique_id":this.randString(24),"apiToken":this.token};
+        p['head'] = {"unique_id":this.randString(24),"apiToken":this.token,"token":this.loginToken};
         p['body'] = d;
         p['signType'] = "NONE";
         $.ajax({

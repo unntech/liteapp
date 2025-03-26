@@ -194,11 +194,11 @@ class auth extends app
                 'id'        => (int)$user['id'],
                 'username'  => $user['username'],
                 'nickname'  => $user['nickname'],
-                'status'    => $user['status'],
-                'login_num' => $user['login_num'],
+                'status'    => (int)$user['status'],
+                'login_num' => (int)$user['login_num'],
                 'auth_ids'  => empty($user['auth_ids']) ? '0' : $user['auth_ids'],
                 'authPrivs' => empty($user['auth_priv']) ? [] : explode(',', $user['auth_priv']),
-                'admin'     => $user['admin'],
+                'admin'     => (int)$user['admin'],
                 'params'    => empty($user['params']) ? [] : json_decode($user['params'], true),
             ];
 

@@ -8,7 +8,6 @@ require_once DT_ROOT . '/vendor/autoload.php';
 $Lite = new LiteApp\LiteApp();
 LiteApp\app::$Lite = $Lite;
 LitePhp\Lite::setRootPath(DT_ROOT);
-
 define('ENVIRONMENT', $Lite->config->get('app.ENVIRONMENT', 'DEV'));
 define('DT_DEBUG', $Lite->config->get('app.APP_DEBUG', true));
 if (DT_DEBUG) {
@@ -18,6 +17,7 @@ if (DT_DEBUG) {
     error_reporting(E_ERROR);
 }
 
+$Lite->set_db();
 $version = LiteApp\app::VERSION;
 $DT_TIME = time();
 $DT_IP = LitePhp\LiComm::ip();

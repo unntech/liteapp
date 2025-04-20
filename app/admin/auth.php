@@ -150,7 +150,7 @@ class auth extends app
     public function hasLogin(): array
     {
         $apiToken = $this->getToken(['sub'=>0, 'exp'=>$this->DT_TIME + 1800]);
-        $ret = ['login'=>false, 'apiToken'=>$apiToken];
+        $ret = ['login'=>false, 'apiToken'=>$apiToken, 'token'=>''];
         $userid = session('admin.id');
         if(empty($userid)){
             return $ret;

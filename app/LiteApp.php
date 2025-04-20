@@ -20,7 +20,6 @@ class LiteApp
         $this->DT_TIME = time();
         $this->config = new \LitePhp\Config(DT_ROOT . "/config/");
         $this->config->load(['app', 'db']);
-        $this->db = \LitePhp\Db::Create($this->config->get('db'));
         $this->appName = $this->config->get('app.name', 'LiteApp');
     }
     

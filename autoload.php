@@ -1,6 +1,6 @@
 <?php
 
-define('IN_LitePhp', true);
+const IN_LitePhp = true;
 define('DT_ROOT', str_replace("\\", '/', __DIR__ ));
 
 require_once DT_ROOT . '/vendor/autoload.php';
@@ -18,6 +18,7 @@ if (DT_DEBUG) {
 }
 
 $Lite->set_db();
+LitePhp\Model::setDb($Lite->db);
 $version = LiteApp\app::VERSION;
 $DT_TIME = time();
 $DT_IP = LitePhp\LiComm::ip();
@@ -26,7 +27,7 @@ LitePhp\Template::init(DT_ROOT, $Lite->config->get('app.template', 'default'), D
 
 define('DT_KEY', $Lite->config->get('app.authkey', 'LitePhp'));
 define('DT_SKIN', '/template/' . $Lite->config->get('app.template', 'default') . "/skin");
-define('DT_STATIC', '/template/static');
+const DT_STATIC = '/template/static';
 
 require_once DT_ROOT . '/include/common.php';
 set_exception_handler('exception_handler');

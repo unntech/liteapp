@@ -10,8 +10,12 @@ class LiteApp
     /**
      * 配置参数
      */
-    const VERSION = '1.1.12';
-    public $config, $db, $redis;
+    const VERSION = '1.1.13';
+    public $config, $db;
+    /**
+     * @var \redis()
+     */
+    public $redis;
     public $DT_TIME;
     public $appName;
     

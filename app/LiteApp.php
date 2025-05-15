@@ -1,6 +1,9 @@
 <?php
 namespace LiteApp;
 
+use LiteApp\extend\DB;
+use LitePhp\LiHttp;
+
 defined('IN_LitePhp') or exit('Access Denied');
 /**
  * LiteApp 基础类
@@ -11,7 +14,11 @@ class LiteApp
      * 配置参数
      */
     const VERSION = '1.1.13';
-    public $config, $db;
+    public $config;
+    /**
+     * @var \LitePhp\mysqli | \LitePhp\sqlsrv | \LitePhp\mongodb
+     */
+    public $db;
     /**
      * @var \redis()
      */
@@ -29,12 +36,12 @@ class LiteApp
     
     public function set_db($i=0){ //$i 为配置文件db列表里的第几个配置
         //$this->config->load(['db']);
-        $this->db = \LitePhp\Db::Create($this->config->get('db'), $i);
+        $this->db = DB::Create($this->config->get('db'), $i);
     }
     
     public function new_db($i=0){ //$i 为配置文件db列表里的第几个配置
         //$this->config->load(['db']);
-        return \LitePhp\Db::Create($this->config->get('db'), $i, true);
+        return DB::Create($this->config->get('db'), $i, true);
     }
     
     public function set_redis(bool $reconnect = false){
@@ -72,17 +79,17 @@ class LiteApp
     
     public function getRequestHeaders(): array
     {
-        return \LitePhp\LiHttp::requestHeaders();
+        return LiHttp::requestHeaders();
     }
     
     public function do_get($url, $aHeader = null)
     {
-        return \LitePhp\LiHttp::get($url, $aHeader);
+        return LiHttp::get($url, $aHeader);
     }
     
     public function do_post($url, $data=null, $aHeader = null)
     {
-        return \LitePhp\LiHttp::post($url, $data, $aHeader);
+        return LiHttp::post($url, $data, $aHeader);
     }
 
     /**

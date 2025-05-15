@@ -3,7 +3,7 @@
 namespace LiteApp\api;
 
 use LiteApp\app;
-use LitePhp\Redis;
+use LiteApp\extend\Redis;
 use LitePhp\LiRsa;
 
 class ApiBase extends app

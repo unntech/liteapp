@@ -5,7 +5,7 @@ namespace LiteApp\admin;
 use LiteApp\app;
 use LitePhp\GoogleAuthenticator;
 use LitePhp\Template;
-use LitePhp\Redis;
+use LiteApp\extend\Redis;
 
 class auth extends app
 {

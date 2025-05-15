@@ -2,6 +2,7 @@
 namespace LiteApp;
 
 use LiteApp\extend\DB;
+use LiteApp\extend\Redis;
 use LitePhp\LiHttp;
 
 defined('IN_LitePhp') or exit('Access Denied');
@@ -47,7 +48,7 @@ class LiteApp
     public function set_redis(bool $reconnect = false){
         if(empty($this->redis) || $reconnect) {
             $this->config->load(['redis']);
-            $this->redis = \LitePhp\Redis::Create($this->config->get('redis'));
+            $this->redis = Redis::Create($this->config->get('redis'));
         }
     }
 

@@ -5,7 +5,7 @@
  */
 require 'autoload.php';
 
-use LitePhp\Redis;
+use LiteApp\extend\Redis;
 use LitePhp\SnowFlake;
 
 $req = json_decode(file_get_contents("php://input"), true);

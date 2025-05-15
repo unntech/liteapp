@@ -3,7 +3,9 @@
 require '../autoload.php';
 $activeMenu = 0;
 require 'auth.inc.php';
+
 use LiteApp\admin\response;
+use LiteApp\extend\Redis;
 
 if($isAjax){
     switch ($postData['action']){
@@ -21,8 +23,8 @@ if($isAjax){
         case 'clearCache':
             if(LiteApp\admin\auth::menuNodeCache){
                 $Lite->set_redis();
-                \LitePhp\Redis::del('adminMenu'. LiteApp\admin\auth::NonceId.'_'.$curUserId);
-                \LitePhp\Redis::del('adminNode'. LiteApp\admin\auth::NonceId.'_'.$curUserId);
+                Redis::del('adminMenu'. LiteApp\admin\auth::NonceId.'_'.$curUserId);
+                Redis::del('adminNode'. LiteApp\admin\auth::NonceId.'_'.$curUserId);
             }
             response::success([]);
             break;

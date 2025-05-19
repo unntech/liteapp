@@ -2,11 +2,13 @@
     "name": "unntech/liteapp",
     "description": "A lite php Framework for web provide",
     "type": "project",
-    "license": "Apache-2.0",
+    "license": "MIT",
+    "homepage": "https://github.com/unntech/liteapp",
     "authors": [
         {
             "name": "Jason Lin",
-            "email": "lzs9605@gmail.com"
+            "email": "lzs9605@gmail.com",
+            "homepage": "https://www.zhisg.com"
         }
     ],
     "require": {

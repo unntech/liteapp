@@ -174,7 +174,12 @@ class ApiBase extends app
 
             }catch(\Throwable $e){
                 $emsg = $e->getMessage();
-                $this->error(417, $emsg);
+                if(DT_DEBUG){
+                    $data = ['request'=>$this->postData, 'exception'=>$e, 'code'=>$e->getCode(),'message'=>$e->getMessage(), 'trace'=>$e->getTrace()];
+                }else{
+                    $data = [];
+                }
+                $this->error(417, $emsg, $data);
             }
         }else{
             $this->error(400, '无效请求');
@@ -242,7 +247,9 @@ class ApiBase extends app
      */
     public function verifySign(array &$data) : bool
     {
-        if((isset($data['encrypted']) || isset($data['signType'])) && ($data['encrypted'] === true || $data['signType'] == 'RSA') && empty($this->rsa)){
+        $data['encrypted'] = $data['encrypted'] ?? false;
+        $data['signType'] = $data['signType'] ?? 'NONE';
+        if(($data['encrypted'] === true || $data['signType'] == 'RSA') && empty($this->rsa)){
             $rsaKey = config('app.rsaKey');
             $this->rsa = new LiRsa($rsaKey['pub'], $rsaKey['priv'], false, $rsaKey['private_key_bits'] );
             $this->rsa->SetThirdPubKey($rsaKey['thirdPub']);
@@ -295,6 +302,33 @@ class ApiBase extends app
             $this->rsa->SetThirdPubKey($rsaKey['thirdPub']);
         }
         return json_decode($this->rsa->decrypt($data), true);
+    }
+
+    public function authorize_token($appid, $secret): array
+    {
+        if(empty($appid)){
+            return ['suc'=>false];
+        }
+        $r = $this->db->table('app_secret')->where(['appid'=>$appid])->selectOne();
+        if($r){
+            if($r['status'] < 1 || ($r['status'] == 2 && $r['expires'] < $this->DT_TIME) || $r['appsecret'] != $secret){
+                return ['suc'=>false];
+            }else{
+                $exp = $this->DT_TIME + 7200;
+                $jwt = ['sub'=>$appid, 'exp'=>$exp];
+                $token = $this->getToken($jwt);
+                self::$Lite->set_redis();
+                $_str = serialize(['token'=>$token, 'secret'=>$secret]);
+                Redis::set($appid, $_str, 7200);
+                return [
+                    'suc'     => true,
+                    'token'   => $token,
+                    'expires' => $exp,
+                ];
+            }
+        }else{
+            return ['suc'=>false];
+        }
     }
 
 }

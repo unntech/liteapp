@@ -2,9 +2,10 @@
 LiteApp 1.1
 ===============
 
-[![Total Downloads](https://poser.pugx.org/unntech/liteapp/downloads)](https://packagist.org/packages/unntech/liteapp)
 [![Latest Stable Version](https://poser.pugx.org/unntech/liteapp/v/stable)](https://packagist.org/packages/unntech/liteapp)
-[![PHP Version](https://img.shields.io/badge/php-%3E%3D7.0-8892BF.svg)](http://www.php.net/)
+[![Total Downloads](https://poser.pugx.org/unntech/liteapp/downloads)](https://packagist.org/packages/unntech/liteapp)
+[![Latest Unstable Version](http://poser.pugx.org/unntech/liteapp/v/unstable)](https://packagist.org/packages/unntech/liteapp)
+[![PHP Version Require](http://poser.pugx.org/unntech/liteapp/require/php)](https://packagist.org/packages/unntech/liteapp)
 [![License](https://poser.pugx.org/unntech/liteapp/license)](https://packagist.org/packages/unntech/liteapp)
 
 一个PHP的轻量框架

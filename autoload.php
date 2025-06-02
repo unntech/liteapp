@@ -23,6 +23,7 @@ $version = LiteApp\app::VERSION;
 $DT_TIME = time();
 $DT_IP = LitePhp\LiComm::ip();
 $title = $Lite->config->get('app.name', 'LiteApp');
+LiteApp\LiApp::initialize();
 LitePhp\Template::init(DT_ROOT, $Lite->config->get('app.template', 'default'), DT_ROOT . "/runtime/cache");
 
 define('DT_KEY', $Lite->config->get('app.authkey', 'LitePhp'));

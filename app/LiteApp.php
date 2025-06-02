@@ -14,7 +14,7 @@ class LiteApp
     /**
      * 配置参数
      */
-    const VERSION = '1.1.14';
+    const VERSION = '1.1.15';
     public $config;
     /**
      * @var \LitePhp\mysqli | \LitePhp\sqlsrv | \LitePhp\mongodb

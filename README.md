@@ -59,6 +59,8 @@ yourApp/
 │   │   ├── controller                      #接口控制器目录，支持分项多级子目录
 │   │   └── ApiBase.php                     #接口基础类
 │   ├── controller                          #控制器方法目录，支持分项多级子目录
+│   ├── extend                              #继承vendor框架类，供扩展和重写方法
+│   ├── model                               #模型类
 │   ├── traits
 │   ├── ...                                 #其它子模块
 │   ├── app.php                             #app基础父类

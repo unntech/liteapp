@@ -141,13 +141,12 @@ function exception_handler(Throwable $e)
             $html .= '<div class="header"><h3>' . $e->getMessage() . '</h3>Code: ' . $e->getCode() . '<BR>File: ' . $e->getFile() . '<BR>Line: ' . $e->getLine() . '</div>';
             $html .= '<div class="msg">' . dv($e, false) . '</div>';
             $html .= '</body></html>';
-            echo $html;
         } else {
             $msg = $e->getCode() . ': ' . $e->getMessage();
             $html = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><title>HTTP 500</title><style>body{background-color:#444;font-size:16px;}h3{font-size:32px;color:#eee;text-align:center;padding-top:50px;font-weight:normal;}</style></head>';
             $html .= '<body><h3>' . $msg . '</h3></body></html>';
-            echo $html;
         }
+        echo $html;
     }
 }
 

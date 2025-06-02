@@ -192,7 +192,7 @@ class ApiBase extends app
      * 请求数据生成签名
      * @param array $data
      * signType 提供 MD5、SHA256、RSA，验签时json encode增加中文不转unicode和不转义反斜杠两个参数
-     * @return string
+     * @return array
      */
     public function request(array $data) : array
     {

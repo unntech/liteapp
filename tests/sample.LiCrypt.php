@@ -2,7 +2,7 @@
 
 require __DIR__.'/../autoload.php';
 
-//第一个参数 密钥；第二个参数 向量，为空则自动生成； 第三个参数加密方式，默认des-cfb
+//第一个参数 密钥；第二个参数 向量，为空则自动生成； 第三个参数加密方式，默认aes-128-cfb
 $liCrypt = new LitePhp\LiCrypt(DT_KEY);
 
 //获取可用加密方式

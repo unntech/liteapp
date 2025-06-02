@@ -1,8 +1,6 @@
 <?php
 require __DIR__.'/../autoload.php';
 
-
-
 $config = $Lite->config->get('app');
 
 $where[] = ['addtime'=>1];

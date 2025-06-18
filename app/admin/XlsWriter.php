@@ -250,4 +250,13 @@ class XlsWriter
         return xlswriter_get_version();
     }
 
+    public function excelToUnixTime($excelDate) {
+        if(is_float($excelDate)){
+            $time = intval(($excelDate - 25569)*86400 - 28800);
+        }else{
+            $time = strtotime($excelDate);
+        }
+        return $time;
+    }
+
 }

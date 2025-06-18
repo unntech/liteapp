@@ -15,10 +15,12 @@ body{
     -moz-transition: -moz-transform 0.3s ease-in-out,width 0.3s ease-in-out;
     -o-transition: -o-transform 0.3s ease-in-out,width 0.3s ease-in-out;
     transition: transform 0.3s ease-in-out,width 0.3s ease-in-out;
-    background: #222d32;
     overflow-y:auto;
     overflow-x:hidden;
     -ms-overflow-style: none;
+}
+.main-sidebar-bg-color{
+    background: #222d32;
 }
 .main-sidebar::-webkit-scrollbar{
     width: 0 !important;
@@ -395,4 +397,22 @@ body{
 }
 #admin-preview-image img{
     max-width: 100%;
+}
+
+.admin-fixed-bottom{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 809;
+    padding-left: 245px;
+    padding-right: 15px;
+}
+
+.admin-fixed-bottom-style{
+    background: #fff;
+    padding: 10px 15px 15px 15px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 0 -3px 5px -3px rgba(0, 0, 0, 0.25);
 }

@@ -229,6 +229,7 @@ function navigatorSiderToggle(){
     if(navigatorSiderFlag == 0){
         $("#admin-main-sidebar").addClass('main-sidebar-sm');
         $(".admin-content-wrapper").css('padding-left', '68px');
+        $(".admin-fixed-bottom").css('padding-left', '68px');
         $(".main-header").addClass('main-header-sm')
         $("#admin-main-sidebar .menu-text").hide();
         navigatorSiderFlag = 1;
@@ -236,6 +237,7 @@ function navigatorSiderToggle(){
     }else{
         $("#admin-main-sidebar").removeClass('main-sidebar-sm');
         $(".admin-content-wrapper").css('padding-left', '245px');
+        $(".admin-fixed-bottom").css('padding-left', '245px');
         $(".main-header").removeClass('main-header-sm');
         $("#admin-main-sidebar .menu-text").fadeIn("slow");
         navigatorSiderFlag = 0;

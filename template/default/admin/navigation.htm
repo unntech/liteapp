@@ -17,12 +17,14 @@
     </div>
 </header>
 <div style="height: 50px"></div>
-<div class="main-sidebar {if $navigatorSiderFlag}main-sidebar-sm{/if} h-100" id="admin-main-sidebar">
-    <div class="logo">
-        <a href="/admin/main.php"><img src="{DT_STATIC}/li-logo.png"></a>
-        <span class="menu-text {if $navigatorSiderFlag}d_none{/if}">{$appName}后台管理</span>
+<div class="main-sidebar main-sidebar-bg-color {if $navigatorSiderFlag}main-sidebar-sm{/if} h-100" id="admin-main-sidebar">
+    <div class="sticky-top main-sidebar-bg-color">
+        <div class="logo">
+            <a href="/admin/main.php"><img src="{DT_STATIC}/li-logo.png"></a>
+            <span class="menu-text {if $navigatorSiderFlag}d_none{/if}">{$appName}后台管理</span>
+        </div>
+        <div class="sidebar-top-separate"></div>
     </div>
-    <div class="sidebar-top-separate"></div>
     <div class="sidebar-menu-wrapper">
     <ul class="sidebar-menu">
         {loop $auth->menu $k $v}
@@ -45,6 +47,7 @@
 {if $navigatorSiderFlag}
 <style>
     .admin-content-wrapper{padding-left: 68px;}
+    .admin-fixed-bottom{padding-left: 68px;}
 </style>
 {/if}
 {else}
@@ -93,6 +96,7 @@
 </div>
 <style>
     .admin-content-wrapper{padding-left: 15px;}
+    .admin-fixed-bottom{padding-left: 15px;}
 </style>
 {/if}
 <div class="userinfomenu shadow-sm" id="userinfomenu">
